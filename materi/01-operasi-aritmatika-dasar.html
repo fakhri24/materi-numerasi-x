@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aritmatika Bilangan Bulat - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem}
+.katex{font-size:1.15em}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+.btn-orange{background:#f59e0b;color:#111}.btn-orange:hover{background:#d97706}
+.btn-sm{padding:6px 14px;font-size:.85rem}
+input[type=number]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:80px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus{border-color:#60a5fa}
+select{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px;border-radius:8px;font-size:1rem;outline:none;cursor:pointer}
+select:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:12px;border-radius:8px;font-size:1.1rem;min-height:50px;display:flex;align-items:center;justify-content:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.3rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:120px;font-size:1.2rem}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.step-list{counter-reset:step;list-style:none;padding:0}
+.step-list li{counter-increment:step;padding:10px 10px 10px 45px;position:relative;margin:6px 0;background:#16162a;border-radius:8px}
+.step-list li::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);background:#3b82f6;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.number-line{position:relative;height:60px;margin:30px 40px;background:#16162a;border-radius:8px}
+.number-line svg{width:100%;height:100%}
+.tip{display:flex;align-items:flex-start;gap:10px;background:#1a1a2e;border-radius:10px;padding:12px 16px;margin:10px 0}
+.tip-icon{font-size:1.3rem;flex-shrink:0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+.tab-content{margin-top:10px}
+.hidden{display:none}
+.back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
+.back-link:hover{color:#60a5fa}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
+<h1>🧮 Aritmatika Bilangan Bulat</h1>
+<p class="subtitle">Pelajari aturan penjumlahan, pengurangan, perkalian &amp; pembagian bilangan bulat secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('penjumlahan')" id="btn-penjumlahan" class="active">➕ Penjumlahan</button>
+<button onclick="show('pengurangan')" id="btn-pengurangan">➖ Pengurangan</button>
+<button onclick="show('perkalian')" id="btn-perkalian">✖️ Perkalian</button>
+<button onclick="show('pembagian')" id="btn-pembagian">➗ Pembagian</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== PENJUMLAHAN ==================== -->
+<div id="penjumlahan" class="section active">
+<div class="card">
+<h2>Aturan Penjumlahan Bilangan Bulat</h2>
+
+<h3>1. Tanda Sama → Jumlahkan, Tanda Tetap</h3>
+<div class="rule-box">
+<div class="label">Rumus</div>
+<div id="rule-add-same"></div>
+</div>
+<div class="example" id="ex-add-same"></div>
+
+<h3>2. Tanda Berbeda → Kurangkan, Ikuti Tanda yang Lebih Besar</h3>
+<div class="rule-box">
+<div class="label">Rumus</div>
+<div id="rule-add-diff"></div>
+</div>
+<div class="example" id="ex-add-diff"></div>
+
+<h3>3. Sifat-sifat Penjumlahan</h3>
+<div class="rule-box success">
+<div class="label">Komutatif</div>
+<div id="prop-kom"></div>
+</div>
+<div class="rule-box success">
+<div class="label">Asosiatif</div>
+<div class="example" id="prop-aso"></div>
+</div>
+</div>
+
+<!-- Kalkulator Interaktif -->
+<div class="card">
+<h2>🔨 Kalkulator Penjumlahan</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="add-a" value="-5" style="width:90px">
+<span style="font-size:1.5rem;color:#60a5fa">+</span>
+<input type="number" id="add-b" value="8" style="width:90px">
+<button class="btn btn-primary" onclick="hitungTambah()">Hitung</button>
+</div>
+<div id="add-result" class="result info" style="margin-top:16px">
+Masukkan angka lalu klik "Hitung"
+</div>
+</div>
+</div>
+
+<!-- Garis Bilangan Interaktif -->
+<div class="card">
+<h2>📊 Visualisasi di Garis Bilangan</h2>
+<div class="interactive-area">
+<p style="margin-bottom:10px">Klik tombol untuk melihat penjumlahan pada garis bilangan</p>
+<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px">
+<button class="btn btn-sm btn-primary" onclick="drawNumberLine(-3,-4)">(-3) + (-4)</button>
+<button class="btn btn-sm btn-green" onclick="drawNumberLine(-5,7)">(-5) + 7</button>
+<button class="btn btn-sm btn-orange" onclick="drawNumberLine(3,-8)">3 + (-8)</button>
+</div>
+<div class="number-line"><canvas id="numCanvas" width="800" height="60"></canvas></div>
+<div id="nl-label" style="text-align:center;color:#888;margin-top:6px;font-size:.95rem"></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PENGURANGAN ==================== -->
+<div id="pengurangan" class="section">
+<div class="card">
+<h2>Aturan Pengurangan Bilangan Bulat</h2>
+
+<div class="rule-box warning">
+<div class="label">Kunci Utama</div>
+<div id="rule-sub-main"></div>
+</div>
+
+<h3>Langkah Penyelesaian</h3>
+<ol class="step-list" id="sub-steps"></ol>
+
+<h3>Contoh</h3>
+<div class="example" id="ex-sub"></div>
+
+<h3>Tabel Perubahan Tanda</h3>
+<table style="width:100%;border-collapse:collapse;margin:12px 0">
+<thead><tr style="border-bottom:2px solid #333">
+<th style="padding:10px;text-align:left;color:#60a5fa">Bentuk Awal</th>
+<th style="padding:10px;text-align:left;color:#60a5fa">Ubah Jadi</th>
+<th style="padding:10px;text-align:left;color:#60a5fa">Hasil</th>
+</tr></thead>
+<tbody id="sub-table"></tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Pengurangan</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="sub-a" value="-3" style="width:90px">
+<span style="font-size:1.5rem;color:#f472b6">−</span>
+<input type="number" id="sub-b" value="-7" style="width:90px">
+<button class="btn btn-primary" onclick="hitungKurang()">Hitung</button>
+</div>
+<div id="sub-result" class="result info" style="margin-top:16px">
+Masukkan angka lalu klik "Hitung"
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PERKALIAN ==================== -->
+<div id="perkalian" class="section">
+<div class="card">
+<h2>Aturan Perkalian Bilangan Bulat</h2>
+
+<h3>Tabel Tanda Perkalian</h3>
+<table style="width:100%;border-collapse:collapse;margin:12px 0;text-align:center">
+<thead><tr style="border-bottom:2px solid #333">
+<th style="padding:12px">× </th>
+<th style="padding:12px;color:#60a5fa">Positif (+)</th>
+<th style="padding:12px;color:#f472b6">Negatif (−)</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #222">
+<td style="padding:12px;color:#60a5fa;font-weight:700">Positif (+)</td>
+<td style="padding:12px;background:#0e2a1a;border-radius:8px" id="mul-pp"></td>
+<td style="padding:12px;background:#2a0e0e;border-radius:8px" id="mul-pn"></td>
+</tr>
+<tr>
+<td style="padding:12px;color:#f472b6;font-weight:700">Negatif (−)</td>
+<td style="padding:12px;background:#2a0e0e;border-radius:8px" id="mul-np"></td>
+<td style="padding:12px;background:#0e2a1a;border-radius:8px" id="mul-nn"></td>
+</tr>
+</tbody>
+</table>
+
+<div class="rule-box">
+<div class="label">Ringkasan Mudah</div>
+<div id="mul-summary"></div>
+</div>
+
+<h3>Contoh</h3>
+<div class="example" id="mul-ex"></div>
+
+<h3>Sifat-sifat Perkalian</h3>
+<div class="rule-box success"><div class="label">Komutatif</div><div id="mul-kom"></div></div>
+<div class="rule-box success"><div class="label">Distributif</div><div id="mul-dist"></div></div>
+<div class="rule-box success"><div class="label">Perkalian dengan 0</div><div id="mul-nol"></div></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Perkalian</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="mul-a" value="-4" style="width:90px">
+<span style="font-size:1.5rem;color:#a78bfa">×</span>
+<input type="number" id="mul-b" value="6" style="width:90px">
+<button class="btn btn-primary" onclick="hitungKali()">Hitung</button>
+</div>
+<div id="mul-calc-result" class="result info" style="margin-top:16px">
+Masukkan angka lalu klik "Hitung"
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PEMBAGIAN ==================== -->
+<div id="pembagian" class="section">
+<div class="card">
+<h2>Aturan Pembagian Bilangan Bulat</h2>
+
+<h3>Tabel Tanda Pembagian</h3>
+<table style="width:100%;border-collapse:collapse;margin:12px 0;text-align:center">
+<thead><tr style="border-bottom:2px solid #333">
+<th style="padding:12px">÷ </th>
+<th style="padding:12px;color:#60a5fa">Positif (+)</th>
+<th style="padding:12px;color:#f472b6">Negatif (−)</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #222">
+<td style="padding:12px;color:#60a5fa;font-weight:700">Positif (+)</td>
+<td style="padding:12px;background:#0e2a1a;border-radius:8px" id="div-pp"></td>
+<td style="padding:12px;background:#2a0e0e;border-radius:8px" id="div-pn"></td>
+</tr>
+<tr>
+<td style="padding:12px;color:#f472b6;font-weight:700">Negatif (−)</td>
+<td style="padding:12px;background:#2a0e0e;border-radius:8px" id="div-np"></td>
+<td style="padding:12px;background:#0e2a1a;border-radius:8px" id="div-nn"></td>
+</tr>
+</tbody>
+</table>
+
+<div class="rule-box">
+<div class="label">Ringkasan</div>
+<div id="div-summary"></div>
+</div>
+
+<h3>Contoh</h3>
+<div class="example" id="div-ex"></div>
+
+<div class="rule-box warning">
+<div class="label">⚠️ Perhatian</div>
+<div id="div-warn"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Pembagian</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="div-a" value="-24" style="width:100px">
+<span style="font-size:1.5rem;color:#10b981">÷</span>
+<input type="number" id="div-b" value="-6" style="width:100px">
+<button class="btn btn-primary" onclick="hitungBagi()">Hitung</button>
+</div>
+<div id="div-calc-result" class="result info" style="margin-top:16px">
+Masukkan angka lalu klik "Hitung"
+</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Aritmatika Bilangan Bulat</h2>
+<p style="color:#888;margin-bottom:10px">Jawab 10 soal. Skor dan jawaban benar ditampilkan di akhir.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="number" id="q-answer" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ============ PENJUMLAHAN ============
+k('rule-add-same','\\text{Jika tanda sama, jumlahkan nilai mutlak, tanda tetap.} \\\\ (+a) + (+b) = +(a+b) \\\\ (-a) + (-b) = -(a+b)');
+k('ex-add-same','\\textbf{Contoh:}\\\\ (-7) + (-3) = -(7+3) = \\boxed{-10} \\\\[6pt] (+5) + (+9) = +(5+9) = \\boxed{+14}');
+k('rule-add-diff','\\text{Jika tanda berbeda, kurangkan nilai mutlak, ikuti tanda yang lebih besar.} \\\\ (-a) + (+b) = \\pm(b-a) \\text{ jika } b>a');
+k('ex-add-diff','\\textbf{Contoh:}\\\\ (-4) + (+9) = +(9-4) = \\boxed{+5} \\\\[6pt] (+3) + (-8) = -(8-3) = \\boxed{-5}');
+k('prop-kom','a + b = b + a \\quad \\Rightarrow \\quad (-3)+5 = 5+(-3) = 2');
+ki('prop-aso','(a+b)+c = a+(b+c)');
+k('prop-aso','((-2)+(-3))+5 = (-2)+((-3)+5) = (-2)+(2) = \\boxed{0}');
+
+// ============ PENGURANGAN ============
+k('rule-sub-main','a - b = a + (-b) \\quad \\text{Ubah tanda pengurang menjadi penjumlahan dengan lawan tanda!}');
+document.getElementById('sub-steps').innerHTML=`<li>Ubah tanda <strong>−</strong> (kurang) menjadi <strong>+</strong> (tambah)</li><li>Balik tanda bilangan setelah tanda kurang → jadikan lawan tanda</li><li>Selesaikan sebagai penjumlahan biasa</li>`;
+k('ex-sub','\\textbf{Contoh:}\\\\ (-3) - (-7) \\\\[4pt] = (-3) + (+7) \\quad \\text{← ubah } -(-7) \\text{ jadi } +(+7) \\\\[4pt] = +(7-3) = \\boxed{+4}');
+const subData=[
+  ['a - (+b)','a + (-b)','a - b'],
+  ['a - (-b)','a + (+b)','a + b'],
+  ['(-a) - (+b)','(-a) + (-b)','-(a+b)'],
+  ['(-a) - (-b)','(-a) + (+b)','±(b-a)'],
+];
+document.getElementById('sub-table').innerHTML=subData.map(r=>`<tr style="border-bottom:1px solid #222"><td style="padding:10px">${r[0]}</td><td style="padding:10px">${r[1]}</td><td style="padding:10px">${r[2]}</td></tr>`).join('');
+
+// ============ PERKALIAN ============
+ki('mul-pp','(+) \\times (+) = \\textbf{Positif}');
+ki('mul-pn','(+) \\times (-) = \\textbf{Negatif}');
+ki('mul-np','(-) \\times (+) = \\textbf{Negatif}');
+ki('mul-nn','(-) \\times (-) = \\textbf{Positif}');
+k('mul-summary','\\textbf{Sesama tanda → Positif} \\quad (+\\times+) \\text{ atau } (-\\times-) \\\\[6pt] \\textbf{Beda tanda → Negatif} \\quad (+\\times-) \\text{ atau } (-\\times+)');
+k('mul-ex','(-4) \\times 5 = \\boxed{-20} \\\\[6pt] (-3) \\times (-7) = \\boxed{+21} \\\\[6pt] 6 \\times (-2) = \\boxed{-12}');
+k('mul-kom','a \\times b = b \\times a \\\\ (-3) \\times 4 = 4 \\times (-3) = -12');
+k('mul-dist','a \\times (b+c) = (a \\times b) + (a \\times c) \\\\ (-2) \\times (3+5) = (-2)(3) + (-2)(5) = -6 + (-10) = \\boxed{-16}');
+k('mul-nol','a \\times 0 = 0 \\quad \\text{untuk semua } a \\in \\mathbb{Z}');
+
+// ============ PEMBAGIAN ============
+ki('div-pp','(+) \\div (+) = \\textbf{Positif}');
+ki('div-pn','(+) \\div (-) = \\textbf{Negatif}');
+ki('div-np','(-) \\div (+) = \\textbf{Negatif}');
+ki('div-nn','(-) \\div (-) = \\textbf{Positif}');
+k('div-summary','\\text{Aturan tanda pembagian SAMA PERSIS dengan perkalian:} \\\\[4pt] \\textbf{Sesama tanda → Positif, Beda tanda → Negatif}');
+k('div-ex','(-24) \\div (-6) = \\boxed{+4} \\\\[6pt] 15 \\div (-3) = \\boxed{-5} \\\\[6pt] (-36) \\div 9 = \\boxed{-4}');
+k('div-warn','\\text{Pembagian dengan 0: } a \\div 0 = \\text{TIDAK TERDEFINISI} \\\\[4pt] \\text{Tapi } 0 \\div a = 0 \\text{ untuk semua } a \\neq 0');
+
+// ---- KALKULATOR ----
+function renderCalc(el, steps, result){
+  document.getElementById(el).className='result '+(result!==null?'correct':'info');
+  document.getElementById(el).innerHTML=steps+(result!==null?'<br><strong>Hasil: '+result+'</strong>':'');
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+function hitungTambah(){
+  const a=+document.getElementById('add-a').value, b=+document.getElementById('add-b').value;
+  const r=a+b, sa=Math.abs(a), sb=Math.abs(b);
+  let s=`$${a} + ${b}$<br>`;
+  if(a>=0&&b>=0) s+=`Kedua positif → langsung jumlahkan: $${sa} + ${sb} = ${r}$`;
+  else if(a<0&&b<0) s+=`Kedua negatif → jumlahkan nilai mutlak, tanda negatif: $-(${sa}+${sb}) = ${r}$`;
+  else if(a<0&&b>=0){
+    if(sb>=sa) s+=`Beda tanda, $${sb} > ${sa}$ → kurangkan, ikuti tanda positif: $+(${sb}-${sa}) = ${r}$`;
+    else s+=`Beda tanda, $${sa} > ${sb}$ → kurangkan, ikuti tanda negatif: $-(${sa}-${sb}) = ${r}$`;
+  } else {
+    if(sa>=sb) s+=`Beda tanda, $${sa} > ${sb}$ → kurangkan, ikuti tanda positif: $+(${sa}-${sb}) = ${r}$`;
+    else s+=`Beda tanda, $${sb} > ${sa}$ → kurangkan, ikuti tanda negatif: $-(${sb}-${sa}) = ${r}$`;
+  }
+  renderCalc('add-result',s,r);
+}
+function hitungKurang(){
+  const a=+document.getElementById('sub-a').value, b=+document.getElementById('sub-b').value;
+  const r=a-b, s=`$${a} - (${b})$<br>Ubah jadi: $${a} + (${-b})$<br>$= ${r}$`;
+  renderCalc('sub-result',s,r);
+}
+function hitungKali(){
+  const a=+document.getElementById('mul-a').value, b=+document.getElementById('mul-b').value;
+  const r=a*b;
+  const tanda=(a>=0&&b>=0)||(a<0&&b<0)?'Sesama tanda → Positif':'Beda tanda → Negatif';
+  renderCalc('mul-calc-result',`$${a} \\times ${b}$<br>${tanda}<br>$= ${r}$`,r);
+}
+function hitungBagi(){
+  const a=+document.getElementById('div-a').value, b=+document.getElementById('div-b').value;
+  if(b===0){renderCalc('div-calc-result','<strong>❌ Pembagian dengan 0 tidak terdefinisi!</strong>',null);return;}
+  const r=a/b;
+  const tanda=(a>=0&&b>=0)||(a<0&&b<0)?'Sesama tanda → Positif':'Beda tanda → Negatif';
+  renderCalc('div-calc-result',`$${a} \\div (${b})$<br>${tanda}<br>$= ${r}$`,r);
+}
+
+// ---- GARIS BILANGAN ----
+function drawNumberLine(a,b){
+  const c=document.getElementById('numCanvas'), ctx=c.getContext('2d');
+  const W=c.width, H=c.height;
+  ctx.clearRect(0,0,W,H);
+  const min=-12, max=12, range=max-min;
+  const px=v=>((v-min)/range)*(W-80)+40;
+  const y=35;
+  // axis
+  ctx.strokeStyle='#444';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px(min),y);ctx.lineTo(px(max),y);ctx.stroke();
+  // ticks & labels
+  ctx.fillStyle='#666';ctx.font='11px sans-serif';ctx.textAlign='center';
+  for(let i=min;i<=max;i++){
+    const x=px(i);
+    ctx.beginPath();ctx.strokeStyle='#444';ctx.moveTo(x,y-6);ctx.lineTo(x,y+6);ctx.stroke();
+    if(i%2===0) ctx.fillText(i,x,y+20);
+  }
+  // arrows
+  const arrowLen=12;
+  // first arrow: a
+  ctx.strokeStyle='#3b82f6';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(px(0),y);ctx.lineTo(px(a),y);ctx.stroke();
+  ctx.beginPath();ctx.fillStyle='#3b82f6';ctx.arc(px(a),y,5,0,Math.PI*2);ctx.fill();
+  // second arrow: from a to a+b
+  const end=a+b;
+  ctx.strokeStyle='#f472b6';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(px(a),y);ctx.lineTo(px(end),y);ctx.stroke();
+  ctx.beginPath();ctx.fillStyle='#f472b6';ctx.arc(px(end),y,6,0,Math.PI*2);ctx.fill();
+  // label
+  document.getElementById('nl-label').innerHTML=`<span style="color:#3b82f6">Mulai dari 0 → ${a}</span> &nbsp;|&nbsp; <span style="color:#f472b6">Lalu ${b>0?'+':'−'} ${Math.abs(b)} → ${end}</span> &nbsp;|&nbsp; <strong style="color:#10b981">Hasil: ${end}</strong>`;
+}
+drawNumberLine(-3,-4);
+
+// ============ KUIS ============
+let quizData=[], qIdx=0, qScore=0;
+function genQuiz(){
+  const ops=[
+    {sym:'+',fn:(a,b)=>a+b,range:[-20,20]},
+    {sym:'−',fn:(a,b)=>a-b,range:[-20,20]},
+    {sym:'×',fn:(a,b)=>a*b,range:[-12,12]},
+  ];
+  quizData=[];
+  for(let i=0;i<10;i++){
+    const op=ops[Math.floor(Math.random()*ops.length)];
+    const r=op.range;
+    let a=Math.floor(Math.random()*(r[1]-r[0]+1))+r[0];
+    let b=Math.floor(Math.random()*(r[1]-r[0]+1))+r[0];
+    if(op.sym==='÷'){
+      // generate division from multiplication
+      const b2=Math.floor(Math.random()*11)-5;
+      const ans=Math.floor(Math.random()*19)-9;
+      a=ans*b2||1; b=b2||1;
+      quizData.push({q:`${a} ÷ (${b})`,ans:ans,sym:'÷'});
+      continue;
+    }
+    quizData.push({q:`(${a}) ${op.sym} (${b})`,ans:op.fn(a,b),sym:op.sym});
+  }
+}
+function resetQuiz(){genQuiz();qIdx=0;qScore=0;showQ();}
+function showQ(){
+  if(qIdx>=10){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / 10</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari 10: <br><span style="font-size:1.6rem">${quizData[qIdx].q} = ?</span>`;
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / 10`;
+  document.getElementById('q-progress').style.width=`${qIdx*10}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value==='')return;
+  const userAns=parseInt(inp.value), correct=quizData[qIdx].ans;
+  const el=document.getElementById('q-result');
+  if(userAns===correct){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! ${quizData[qIdx].q} = ${correct}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban: <strong>${correct}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / 10`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['01-operasi-aritmatika-dasar']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numerasi X - Peta Belajar Interaktif</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
+.container{max-width:820px;margin:0 auto;padding:20px 20px 60px}
+h1{text-align:center;font-size:2.1rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{text-align:center;color:#888;margin-bottom:24px;font-size:.95rem}
+
+.progress-wrap{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:18px 22px;margin-bottom:28px}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.9rem;color:#aaa}
+.progress-top strong{color:#e0e0e0}
+.progress-bar{height:8px;background:#2a2a3e;border-radius:4px;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa,#f472b6);border-radius:4px;transition:width .5s ease;width:0%}
+
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:22px;font-size:.85rem;color:#888}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.dot.prasyarat{background:#60a5fa}
+.dot.sistem{background:#a78bfa}
+
+.path{position:relative;padding-left:34px}
+.path::before{content:'';position:absolute;left:15px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,#2a2a3e,#3a3a5e)}
+
+.item{position:relative;margin-bottom:14px}
+.item::before{content:attr(data-num);position:absolute;left:-34px;top:14px;width:30px;height:30px;border-radius:50%;background:#1e1e2e;border:2px solid #333;color:#888;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;z-index:1}
+.item.done::before{border-color:#10b981;color:#10b981;background:#0e2a1a}
+.item.ready::before{border-color:#60a5fa;color:#60a5fa}
+
+a.card{display:block;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:all .2s;display:flex;align-items:center;gap:14px}
+a.card:hover{border-color:#60a5fa;background:#20203a;transform:translateX(4px)}
+a.card.disabled{cursor:default;opacity:.55}
+a.card.disabled:hover{border-color:#2a2a3e;background:#1a1a2e;transform:none}
+
+.card-emoji{font-size:1.6rem;flex-shrink:0}
+.card-body{flex:1;min-width:0}
+.card-title{font-size:1.05rem;font-weight:600;color:#e0e0e0}
+.card-tab{font-size:.78rem;font-weight:600;letter-spacing:.02em}
+.card-tab.prasyarat{color:#60a5fa}
+.card-tab.sistem{color:#a78bfa}
+.card-status{font-size:.8rem;color:#666;flex-shrink:0;white-space:nowrap}
+.card-status.done{color:#10b981}
+.card-status.ready{color:#60a5fa}
+
+footer{text-align:center;color:#555;font-size:.8rem;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📚 Numerasi X</h1>
+<p class="subtitle">Peta belajar interaktif — 12 materi sesuai urutan penguasaan</p>
+
+<div class="progress-wrap">
+  <div class="progress-top"><span>Progres kamu</span><strong id="progress-label">0 / 12 selesai</strong></div>
+  <div class="progress-bar"><div class="fill" id="progress-fill"></div></div>
+</div>
+
+<div class="legend">
+  <span><span class="dot prasyarat"></span> Prasyarat</span>
+  <span><span class="dot sistem"></span> Sistem Persamaan</span>
+</div>
+
+<div class="path" id="path"></div>
+
+<footer>Dibuat untuk belajar numerasi &middot; data progres tersimpan di browser kamu (localStorage)</footer>
+</div>
+
+<script>
+const materi = [
+  {num:1,  slug:'01-operasi-aritmatika-dasar', title:'Operasi Aritmatika Dasar', emoji:'🧮', tab:'prasyarat', tabLabel:'Prasyarat', ready:true},
+  {num:2,  slug:'02-sifat-operasi-bilangan',   title:'Sifat Operasi Bilangan', emoji:'🔢', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:3,  slug:'03-kpk-dan-fpb',              title:'KPK dan FPB', emoji:'🧩', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:4,  slug:'04-operasi-pecahan',          title:'Operasi Pecahan', emoji:'🍰', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:5,  slug:'05-operasi-konversi-desimal', title:'Operasi dan Konversi Desimal', emoji:'🔟', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:6,  slug:'06-pengenalan-variabel',      title:'Pengenalan Variabel', emoji:'🔤', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:7,  slug:'07-manipulasi-aljabar-dasar', title:'Manipulasi Aljabar Dasar', emoji:'🧮', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:8,  slug:'08-plsv',                     title:'Persamaan Linear Satu Variabel (PLSV)', emoji:'⚖️', tab:'sistem', tabLabel:'Sistem Persamaan', ready:false},
+  {num:9,  slug:'09-spldv',                    title:'Sistem Persamaan Linear Dua Variabel (SPLDV)', emoji:'📐', tab:'sistem', tabLabel:'Sistem Persamaan', ready:false},
+  {num:10, slug:'10-persentase',               title:'Persentase', emoji:'💯', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:11, slug:'11-perbandingan-dan-skala',   title:'Perbandingan dan Skala', emoji:'📏', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+  {num:12, slug:'12-pembulatan-dan-estimasi',  title:'Pembulatan dan Estimasi', emoji:'🎯', tab:'prasyarat', tabLabel:'Prasyarat', ready:false},
+];
+
+let progress = {};
+try{ progress = JSON.parse(localStorage.getItem('numerasi-progress') || '{}'); }catch(e){}
+
+const pathEl = document.getElementById('path');
+let doneCount = 0;
+
+pathEl.innerHTML = materi.map(m => {
+  const isDone = !!progress[m.slug];
+  if(isDone) doneCount++;
+  const stateClass = isDone ? 'done' : (m.ready ? 'ready' : '');
+  const statusText = isDone ? '✅ Selesai' : (m.ready ? '▶ Mulai' : '🔒 Segera hadir');
+  const statusClass = isDone ? 'done' : (m.ready ? 'ready' : '');
+  const href = `materi/${m.slug}.html`;
+  const disabled = m.ready ? '' : 'disabled';
+  const clickable = m.ready ? `href="${href}"` : `href="${href}"`;
+  return `<div class="item ${stateClass}" data-num="${m.num}">
+    <a class="card ${disabled}" ${clickable}>
+      <span class="card-emoji">${m.emoji}</span>
+      <span class="card-body">
+        <div class="card-title">${m.title}</div>
+        <div class="card-tab ${m.tab}">${m.tabLabel}</div>
+      </span>
+      <span class="card-status ${statusClass}">${statusText}</span>
+    </a>
+  </div>`;
+}).join('');
+
+document.getElementById('progress-label').textContent = `${doneCount} / ${materi.length} selesai`;
+document.getElementById('progress-fill').style.width = `${(doneCount / materi.length) * 100}%`;
+</script>
+</body>
+</html>
