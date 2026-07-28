@@ -3,35 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Operasi Pecahan - Numerasi X</title>
+<title>Operasi Pecahan - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+.frac-input{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 6px}
+.frac-input input{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:8px;border-radius:6px;font-size:1.05rem;width:64px;text-align:center;outline:none;transition:border .2s}
+.frac-input input:focus{border-color:#60a5fa}
+.frac-input .bar{width:64px;height:2px;background:#666;margin:4px 0}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:90px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#60a5fa}
+select{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px;border-radius:8px;font-size:1.3rem;outline:none;cursor:pointer}
+select:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.3rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:140px;font-size:1.2rem}
+.quiz-hint{color:#666;font-size:.82rem;margin-top:6px}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🍰 Operasi Pecahan</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari penyederhanaan, penjumlahan, pengurangan, perkalian, pembagian &amp; pecahan campuran secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('sederhana')" id="btn-sederhana" class="active">🔻 Sederhanakan</button>
+<button onclick="show('tambahkurang')" id="btn-tambahkurang">➕ Tambah &amp; Kurang</button>
+<button onclick="show('kaliBagi')" id="btn-kaliBagi">✖️ Kali &amp; Bagi</button>
+<button onclick="show('campuran')" id="btn-campuran">🔄 Pecahan Campuran</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== SEDERHANAKAN ==================== -->
+<div id="sederhana" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Menyederhanakan Pecahan</h2>
+<div class="rule-box">
+<div class="label">Cara</div>
+<div id="rule-sederhana"></div>
+</div>
+<div class="example" id="ex-sederhana"></div>
+<div class="rule-box">
+<div class="label">💡 Ingat</div>
+<div>FPB dihitung dengan faktorisasi prima atau irisan faktor. Lihat kembali di <a href="03-kpk-dan-fpb.html" style="color:#60a5fa">materi KPK dan FPB →</a></div>
 </div>
 </div>
+
+<div class="card">
+<h2>🔨 Coba Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<div class="frac-input"><input type="number" id="spl-n" value="12"><div class="bar"></div><input type="number" id="spl-d" value="18"></div>
+<button class="btn btn-primary" onclick="hitungSederhana()">Sederhanakan</button>
+</div>
+<div id="spl-result" class="result info" style="margin-top:16px">Masukkan pembilang &amp; penyebut lalu klik "Sederhanakan"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== TAMBAH & KURANG ==================== -->
+<div id="tambahkurang" class="section">
+<div class="card">
+<h2>Penjumlahan &amp; Pengurangan Pecahan</h2>
+
+<h3>Pecahan Sejenis (Penyebut Sama)</h3>
+<div class="rule-box"><div class="label">Cara</div><div id="rule-sejenis"></div></div>
+<div class="example" id="ex-sejenis"></div>
+
+<h3>Pecahan Tak Sejenis (Penyebut Beda)</h3>
+<div class="rule-box"><div class="label">Cara</div><div id="rule-taksejenis"></div></div>
+<div class="example" id="ex-taksejenis"></div>
+
+<div class="rule-box success">
+<div class="label">💡 Ingat</div>
+<div>Penyebut disamakan dengan KPK kedua penyebut. Lihat kembali di <a href="03-kpk-dan-fpb.html" style="color:#6ee7b7">materi KPK dan FPB →</a></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Tambah &amp; Kurang</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+<div class="frac-input"><input type="number" id="ts-an" value="2"><div class="bar"></div><input type="number" id="ts-ad" value="3"></div>
+<select id="ts-op"><option value="+">+</option><option value="-">−</option></select>
+<div class="frac-input"><input type="number" id="ts-bn" value="1"><div class="bar"></div><input type="number" id="ts-bd" value="6"></div>
+<button class="btn btn-primary" onclick="hitungTambahKurang()">Hitung</button>
+</div>
+<div id="ts-result" class="result info" style="margin-top:16px">Masukkan dua pecahan lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KALI & BAGI ==================== -->
+<div id="kaliBagi" class="section">
+<div class="card">
+<h2>Perkalian &amp; Pembagian Pecahan</h2>
+
+<h3>Perkalian</h3>
+<div class="rule-box"><div class="label">Cara</div><div id="rule-kali"></div></div>
+<div class="example" id="ex-kali"></div>
+
+<h3>Pembagian</h3>
+<div class="rule-box"><div class="label">Cara</div><div id="rule-bagi"></div></div>
+<div class="example" id="ex-bagi"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Kali &amp; Bagi</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+<div class="frac-input"><input type="number" id="kb-an" value="2"><div class="bar"></div><input type="number" id="kb-ad" value="3"></div>
+<select id="kb-op"><option value="×">×</option><option value="÷">÷</option></select>
+<div class="frac-input"><input type="number" id="kb-bn" value="3"><div class="bar"></div><input type="number" id="kb-bd" value="4"></div>
+<button class="btn btn-primary" onclick="hitungKaliBagi()">Hitung</button>
+</div>
+<div id="kb-result" class="result info" style="margin-top:16px">Masukkan dua pecahan lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PECAHAN CAMPURAN ==================== -->
+<div id="campuran" class="section">
+<div class="card">
+<h2>Pecahan Campuran ↔ Pecahan Biasa</h2>
+
+<h3>Campuran → Biasa</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-c2b"></div></div>
+<div class="example" id="ex-c2b"></div>
+
+<h3>Biasa → Campuran</h3>
+<div class="rule-box"><div class="label">Cara</div><div id="rule-b2c"></div></div>
+<div class="example" id="ex-b2c"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Konversi Campuran → Biasa</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="c2b-w" value="2" style="width:70px">
+<div class="frac-input"><input type="number" id="c2b-n" value="3"><div class="bar"></div><input type="number" id="c2b-d" value="4"></div>
+<button class="btn btn-primary" onclick="hitungC2B()">Ubah</button>
+</div>
+<div id="c2b-result" class="result info" style="margin-top:16px">Masukkan bilangan bulat &amp; pecahan lalu klik "Ubah"</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔨 Konversi Biasa → Campuran</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<div class="frac-input"><input type="number" id="b2c-n" value="11"><div class="bar"></div><input type="number" id="b2c-d" value="4"></div>
+<button class="btn btn-primary" onclick="hitungB2C()">Ubah</button>
+</div>
+<div id="b2c-result" class="result info" style="margin-top:16px">Masukkan pecahan biasa lalu klik "Ubah"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Operasi Pecahan</h2>
+<p style="color:#888;margin-bottom:6px">Jawab 10 soal. Ketik jawaban sebagai pecahan (misal <strong>3/4</strong>) atau bilangan bulat.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="text" id="q-answer" placeholder="cth: 3/4" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<div class="quiz-hint">Tulis pecahan dalam bentuk paling sederhana, misal 1/2 (bukan 2/4)</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+function frac(n,d){ return `\\frac{${n}}{${d}}`; }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ---- HELPER PECAHAN ----
+function gcdEuclid(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+function simplifyFrac(n,d){
+  if(d===0) return {n:NaN,d:0};
+  if(d<0){ n=-n; d=-d; }
+  const g=gcdEuclid(n,d);
+  return {n:n/g, d:d/g};
+}
+function fracToTex(f){
+  if(f.d===1) return `${f.n}`;
+  if(f.n<0) return `-\\frac{${-f.n}}{${f.d}}`;
+  return `\\frac{${f.n}}{${f.d}}`;
+}
+function parseFracInput(str){
+  str=str.trim();
+  if(str==='') return null;
+  if(str.includes('/')){
+    const parts=str.split('/');
+    if(parts.length!==2) return null;
+    const n=parseInt(parts[0]), d=parseInt(parts[1]);
+    if(!Number.isInteger(n)||!Number.isInteger(d)||d===0) return null;
+    return simplifyFrac(n,d);
+  }
+  const n=parseInt(str);
+  if(!Number.isInteger(n)) return null;
+  return {n, d:1};
+}
+
+// ============ SEDERHANAKAN (STATIS) ============
+k('rule-sederhana','\\text{Bagi pembilang dan penyebut dengan FPB keduanya.}');
+k('ex-sederhana',`\\textbf{Contoh:}\\\\ \\text{FPB}(12,18)=6 \\quad\\Rightarrow\\quad ${frac(12,18)} = ${frac('12\\div 6','18\\div 6')} = \\boxed{${frac(2,3)}}`);
+
+// ============ TAMBAH & KURANG (STATIS) ============
+k('rule-sejenis','\\text{Jumlahkan/kurangkan pembilangnya saja, penyebut tetap.}');
+k('ex-sejenis',`${frac(2,7)} + ${frac(3,7)} = ${frac('2+3',7)} = \\boxed{${frac(5,7)}}`);
+k('rule-taksejenis','\\text{Samakan penyebut dulu dengan KPK, baru jumlahkan/kurangkan pembilangnya.}');
+k('ex-taksejenis',`${frac(2,3)} + ${frac(1,6)} \\\\[6pt] \\text{KPK}(3,6)=6 \\quad\\Rightarrow\\quad ${frac(4,6)} + ${frac(1,6)} = ${frac(5,6)} = \\boxed{${frac(5,6)}}`);
+
+// ============ KALI & BAGI (STATIS) ============
+k('rule-kali','\\frac{a}{b} \\times \\frac{c}{d} = \\frac{a \\times c}{b \\times d}');
+k('ex-kali',`${frac(2,3)} \\times ${frac(3,4)} = ${frac('2\\times 3','3\\times 4')} = \\frac{6}{12} = \\boxed{${frac(1,2)}}`);
+k('rule-bagi','\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\times \\frac{d}{c}\\quad\\text{(kalikan dengan kebalikan pembagi)}');
+k('ex-bagi',`${frac(1,2)} \\div ${frac(1,4)} = ${frac(1,2)} \\times ${frac(4,1)} = \\frac{4}{2} = \\boxed{2}`);
+
+// ============ PECAHAN CAMPURAN (STATIS) ============
+k('rule-c2b','a\\frac{b}{c} = \\frac{(a \\times c) + b}{c}');
+k('ex-c2b',`2\\frac{3}{4} = \\frac{(2\\times 4)+3}{4} = \\boxed{${frac(11,4)}}`);
+k('rule-b2c','\\text{Bagi pembilang dengan penyebut. Hasil bagi = bilangan bulat, sisa = pembilang baru.}');
+k('ex-b2c',`\\frac{11}{4} = 11 \\div 4 = 2 \\text{ sisa } 3 \\quad\\Rightarrow\\quad \\boxed{2\\frac{3}{4}}`);
+
+// ---- RENDER HASIL ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ---- KALKULATOR: SEDERHANAKAN ----
+function hitungSederhana(){
+  const n=Math.round(+document.getElementById('spl-n').value), d=Math.round(+document.getElementById('spl-d').value);
+  if(!Number.isInteger(n)||!Number.isInteger(d)||d===0){ renderResult('spl-result','Penyebut tidak boleh 0.','info'); return; }
+  const g=gcdEuclid(n,d);
+  const s=simplifyFrac(n,d);
+  const html=`FPB(${Math.abs(n)},${Math.abs(d)}) = ${g}<br>$${frac(n,d)} = ${frac(`${n}\\div ${g}`,`${d}\\div ${g}`)} = \\boxed{${fracToTex(s)}}$`;
+  renderResult('spl-result', html, 'correct');
+}
+
+// ---- KALKULATOR: TAMBAH & KURANG ----
+function hitungTambahKurang(){
+  const an=Math.round(+document.getElementById('ts-an').value), ad=Math.round(+document.getElementById('ts-ad').value);
+  const bn=Math.round(+document.getElementById('ts-bn').value), bd=Math.round(+document.getElementById('ts-bd').value);
+  const op=document.getElementById('ts-op').value;
+  if(ad===0||bd===0){ renderResult('ts-result','Penyebut tidak boleh 0.','info'); return; }
+  const lcm=Math.abs(ad*bd)/gcdEuclid(ad,bd);
+  const an2=an*(lcm/ad), bn2=bn*(lcm/bd);
+  const rn = op==='+' ? an2+bn2 : an2-bn2;
+  const result=simplifyFrac(rn, lcm);
+  const html=`$${frac(an,ad)} ${op} ${frac(bn,bd)}$<br>KPK(${ad},${bd}) = ${lcm}<br>$${frac(an2,lcm)} ${op} ${frac(bn2,lcm)} = ${frac(rn,lcm)}$<br>$= \\boxed{${fracToTex(result)}}$`;
+  renderResult('ts-result', html, 'correct');
+}
+
+// ---- KALKULATOR: KALI & BAGI ----
+function hitungKaliBagi(){
+  const an=Math.round(+document.getElementById('kb-an').value), ad=Math.round(+document.getElementById('kb-ad').value);
+  const bn=Math.round(+document.getElementById('kb-bn').value), bd=Math.round(+document.getElementById('kb-bd').value);
+  const op=document.getElementById('kb-op').value;
+  if(ad===0||bd===0||(op==='÷'&&bn===0)){ renderResult('kb-result','Penyebut (atau pembilang pembagi) tidak boleh 0.','info'); return; }
+  let rn, rd, stepTex;
+  if(op==='×'){
+    rn=an*bn; rd=ad*bd;
+    stepTex=`${frac(an,ad)} \\times ${frac(bn,bd)} = ${frac(`${an}\\times ${bn}`,`${ad}\\times ${bd}`)} = ${frac(rn,rd)}`;
+  } else {
+    rn=an*bd; rd=ad*bn;
+    stepTex=`${frac(an,ad)} \\div ${frac(bn,bd)} = ${frac(an,ad)} \\times ${frac(bd,bn)} = ${frac(rn,rd)}`;
+  }
+  const result=simplifyFrac(rn,rd);
+  const html=`$${stepTex}$<br>$= \\boxed{${fracToTex(result)}}$`;
+  renderResult('kb-result', html, 'correct');
+}
+
+// ---- KALKULATOR: CAMPURAN <-> BIASA ----
+function hitungC2B(){
+  const w=Math.round(+document.getElementById('c2b-w').value), n=Math.round(+document.getElementById('c2b-n').value), d=Math.round(+document.getElementById('c2b-d').value);
+  if(!Number.isInteger(d)||d===0){ renderResult('c2b-result','Penyebut tidak boleh 0.','info'); return; }
+  const sign = w<0 ? -1 : 1;
+  const newN = sign*(Math.abs(w)*d + Math.abs(n));
+  const html=`$${w}\\frac{${n}}{${d}} = \\frac{(${w}\\times ${d})+${n}}{${d}} = \\boxed{${frac(newN,d)}}$`;
+  renderResult('c2b-result', html, 'correct');
+}
+function hitungB2C(){
+  const n=Math.round(+document.getElementById('b2c-n').value), d=Math.round(+document.getElementById('b2c-d').value);
+  if(!Number.isInteger(d)||d===0){ renderResult('b2c-result','Penyebut tidak boleh 0.','info'); return; }
+  const sign = n<0 ? -1 : 1;
+  const an=Math.abs(n);
+  const whole=Math.floor(an/d), rem=an%d;
+  let html;
+  if(rem===0){
+    html=`$${frac(n,d)} = ${n/d}$ &nbsp;(pecahan bulat, tanpa sisa)`;
+  } else {
+    html=`$${frac(n,d)} = ${an} \\div ${d} = ${whole} \\text{ sisa } ${rem}$<br>$= \\boxed{${sign<0?'-':''}${whole}\\frac{${rem}}{${d}}}$`;
+  }
+  renderResult('b2c-result', html, 'correct');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {tex:'\\frac{1}{4}+\\frac{1}{4}', ans:{n:1,d:2}},
+  {tex:'\\frac{2}{3}+\\frac{1}{6}', ans:{n:5,d:6}},
+  {tex:'\\frac{3}{4}-\\frac{1}{4}', ans:{n:1,d:2}},
+  {tex:'\\frac{5}{6}-\\frac{1}{3}', ans:{n:1,d:2}},
+  {tex:'\\frac{2}{3}\\times\\frac{3}{4}', ans:{n:1,d:2}},
+  {tex:'\\frac{4}{5}\\times\\frac{5}{8}', ans:{n:1,d:2}},
+  {tex:'\\frac{1}{2}\\div\\frac{1}{4}', ans:{n:2,d:1}},
+  {tex:'\\frac{3}{4}\\div\\frac{1}{2}', ans:{n:3,d:2}},
+  {tex:'\\text{Sederhanakan } \\frac{8}{12}', ans:{n:2,d:3}},
+  {tex:'\\text{Sederhanakan } \\frac{15}{20}', ans:{n:3,d:4}},
+];
+let quizOrder=[], qIdx=0, qScore=0;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari ${quizOrder.length}: <br><span id="q-formula" style="font-size:1.5rem"></span> = ?`;
+  ki('q-formula', item.tex);
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value.trim()==='')return;
+  const item=quizOrder[qIdx];
+  const parsed=parseFracInput(inp.value);
+  const el=document.getElementById('q-result');
+  const correctTex=fracToTex(simplifyFrac(item.ans.n,item.ans.d));
+  if(parsed && parsed.n===item.ans.n && parsed.d===item.ans.d){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! Jawabannya $${correctTex}$`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban yang benar: $${correctTex}$`;
+  }
+  renderMathInElement(el, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1700);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['04-operasi-pecahan']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
