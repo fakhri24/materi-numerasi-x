@@ -243,7 +243,7 @@ function dispNum(x){ return fmtNum(x).replace('.',','); }
 // ============ KONVERSI (STATIS) ============
 k('rule-p2d','\\text{Bagi pembilang dengan penyebut.}');
 k('ex-p2d',`\\textbf{Contoh:}\\\\ ${frac(3,4)} = 3 \\div 4 = \\boxed{0{,}75}\\\\[6pt] ${frac(1,3)} = 1 \\div 3 = 0{,}333\\ldots \\ \\text{(berulang)}`);
-k('rule-d2p','\\text{Angka di belakang koma jadi pembilang, penyebutnya kelipatan 10 sesuai banyak digitnya. Lalu sederhanakan dengan FPB.}');
+k('rule-d2p','\\text{Angka di belakang koma jadi pembilang,}\\\\ \\text{penyebutnya kelipatan 10 sesuai banyak digitnya.}\\\\ \\text{Lalu sederhanakan dengan FPB.}');
 k('ex-d2p',`\\textbf{Contoh:}\\\\ 0{,}6 = ${frac(6,10)} \\quad \\text{FPB}(6,10)=2 \\quad\\Rightarrow\\quad \\boxed{${frac(3,5)}}`);
 
 const refData=[
@@ -252,14 +252,14 @@ const refData=[
 document.getElementById('ref-table').innerHTML=refData.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
 
 // ============ TAMBAH & KURANG (STATIS) ============
-k('rule-td','\\text{Sejajarkan tanda koma (satuan dengan satuan, persepuluhan dengan persepuluhan), lalu jumlahkan/kurangkan seperti bilangan bulat biasa.}');
+k('rule-td','\\text{Sejajarkan tanda koma (satuan dengan satuan, persepuluhan dengan persepuluhan),}\\\\ \\text{lalu jumlahkan/kurangkan seperti bilangan bulat biasa.}');
 k('ex-td-add','\\begin{array}{r} 12{,}50 \\\\ +\\ 3{,}75 \\\\ \\hline 16{,}25 \\end{array}');
 k('ex-td-sub','\\begin{array}{r} 8{,}40 \\\\ -\\ 2{,}75 \\\\ \\hline 5{,}65 \\end{array}');
 
 // ============ KALI & BAGI (STATIS) ============
-k('rule-kali-desimal','\\text{Kalikan seperti bilangan bulat (abaikan koma dulu). Hitung total banyak angka di belakang koma pada KEDUA bilangan, lalu sisipkan koma pada hasil sejauh itu dari kanan.}');
+k('rule-kali-desimal','\\text{Kalikan seperti bilangan bulat (abaikan koma dulu).}\\\\ \\text{Hitung total banyak angka di belakang koma pada KEDUA bilangan,}\\\\ \\text{lalu sisipkan koma pada hasil sejauh itu dari kanan.}');
 k('ex-kali-desimal','2{,}5 \\times 1{,}2:\\ 25\\times 12=300 \\\\ \\text{total 2 angka desimal} \\quad\\Rightarrow\\quad \\boxed{3{,}00}');
-k('rule-bagi-desimal','\\text{Jika pembagi berupa desimal, geser tanda koma pada pembagi dan yang dibagi ke kanan sampai pembagi jadi bilangan bulat, baru bagi seperti biasa.}');
+k('rule-bagi-desimal','\\text{Jika pembagi berupa desimal, geser tanda koma}\\\\ \\text{pada pembagi dan yang dibagi ke kanan}\\\\ \\text{sampai pembagi jadi bilangan bulat, baru bagi seperti biasa.}');
 k('ex-bagi-desimal','4{,}8 \\div 0{,}6:\\ \\text{geser 1 angka} \\quad\\Rightarrow\\quad 48 \\div 6 = \\boxed{8}');
 
 // ---- RENDER HASIL ----
