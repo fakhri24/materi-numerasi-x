@@ -3,35 +3,384 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KPK dan FPB - Numerasi X</title>
+<title>KPK dan FPB - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem}
+.katex{font-size:1.15em}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+input[type=number]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:90px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.3rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:120px;font-size:1.2rem}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.prop-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.prop-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.prop-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🧩 KPK dan FPB</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari faktorisasi prima, FPB, KPK, dan hubungan antar keduanya secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('faktorisasi')" id="btn-faktorisasi" class="active">🌳 Faktorisasi Prima</button>
+<button onclick="show('fpb')" id="btn-fpb">🔹 FPB</button>
+<button onclick="show('kpk')" id="btn-kpk">🔸 KPK</button>
+<button onclick="show('hubungan')" id="btn-hubungan">🔗 Hubungan</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== FAKTORISASI PRIMA ==================== -->
+<div id="faktorisasi" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Bilangan Prima &amp; Faktorisasi Prima</h2>
+<div class="rule-box">
+<div class="label">Bilangan Prima</div>
+<div id="rule-prima"></div>
+</div>
+<div class="rule-box">
+<div class="label">Faktorisasi Prima</div>
+<div id="rule-faktorisasi"></div>
+</div>
+<div class="example" id="ex-faktorisasi"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Coba Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="fp-n" value="60" min="2" max="9999">
+<button class="btn btn-primary" onclick="hitungFaktorisasi()">Faktorkan</button>
+</div>
+<div id="fp-result" class="result info" style="margin-top:16px">Masukkan bilangan (&gt; 1) lalu klik "Faktorkan"</div>
 </div>
 </div>
+</div>
+
+<!-- ==================== FPB ==================== -->
+<div id="fpb" class="section">
+<div class="card">
+<h2>FPB (Faktor Persekutuan Terbesar)</h2>
+<div class="rule-box">
+<div class="label">Definisi</div>
+<div id="rule-fpb"></div>
+</div>
+
+<h3>Metode 1: Irisan Faktor Persekutuan</h3>
+<div class="example" id="ex-fpb-listing"></div>
+
+<h3>Metode 2: Faktorisasi Prima</h3>
+<div class="rule-box success"><div class="label">Cara</div><div id="rule-fpb-prima"></div></div>
+<div class="example" id="ex-fpb-prima"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator FPB</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="fpb-a" value="24" min="1" max="9999">
+<span style="font-size:1.3rem;color:#60a5fa">&amp;</span>
+<input type="number" id="fpb-b" value="36" min="1" max="9999">
+<button class="btn btn-primary" onclick="hitungFPB()">Hitung FPB</button>
+</div>
+<div id="fpb-result" class="result info" style="margin-top:16px">Masukkan dua bilangan lalu klik "Hitung FPB"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KPK ==================== -->
+<div id="kpk" class="section">
+<div class="card">
+<h2>KPK (Kelipatan Persekutuan Terkecil)</h2>
+<div class="rule-box">
+<div class="label">Definisi</div>
+<div id="rule-kpk"></div>
+</div>
+
+<h3>Metode 1: Irisan Kelipatan Persekutuan</h3>
+<div class="example" id="ex-kpk-listing"></div>
+
+<h3>Metode 2: Faktorisasi Prima</h3>
+<div class="rule-box success"><div class="label">Cara</div><div id="rule-kpk-prima"></div></div>
+<div class="example" id="ex-kpk-prima"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator KPK</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="kpk-a" value="4" min="1" max="9999">
+<span style="font-size:1.3rem;color:#f472b6">&amp;</span>
+<input type="number" id="kpk-b" value="6" min="1" max="9999">
+<button class="btn btn-primary" onclick="hitungKPK()">Hitung KPK</button>
+</div>
+<div id="kpk-result" class="result info" style="margin-top:16px">Masukkan dua bilangan lalu klik "Hitung KPK"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== HUBUNGAN ==================== -->
+<div id="hubungan" class="section">
+<div class="card">
+<h2>Hubungan FPB dan KPK</h2>
+<div class="rule-box">
+<div class="label">Rumus</div>
+<div id="rule-hubungan"></div>
+</div>
+<div class="example" id="ex-hubungan"></div>
+
+<h3>📖 Contoh Soal Cerita</h3>
+<div class="rule-box success">
+<div class="label">KPK dalam kehidupan sehari-hari</div>
+<div id="cerita-kpk"></div>
+</div>
+<div class="rule-box success">
+<div class="label">FPB dalam kehidupan sehari-hari</div>
+<div id="cerita-fpb"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔨 Buktikan Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="hub-a" value="8" min="1" max="9999">
+<span style="font-size:1.3rem;color:#a78bfa">&amp;</span>
+<input type="number" id="hub-b" value="12" min="1" max="9999">
+<button class="btn btn-primary" onclick="hitungHubungan()">Buktikan</button>
+</div>
+<div id="hub-result" class="result info" style="margin-top:16px">Masukkan dua bilangan lalu klik "Buktikan"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis KPK dan FPB</h2>
+<p style="color:#888;margin-bottom:10px">Jawab 10 soal FPB &amp; KPK. Skor ditampilkan di akhir.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="number" id="q-answer" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ============ HELPER MATEMATIKA ============
+function primeFactors(n){
+  const factors=[]; let x=n;
+  for(let p=2; p*p<=x; p++){
+    if(x%p===0){
+      let e=0;
+      while(x%p===0){ x/=p; e++; }
+      factors.push({p,e});
+    }
+  }
+  if(x>1) factors.push({p:x,e:1});
+  return factors;
+}
+function factorsToTex(factors){
+  if(factors.length===0) return '1';
+  return factors.map(f=> f.e>1 ? `${f.p}^{${f.e}}` : `${f.p}`).join(' \\times ');
+}
+function factorsToMap(factors){ const m={}; factors.forEach(f=>m[f.p]=f.e); return m; }
+function divisorsOf(n){ const d=[]; for(let i=1;i<=n;i++) if(n%i===0) d.push(i); return d; }
+function gcdEuclid(a,b){ while(b){ [a,b]=[b,a%b]; } return a; }
+function lcmOf(a,b){ return Math.abs(a*b)/gcdEuclid(a,b); }
+function divisionSteps(n){
+  const steps=[]; let x=n, p=2;
+  while(x>1){
+    if(x%p===0){ steps.push([p, x/p]); x=x/p; }
+    else { p++; }
+  }
+  return steps;
+}
+
+// ============ FAKTORISASI PRIMA (STATIS) ============
+k('rule-prima','\\text{Bilangan asli} > 1 \\text{ yang hanya memiliki dua faktor: 1 dan dirinya sendiri.} \\\\ \\text{Contoh: } 2,3,5,7,11,13,17,19,23,\\dots');
+k('rule-faktorisasi','\\text{Menyatakan suatu bilangan sebagai perkalian faktor-faktor primanya.}');
+k('ex-faktorisasi','\\textbf{Contoh:}\\\\ 60 = 2\\times 2\\times 3\\times 5 = \\boxed{2^2 \\times 3 \\times 5}');
+
+// ============ FPB (STATIS) ============
+k('rule-fpb','\\text{Bilangan bulat terbesar yang dapat membagi habis dua bilangan atau lebih.}');
+k('ex-fpb-listing','\\textbf{Contoh: FPB(12, 18)}\\\\ \\text{Faktor } 12 = \\{1,2,3,4,6,12\\} \\\\ \\text{Faktor } 18 = \\{1,2,3,6,9,18\\} \\\\ \\text{Faktor sekutu} = \\{1,2,3,6\\} \\quad\\Rightarrow\\quad \\text{FPB} = \\boxed{6}');
+k('rule-fpb-prima','\\text{Ambil faktor prima yang sama, dengan pangkat TERKECIL.}');
+k('ex-fpb-prima','\\textbf{Contoh: FPB(24, 36)}\\\\ 24 = 2^3 \\times 3 \\\\ 36 = 2^2 \\times 3^2 \\\\ \\text{FPB} = 2^2 \\times 3 = \\boxed{12}');
+
+// ============ KPK (STATIS) ============
+k('rule-kpk','\\text{Bilangan positif terkecil yang merupakan kelipatan dari dua bilangan atau lebih.}');
+k('ex-kpk-listing','\\textbf{Contoh: KPK(4, 6)}\\\\ \\text{Kelipatan } 4 = \\{4,8,12,16,20,24,\\dots\\} \\\\ \\text{Kelipatan } 6 = \\{6,12,18,24,\\dots\\} \\\\ \\text{Kelipatan sekutu terkecil} = \\boxed{12}');
+k('rule-kpk-prima','\\text{Ambil SEMUA faktor prima (yang sama maupun berbeda), dengan pangkat TERBESAR.}');
+k('ex-kpk-prima','\\textbf{Contoh: KPK(8, 12)}\\\\ 8 = 2^3 \\\\ 12 = 2^2 \\times 3 \\\\ \\text{KPK} = 2^3 \\times 3 = \\boxed{24}');
+
+// ============ HUBUNGAN (STATIS) ============
+k('rule-hubungan','\\text{FPB}(a,b) \\times \\text{KPK}(a,b) = a \\times b');
+k('ex-hubungan','\\textbf{Contoh:}\\\\ \\text{FPB}(8,12)=4 \\quad \\text{KPK}(8,12)=24 \\\\ 4 \\times 24 = 96 = 8 \\times 12 \\ \\checkmark');
+document.getElementById('cerita-kpk').innerHTML='Lampu A berkedip setiap 4 detik, lampu B setiap 6 detik. Jika keduanya menyala bersamaan pada detik ke-0, keduanya akan berkedip bersamaan lagi setiap <strong>KPK(4,6) = 12 detik</strong>.';
+document.getElementById('cerita-fpb').innerHTML='Ada 24 apel dan 36 jeruk yang akan dibagi rata ke beberapa keranjang tanpa sisa. Jumlah keranjang terbanyak yang mungkin adalah <strong>FPB(24,36) = 12 keranjang</strong> (masing-masing berisi 2 apel dan 3 jeruk).';
+
+// ---- KALKULATOR ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+function hitungFaktorisasi(){
+  const n=Math.round(+document.getElementById('fp-n').value);
+  if(!Number.isInteger(n) || n<2){ renderResult('fp-result','Masukkan bilangan bulat lebih besar dari 1.','info'); return; }
+  const steps=divisionSteps(n);
+  let cur=n;
+  const rows=steps.map(([p,q])=>{ const row=`${cur} ÷ ${p} = ${q}`; cur=q; return row; }).join('<br>');
+  const tex=factorsToTex(primeFactors(n));
+  renderResult('fp-result', `${rows}<br><br>$${n} = ${tex}$`, 'correct');
+}
+function hitungFPB(){
+  const a=Math.round(+document.getElementById('fpb-a').value), b=Math.round(+document.getElementById('fpb-b').value);
+  if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1){ renderResult('fpb-result','Masukkan dua bilangan bulat positif.','info'); return; }
+  const fa=primeFactors(a), fb=primeFactors(b);
+  const ma=factorsToMap(fa), mb=factorsToMap(fb);
+  const common=Object.keys(ma).filter(p=>mb[p]).map(p=>({p:+p, e:Math.min(ma[p],mb[p])}));
+  const fpbValue=common.reduce((acc,f)=>acc*Math.pow(f.p,f.e),1);
+  const s=`$${a} = ${factorsToTex(fa)}$<br>$${b} = ${factorsToTex(fb)}$<br>FPB = ${common.length? '$'+factorsToTex(common)+'$' : '1'} $= \\boxed{${fpbValue}}$`;
+  renderResult('fpb-result', s, 'correct');
+}
+function hitungKPK(){
+  const a=Math.round(+document.getElementById('kpk-a').value), b=Math.round(+document.getElementById('kpk-b').value);
+  if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1){ renderResult('kpk-result','Masukkan dua bilangan bulat positif.','info'); return; }
+  const fa=primeFactors(a), fb=primeFactors(b);
+  const ma=factorsToMap(fa), mb=factorsToMap(fb);
+  const allPrimes=[...new Set([...Object.keys(ma),...Object.keys(mb)])];
+  const all=allPrimes.map(p=>({p:+p, e:Math.max(ma[p]||0, mb[p]||0)}));
+  const kpkValue=all.reduce((acc,f)=>acc*Math.pow(f.p,f.e),1);
+  const s=`$${a} = ${factorsToTex(fa)}$<br>$${b} = ${factorsToTex(fb)}$<br>KPK = $${factorsToTex(all)}$ $= \\boxed{${kpkValue}}$`;
+  renderResult('kpk-result', s, 'correct');
+}
+function hitungHubungan(){
+  const a=Math.round(+document.getElementById('hub-a').value), b=Math.round(+document.getElementById('hub-b').value);
+  if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1){ renderResult('hub-result','Masukkan dua bilangan bulat positif.','info'); return; }
+  const f=gcdEuclid(a,b), l=lcmOf(a,b);
+  const ok=(f*l)===(a*b);
+  const s=`FPB(${a},${b}) $= ${f}$ &nbsp;&nbsp; KPK(${a},${b}) $= ${l}$<br>$${f} \\times ${l} = ${f*l}$ &nbsp;dan&nbsp; $${a} \\times ${b} = ${a*b}$ ${ok?'✅':'❌'}`;
+  renderResult('hub-result', s, ok?'correct':'wrong');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {type:'FPB', a:12, b:18, ans:6},
+  {type:'KPK', a:4, b:6, ans:12},
+  {type:'FPB', a:24, b:36, ans:12},
+  {type:'KPK', a:5, b:7, ans:35},
+  {type:'FPB', a:45, b:60, ans:15},
+  {type:'KPK', a:8, b:12, ans:24},
+  {type:'FPB', a:16, b:24, ans:8},
+  {type:'KPK', a:9, b:15, ans:45},
+  {type:'FPB', a:100, b:75, ans:25},
+  {type:'KPK', a:10, b:12, ans:60},
+];
+let quizOrder=[], qIdx=0, qScore=0;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari ${quizOrder.length}: <br><span style="font-size:1.4rem">Tentukan ${item.type} dari ${item.a} dan ${item.b}</span>`;
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value==='')return;
+  const item=quizOrder[qIdx];
+  const userAns=parseInt(inp.value), correct=item.ans;
+  const el=document.getElementById('q-result');
+  if(userAns===correct){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! ${item.type}(${item.a},${item.b}) = ${correct}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban: <strong>${correct}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['03-kpk-dan-fpb']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
