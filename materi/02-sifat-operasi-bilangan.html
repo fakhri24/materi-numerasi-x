@@ -3,35 +3,380 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sifat Operasi Bilangan - Numerasi X</title>
+<title>Sifat Operasi Bilangan - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem}
+.katex{font-size:1.15em}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-sm{padding:6px 14px;font-size:.85rem}
+input[type=number]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:80px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:12px;border-radius:8px;font-size:1.1rem;min-height:50px;display:flex;align-items:center;justify-content:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.25rem;margin:16px 0}
+.quiz-choices{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.quiz-choices button{background:#1e1e2e;border:2px solid #333;color:#ccc;padding:12px 20px;border-radius:10px;cursor:pointer;font-size:.95rem;transition:all .2s}
+.quiz-choices button:hover{border-color:#60a5fa}
+.quiz-choices button.correct-choice{border-color:#10b981;background:#0e2a1a;color:#6ee7b7}
+.quiz-choices button.wrong-choice{border-color:#ef4444;background:#2a0e0e;color:#fca5a5}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.prop-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.prop-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.prop-table td{padding:10px;border-bottom:1px solid #222}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🔢 Sifat Operasi Bilangan</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari sifat komutatif, asosiatif, distributif, identitas &amp; invers pada bilangan bulat secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('komutatif')" id="btn-komutatif" class="active">🔄 Komutatif</button>
+<button onclick="show('asosiatif')" id="btn-asosiatif">🔗 Asosiatif</button>
+<button onclick="show('distributif')" id="btn-distributif">✳️ Distributif</button>
+<button onclick="show('identitas')" id="btn-identitas">🪞 Identitas &amp; Invers</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== KOMUTATIF ==================== -->
+<div id="komutatif" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Sifat Komutatif</h2>
+<p style="color:#aaa;margin-bottom:10px">Menukar urutan bilangan tidak mengubah hasil operasinya. Berlaku untuk penjumlahan dan perkalian.</p>
+
+<h3>Penjumlahan</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-kom-add"></div></div>
+<div class="example" id="ex-kom-add"></div>
+
+<h3>Perkalian</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-kom-mul"></div></div>
+<div class="example" id="ex-kom-mul"></div>
+
+<div class="rule-box warning">
+<div class="label">⚠️ Tidak Berlaku Untuk</div>
+<div id="kom-warn"></div>
 </div>
 </div>
+
+<div class="card">
+<h2>🔨 Buktikan Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="kom-a" value="-5">
+<input type="number" id="kom-b" value="8">
+<button class="btn btn-primary" onclick="hitungKomutatif()">Buktikan</button>
+</div>
+<div id="kom-result" class="result info" style="margin-top:16px">Masukkan dua angka lalu klik "Buktikan"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== ASOSIATIF ==================== -->
+<div id="asosiatif" class="section">
+<div class="card">
+<h2>Sifat Asosiatif</h2>
+<p style="color:#aaa;margin-bottom:10px">Mengelompokkan ulang tiga bilangan atau lebih tidak mengubah hasil operasinya. Berlaku untuk penjumlahan dan perkalian.</p>
+
+<h3>Penjumlahan</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-aso-add"></div></div>
+<div class="example" id="ex-aso-add"></div>
+
+<h3>Perkalian</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-aso-mul"></div></div>
+<div class="example" id="ex-aso-mul"></div>
+
+<div class="rule-box warning">
+<div class="label">⚠️ Tidak Berlaku Untuk</div>
+<div id="aso-warn"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔨 Buktikan Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="aso-a" value="-2">
+<input type="number" id="aso-b" value="-3">
+<input type="number" id="aso-c" value="5">
+<button class="btn btn-primary" onclick="hitungAsosiatif()">Buktikan</button>
+</div>
+<div id="aso-result" class="result info" style="margin-top:16px">Masukkan tiga angka lalu klik "Buktikan"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== DISTRIBUTIF ==================== -->
+<div id="distributif" class="section">
+<div class="card">
+<h2>Sifat Distributif</h2>
+<p style="color:#aaa;margin-bottom:10px">Perkalian dapat disebar ke setiap suku dalam penjumlahan atau pengurangan.</p>
+
+<h3>Distributif terhadap Penjumlahan</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-dist-add"></div></div>
+<div class="example" id="ex-dist-add"></div>
+
+<h3>Distributif terhadap Pengurangan</h3>
+<div class="rule-box"><div class="label">Rumus</div><div id="rule-dist-sub"></div></div>
+<div class="example" id="ex-dist-sub"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Buktikan Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="dist-a" value="-3">
+<input type="number" id="dist-b" value="4">
+<input type="number" id="dist-c" value="9">
+<button class="btn btn-primary" onclick="hitungDistributif()">Buktikan</button>
+</div>
+<div id="dist-result" class="result info" style="margin-top:16px">Masukkan tiga angka lalu klik "Buktikan"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== IDENTITAS & INVERS ==================== -->
+<div id="identitas" class="section">
+<div class="card">
+<h2>Unsur Identitas</h2>
+<p style="color:#aaa;margin-bottom:10px">Bilangan yang jika dioperasikan dengan bilangan lain, hasilnya tetap bilangan itu sendiri.</p>
+
+<div class="rule-box success"><div class="label">Identitas Penjumlahan (0)</div><div id="id-add"></div></div>
+<div class="rule-box success"><div class="label">Identitas Perkalian (1)</div><div id="id-mul"></div></div>
+
+<h2 style="margin-top:20px">Invers (Lawan &amp; Kebalikan)</h2>
+<div class="rule-box"><div class="label">Invers Penjumlahan (Lawan Bilangan)</div><div id="inv-add"></div></div>
+<div class="rule-box"><div class="label">Invers Perkalian (Kebalikan Bilangan)</div><div id="inv-mul"></div></div>
+</div>
+
+<div class="card">
+<h2>🔨 Buktikan Sendiri</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="number" id="id-a" value="-7">
+<button class="btn btn-primary" onclick="hitungIdentitas()">Buktikan</button>
+</div>
+<div id="id-result" class="result info" style="margin-top:16px">Masukkan satu angka lalu klik "Buktikan"</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📦 Sifat Tertutup (Closure)</h2>
+<p style="color:#aaa;margin-bottom:10px">Suatu operasi dikatakan tertutup pada himpunan bilangan bulat jika hasilnya selalu berupa bilangan bulat juga.</p>
+<table class="prop-table">
+<thead><tr><th>Operasi</th><th>Tertutup?</th><th>Contoh</th></tr></thead>
+<tbody id="closure-table"></tbody>
+</table>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Sifat Operasi Bilangan</h2>
+<p style="color:#888;margin-bottom:10px">Tentukan sifat apa yang digunakan pada setiap persamaan. 10 soal, skor ditampilkan di akhir.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-choices" id="q-choices"></div>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ============ KOMUTATIF ============
+k('rule-kom-add','a + b = b + a');
+k('ex-kom-add','(-5) + 8 = 8 + (-5) = \\boxed{3}');
+k('rule-kom-mul','a \\times b = b \\times a');
+k('ex-kom-mul','(-4) \\times 6 = 6 \\times (-4) = \\boxed{-24}');
+k('kom-warn','\\text{Pengurangan: } 5 - 3 \\neq 3 - 5 \\\\ \\text{Pembagian: } 8 \\div 2 \\neq 2 \\div 8');
+
+// ============ ASOSIATIF ============
+k('rule-aso-add','(a + b) + c = a + (b + c)');
+k('ex-aso-add','((-2)+(-3))+5 = (-2)+((-3)+5) = \\boxed{0}');
+k('rule-aso-mul','(a \\times b) \\times c = a \\times (b \\times c)');
+k('ex-aso-mul','((-2)\\times 3)\\times 4 = (-2)\\times(3\\times 4) = \\boxed{-24}');
+k('aso-warn','\\text{Pengurangan: } (8-4)-2 \\neq 8-(4-2) \\\\ \\text{Pembagian: } (16\\div 4)\\div 2 \\neq 16\\div(4\\div 2)');
+
+// ============ DISTRIBUTIF ============
+k('rule-dist-add','a \\times (b + c) = (a \\times b) + (a \\times c)');
+k('ex-dist-add','(-3)\\times(4+9) = ((-3)\\times 4)+((-3)\\times 9) = -12+(-27) = \\boxed{-39}');
+k('rule-dist-sub','a \\times (b - c) = (a \\times b) - (a \\times c)');
+k('ex-dist-sub','5 \\times (9-4) = (5\\times 9)-(5\\times 4) = 45-20 = \\boxed{25}');
+
+// ============ IDENTITAS & INVERS ============
+k('id-add','a + 0 = a \\quad \\Rightarrow \\quad (-9) + 0 = -9');
+k('id-mul','a \\times 1 = a \\quad \\Rightarrow \\quad (-9) \\times 1 = -9');
+k('inv-add','a + (-a) = 0 \\quad \\Rightarrow \\quad 7 + (-7) = 0');
+k('inv-mul','a \\times \\frac{1}{a} = 1 \\ (a \\neq 0) \\quad \\Rightarrow \\quad 4 \\times \\frac{1}{4} = 1');
+
+const closureData=[
+  ['Penjumlahan','✅ Tertutup','3 + 5 = 8 (bilangan bulat)'],
+  ['Pengurangan','✅ Tertutup','3 − 8 = −5 (bilangan bulat)'],
+  ['Perkalian','✅ Tertutup','(−4) × 6 = −24 (bilangan bulat)'],
+  ['Pembagian','❌ Tidak Tertutup','7 ÷ 2 = 3.5 (bukan bilangan bulat)'],
+];
+document.getElementById('closure-table').innerHTML=closureData.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+// ---- KALKULATOR ----
+function renderCalc(el, steps, ok){
+  document.getElementById(el).className='result '+(ok===null?'info':(ok?'correct':'wrong'));
+  document.getElementById(el).innerHTML=steps;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+function hitungKomutatif(){
+  const a=+document.getElementById('kom-a').value, b=+document.getElementById('kom-b').value;
+  const addOk = (a+b)===(b+a), mulOk = (a*b)===(b*a);
+  const s = `$${a} + ${b} = ${a+b}$ &nbsp; dan &nbsp; $${b} + ${a} = ${b+a}$ ${addOk?'✅':'❌'}<br>`+
+            `$${a} \\times ${b} = ${a*b}$ &nbsp; dan &nbsp; $${b} \\times ${a} = ${b*a}$ ${mulOk?'✅':'❌'}`;
+  renderCalc('kom-result', s, addOk&&mulOk);
+}
+function hitungAsosiatif(){
+  const a=+document.getElementById('aso-a').value, b=+document.getElementById('aso-b').value, c=+document.getElementById('aso-c').value;
+  const addL=(a+b)+c, addR=a+(b+c), mulL=(a*b)*c, mulR=a*(b*c);
+  const s = `$(${a}+${b})+${c} = ${addL}$ &nbsp; dan &nbsp; $${a}+(${b}+${c}) = ${addR}$ ${addL===addR?'✅':'❌'}<br>`+
+            `$(${a}\\times ${b})\\times ${c} = ${mulL}$ &nbsp; dan &nbsp; $${a}\\times(${b}\\times ${c}) = ${mulR}$ ${mulL===mulR?'✅':'❌'}`;
+  renderCalc('aso-result', s, addL===addR&&mulL===mulR);
+}
+function hitungDistributif(){
+  const a=+document.getElementById('dist-a').value, b=+document.getElementById('dist-b').value, c=+document.getElementById('dist-c').value;
+  const left=a*(b+c), right=(a*b)+(a*c);
+  const leftS=a*(b-c), rightS=(a*b)-(a*c);
+  const ok = left===right && leftS===rightS;
+  const s = `$${a}\\times(${b}+${c}) = ${left}$ &nbsp; dan &nbsp; $(${a}\\times ${b})+(${a}\\times ${c}) = ${right}$ ${left===right?'✅':'❌'}<br>`+
+            `$${a}\\times(${b}-${c}) = ${leftS}$ &nbsp; dan &nbsp; $(${a}\\times ${b})-(${a}\\times ${c}) = ${rightS}$ ${leftS===rightS?'✅':'❌'}`;
+  renderCalc('dist-result', s, ok);
+}
+function hitungIdentitas(){
+  const a=+document.getElementById('id-a').value;
+  let s = `$${a} + 0 = ${a+0}$ ✅<br>$${a} \\times 1 = ${a*1}$ ✅<br>$${a} + (${-a}) = ${a+(-a)}$ ✅`;
+  if(a!==0){
+    s += `<br>$${a} \\times \\frac{1}{${a}} = 1$ ✅`;
+  } else {
+    s += `<br>0 tidak memiliki invers perkalian (tidak ada $\\frac{1}{0}$)`;
+  }
+  renderCalc('id-result', s, true);
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'(-6) + 9 = 9 + (-6)', choices:['Komutatif','Asosiatif','Distributif','Identitas'], ans:'Komutatif'},
+  {q:'(2 \\times 3) \\times 4 = 2 \\times (3 \\times 4)', choices:['Komutatif','Asosiatif','Distributif','Invers'], ans:'Asosiatif'},
+  {q:'5 \\times (2+7) = (5\\times 2)+(5\\times 7)', choices:['Distributif','Komutatif','Identitas','Invers'], ans:'Distributif'},
+  {q:'(-8) + 0 = -8', choices:['Identitas','Invers','Komutatif','Asosiatif'], ans:'Identitas'},
+  {q:'12 + (-12) = 0', choices:['Invers','Identitas','Komutatif','Distributif'], ans:'Invers'},
+  {q:'3 \\times 1 = 3', choices:['Identitas','Invers','Asosiatif','Komutatif'], ans:'Identitas'},
+  {q:'(-4) \\times (-5) = (-5) \\times (-4)', choices:['Komutatif','Distributif','Asosiatif','Invers'], ans:'Komutatif'},
+  {q:'((-2)+5)+7 = (-2)+(5+7)', choices:['Asosiatif','Komutatif','Distributif','Identitas'], ans:'Asosiatif'},
+  {q:'6 \\times \\frac{1}{6} = 1', choices:['Invers','Identitas','Komutatif','Asosiatif'], ans:'Invers'},
+  {q:'(-3) \\times (4-9) = ((-3)\\times 4) - ((-3)\\times 9)', choices:['Distributif','Asosiatif','Invers','Identitas'], ans:'Distributif'},
+];
+let quizOrder=[], qIdx=0, qScore=0, qLocked=false;
+
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function resetQuiz(){
+  quizOrder=shuffle(quizBank);
+  qIdx=0; qScore=0; qLocked=false;
+  showQ();
+}
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-choices').innerHTML='';
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari ${quizOrder.length}: <br><span id="q-formula"></span>`;
+  ki('q-formula', item.q);
+  const choicesShuffled=shuffle(item.choices);
+  document.getElementById('q-choices').innerHTML=choicesShuffled.map(c=>`<button onclick="cekJawaban(this,'${c}')">${c}</button>`).join('');
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  qLocked=false;
+}
+function cekJawaban(btn, chosen){
+  if(qLocked) return;
+  qLocked=true;
+  const item=quizOrder[qIdx];
+  const el=document.getElementById('q-result');
+  document.querySelectorAll('#q-choices button').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===item.ans) b.classList.add('correct-choice');
+    else if(b===btn) b.classList.add('wrong-choice');
+  });
+  if(chosen===item.ans){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! Ini sifat ${item.ans}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Sifat yang benar: <strong>${item.ans}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['02-sifat-operasi-bilangan']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
