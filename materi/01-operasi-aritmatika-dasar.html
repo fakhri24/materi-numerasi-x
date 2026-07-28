@@ -66,13 +66,14 @@ select:focus{border-color:#60a5fa}
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🧮 Aritmatika Bilangan Bulat</h1>
-<p class="subtitle">Pelajari aturan penjumlahan, pengurangan, perkalian &amp; pembagian bilangan bulat secara interaktif</p>
+<p class="subtitle">Pelajari aturan penjumlahan, pengurangan, perkalian, pembagian &amp; urutan operasi (PEMDAS) secara interaktif</p>
 
 <div class="nav">
 <button onclick="show('penjumlahan')" id="btn-penjumlahan" class="active">➕ Penjumlahan</button>
 <button onclick="show('pengurangan')" id="btn-pengurangan">➖ Pengurangan</button>
 <button onclick="show('perkalian')" id="btn-perkalian">✖️ Perkalian</button>
 <button onclick="show('pembagian')" id="btn-pembagian">➗ Pembagian</button>
+<button onclick="show('pemdas')" id="btn-pemdas">🔢 Urutan Operasi</button>
 <button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
 </div>
 
@@ -288,6 +289,47 @@ Masukkan angka lalu klik "Hitung"
 </div>
 </div>
 
+<!-- ==================== PEMDAS / URUTAN OPERASI ==================== -->
+<div id="pemdas" class="section">
+<div class="card">
+<h2>Urutan Operasi Hitung Campuran (PEMDAS)</h2>
+<p style="color:#aaa;margin-bottom:10px">Jika dalam satu soal ada beberapa operasi sekaligus, kerjakan sesuai urutan prioritas berikut:</p>
+
+<ol class="step-list">
+<li><strong>Kurung</strong> — kerjakan operasi di dalam tanda kurung <code>( )</code> lebih dulu</li>
+<li><strong>Pangkat</strong> — hitung pangkat atau akar</li>
+<li><strong>Kali atau Bagi</strong> — kerjakan dari <strong>kiri ke kanan</strong></li>
+<li><strong>Tambah atau Kurang</strong> — kerjakan dari <strong>kiri ke kanan</strong></li>
+</ol>
+
+<div class="rule-box warning">
+<div class="label">⚠️ Kesalahan Umum</div>
+<div id="pemdas-warn"></div>
+</div>
+
+<h3>Contoh Tanpa Pangkat</h3>
+<ol class="step-list" id="pemdas-ex1-steps"></ol>
+
+<h3>Contoh Dengan Pangkat</h3>
+<ol class="step-list" id="pemdas-ex2-steps"></ol>
+</div>
+
+<div class="card">
+<h2>🔨 Latihan Urutan Operasi</h2>
+<p style="color:#888;margin-bottom:10px">Kerjakan 8 soal campuran. Ketik hasil akhirnya sebagai bilangan.</p>
+<div class="progress-bar"><div class="fill" id="pemdas-progress" style="width:0%"></div></div>
+<div class="score" id="pemdas-score">Skor: 0 / 8</div>
+<div class="quiz-container">
+<div class="quiz-question" id="pemdas-q-text"></div>
+<div class="quiz-input">
+<input type="number" id="pemdas-q-answer" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekPemdasJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekPemdasJawaban()" id="pemdas-q-btn">Cek Jawaban</button>
+<div class="result" id="pemdas-q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
 <!-- ==================== KUIS ==================== -->
 <div id="quiz" class="section">
 <div class="card">
@@ -320,6 +362,7 @@ function show(id){
   document.getElementById(id).classList.add('active');
   document.getElementById('btn-'+id).classList.add('active');
   if(id==='quiz') resetQuiz();
+  if(id==='pemdas') resetPemdasQuiz();
 }
 
 // ============ PENJUMLAHAN ============
@@ -356,6 +399,11 @@ ki('div-nn','(-) \\div (-) = \\textbf{Positif}');
 k('div-summary','\\text{Aturan tanda pembagian SAMA PERSIS dengan perkalian:} \\\\[4pt] \\textbf{Sesama tanda → Positif, Beda tanda → Negatif}');
 k('div-ex','(-24) \\div (-6) = \\boxed{+4} \\\\[6pt] 15 \\div (-3) = \\boxed{-5} \\\\[6pt] (-36) \\div 9 = \\boxed{-4}');
 k('div-warn','\\text{Pembagian dengan 0: } a \\div 0 = \\text{TIDAK TERDEFINISI} \\\\[4pt] \\text{Tapi } 0 \\div a = 0 \\text{ untuk semua } a \\neq 0');
+
+// ============ PEMDAS ============
+k('pemdas-warn','\\text{Kali dan Bagi setara, begitu juga Tambah dan Kurang.}\\\\ \\text{Kerjakan dari KIRI ke KANAN, bukan selalu "kali/tambah dulu"!}\\\\[8pt] 20 \\div 4 \\times 2:\\ \\text{benar } (20\\div 4)\\times 2 = \\boxed{10}\\\\ \\text{salah } 20\\div(4\\times 2)=2.5\\\\[4pt] 10 - 2 + 3:\\ \\text{benar } (10-2)+3 = \\boxed{11}\\\\ \\text{salah } 10-(2+3)=5');
+document.getElementById('pemdas-ex1-steps').innerHTML=`<li>Soal: $20 - 3 \\times (6-2)$</li><li>Kurung dulu: $6-2=4$ &nbsp;→&nbsp; $20 - 3\\times 4$</li><li>Kali: $3\\times 4=12$ &nbsp;→&nbsp; $20 - 12$</li><li>Kurang: $20-12=\\boxed{8}$</li>`;
+document.getElementById('pemdas-ex2-steps').innerHTML=`<li>Soal: $5 + 2^2 \\times 3$</li><li>Pangkat dulu: $2^2=4$ &nbsp;→&nbsp; $5 + 4\\times 3$</li><li>Kali: $4\\times 3=12$ &nbsp;→&nbsp; $5 + 12$</li><li>Tambah: $5+12=\\boxed{17}$</li>`;
 
 // ---- KALKULATOR ----
 function renderCalc(el, steps, result){
@@ -484,6 +532,57 @@ function cekJawaban(){
   document.getElementById('q-btn').disabled=true;inp.disabled=true;
   qIdx++;
   setTimeout(showQ,1500);
+}
+
+// ============ LATIHAN PEMDAS ============
+const pemdasBank=[
+  {tex:'8 + 2 \\times 5', ans:18, steps:['Kali dulu: $2\\times 5=10$','$8+10=\\boxed{18}$']},
+  {tex:'(8 + 2) \\times 5', ans:50, steps:['Kurung dulu: $8+2=10$','$10\\times 5=\\boxed{50}$']},
+  {tex:'20 - 3 \\times 4', ans:8, steps:['Kali dulu: $3\\times 4=12$','$20-12=\\boxed{8}$']},
+  {tex:'(20 - 3) \\times 4', ans:68, steps:['Kurung dulu: $20-3=17$','$17\\times 4=\\boxed{68}$']},
+  {tex:'18 \\div 3 + 2 \\times 5', ans:16, steps:['Kali & Bagi (kiri ke kanan): $18\\div 3=6$ dan $2\\times 5=10$','$6+10=\\boxed{16}$']},
+  {tex:'24 \\div (3+3)', ans:4, steps:['Kurung dulu: $3+3=6$','$24\\div 6=\\boxed{4}$']},
+  {tex:'2^2 + 3 \\times 4', ans:16, steps:['Pangkat dulu: $2^2=4$','Kali: $3\\times 4=12$','$4+12=\\boxed{16}$']},
+  {tex:'30 \\div 5 \\div 3', ans:2, steps:['Bagi dari kiri ke kanan: $30\\div 5=6$','$6\\div 3=\\boxed{2}$']},
+];
+let pemdasOrder=[], pemdasIdx=0, pemdasScore=0;
+function resetPemdasQuiz(){ pemdasOrder=shuffleArr(pemdasBank); pemdasIdx=0; pemdasScore=0; showPemdasQ(); }
+function shuffleArr(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function showPemdasQ(){
+  if(pemdasIdx>=pemdasOrder.length){
+    document.getElementById('pemdas-q-text').innerHTML=`Latihan selesai! 🎉`;
+    document.getElementById('pemdas-q-result').className='result correct';
+    document.getElementById('pemdas-q-result').innerHTML=`Skor akhir: <strong>${pemdasScore} / ${pemdasOrder.length}</strong> ${pemdasScore>=7?'🌟 Hebat!':pemdasScore>=4?'👍 Cukup bagus!':'📚 Terus berlatih ya!'}`;
+    document.getElementById('pemdas-q-btn').disabled=true;
+    document.getElementById('pemdas-q-answer').disabled=true;
+    return;
+  }
+  const item=pemdasOrder[pemdasIdx];
+  document.getElementById('pemdas-q-text').innerHTML=`Soal ${pemdasIdx+1} dari ${pemdasOrder.length}: <br><span id="pemdas-q-formula" style="font-size:1.5rem"></span> = ?`;
+  ki('pemdas-q-formula', item.tex);
+  document.getElementById('pemdas-q-answer').value='';document.getElementById('pemdas-q-answer').focus();
+  document.getElementById('pemdas-q-result').innerHTML='';document.getElementById('pemdas-q-result').className='result info';
+  document.getElementById('pemdas-score').textContent=`Skor: ${pemdasScore} / ${pemdasOrder.length}`;
+  document.getElementById('pemdas-progress').style.width=`${(pemdasIdx/pemdasOrder.length)*100}%`;
+  document.getElementById('pemdas-q-btn').disabled=false;document.getElementById('pemdas-q-answer').disabled=false;
+}
+function cekPemdasJawaban(){
+  const inp=document.getElementById('pemdas-q-answer');
+  if(inp.value==='')return;
+  const item=pemdasOrder[pemdasIdx];
+  const userAns=parseFloat(inp.value);
+  const el=document.getElementById('pemdas-q-result');
+  const stepsHtml=item.steps.join('<br>');
+  if(userAns===item.ans){
+    pemdasScore++;el.className='result correct';el.innerHTML=`✅ Benar!<br>${stepsHtml}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban: <strong>${item.ans}</strong><br>${stepsHtml}`;
+  }
+  renderMathInElement(el, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  document.getElementById('pemdas-score').textContent=`Skor: ${pemdasScore} / ${pemdasOrder.length}`;
+  document.getElementById('pemdas-q-btn').disabled=true;inp.disabled=true;
+  pemdasIdx++;
+  setTimeout(showPemdasQ,2200);
 }
 
 // ---- INIT KATEX AUTO RENDER ----
