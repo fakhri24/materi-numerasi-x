@@ -173,6 +173,7 @@ table.prop-table td{padding:10px;border-bottom:1px solid #222}
 
 <div class="rule-box success"><div class="label">Identitas Penjumlahan (0)</div><div id="id-add"></div></div>
 <div class="rule-box success"><div class="label">Identitas Perkalian (1)</div><div id="id-mul"></div></div>
+<div class="rule-box warning"><div class="label">Perkalian dengan Nol (Sifat Penyerap)</div><div id="id-zero"></div></div>
 
 <h2 style="margin-top:20px">Invers (Lawan &amp; Kebalikan)</h2>
 <div class="rule-box"><div class="label">Invers Penjumlahan (Lawan Bilangan)</div><div id="inv-add"></div></div>
@@ -254,6 +255,7 @@ k('ex-dist-sub','5 \\times (9-4) = (5\\times 9)-(5\\times 4) = 45-20 = \\boxed{2
 // ============ IDENTITAS & INVERS ============
 k('id-add','a + 0 = a \\quad \\Rightarrow \\quad (-9) + 0 = -9');
 k('id-mul','a \\times 1 = a \\quad \\Rightarrow \\quad (-9) \\times 1 = -9');
+k('id-zero','a \\times 0 = 0 \\quad \\text{untuk semua } a \\in \\mathbb{Z} \\quad \\Rightarrow \\quad (-7) \\times 0 = 0');
 k('inv-add','a + (-a) = 0 \\quad \\Rightarrow \\quad 7 + (-7) = 0');
 k('inv-mul','a \\times \\frac{1}{a} = 1 \\ (a \\neq 0) \\quad \\Rightarrow \\quad 4 \\times \\frac{1}{4} = 1');
 
@@ -296,7 +298,7 @@ function hitungDistributif(){
 }
 function hitungIdentitas(){
   const a=+document.getElementById('id-a').value;
-  let s = `$${a} + 0 = ${a+0}$ ✅<br>$${a} \\times 1 = ${a*1}$ ✅<br>$${a} + (${-a}) = ${a+(-a)}$ ✅`;
+  let s = `$${a} + 0 = ${a+0}$ ✅<br>$${a} \\times 1 = ${a*1}$ ✅<br>$${a} \\times 0 = ${a*0}$ ✅<br>$${a} + (${-a}) = ${a+(-a)}$ ✅`;
   if(a!==0){
     s += `<br>$${a} \\times \\frac{1}{${a}} = 1$ ✅`;
   } else {

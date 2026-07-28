@@ -95,14 +95,9 @@ select:focus{border-color:#60a5fa}
 </div>
 <div class="example" id="ex-add-diff"></div>
 
-<h3>3. Sifat-sifat Penjumlahan</h3>
-<div class="rule-box success">
-<div class="label">Komutatif</div>
-<div id="prop-kom"></div>
-</div>
-<div class="rule-box success">
-<div class="label">Asosiatif</div>
-<div class="example" id="prop-aso"></div>
+<div class="rule-box">
+<div class="label">💡 Ingin Tahu Lebih Dalam?</div>
+<div>Penjumlahan bilangan bulat juga mengikuti sifat <strong>komutatif</strong> ($a+b=b+a$) dan <strong>asosiatif</strong> ($(a+b)+c=a+(b+c)$). Pembuktian, contoh, dan latihannya ada di <a href="02-sifat-operasi-bilangan.html" style="color:#60a5fa">materi Sifat Operasi Bilangan →</a></div>
 </div>
 </div>
 
@@ -215,10 +210,10 @@ Masukkan angka lalu klik "Hitung"
 <h3>Contoh</h3>
 <div class="example" id="mul-ex"></div>
 
-<h3>Sifat-sifat Perkalian</h3>
-<div class="rule-box success"><div class="label">Komutatif</div><div id="mul-kom"></div></div>
-<div class="rule-box success"><div class="label">Distributif</div><div id="mul-dist"></div></div>
-<div class="rule-box success"><div class="label">Perkalian dengan 0</div><div id="mul-nol"></div></div>
+<div class="rule-box">
+<div class="label">💡 Ingin Tahu Lebih Dalam?</div>
+<div>Perkalian bilangan bulat juga mengikuti sifat <strong>komutatif</strong>, <strong>distributif</strong>, dan punya sifat khusus perkalian dengan nol serta identitas. Pembuktian, contoh, dan latihannya ada di <a href="02-sifat-operasi-bilangan.html" style="color:#a78bfa">materi Sifat Operasi Bilangan →</a></div>
+</div>
 </div>
 
 <div class="card">
@@ -332,9 +327,6 @@ k('rule-add-same','\\text{Jika tanda sama, jumlahkan nilai mutlak, tanda tetap.}
 k('ex-add-same','\\textbf{Contoh:}\\\\ (-7) + (-3) = -(7+3) = \\boxed{-10} \\\\[6pt] (+5) + (+9) = +(5+9) = \\boxed{+14}');
 k('rule-add-diff','\\text{Jika tanda berbeda, kurangkan nilai mutlak, ikuti tanda yang lebih besar.} \\\\ (-a) + (+b) = \\pm(b-a) \\text{ jika } b>a');
 k('ex-add-diff','\\textbf{Contoh:}\\\\ (-4) + (+9) = +(9-4) = \\boxed{+5} \\\\[6pt] (+3) + (-8) = -(8-3) = \\boxed{-5}');
-k('prop-kom','a + b = b + a \\quad \\Rightarrow \\quad (-3)+5 = 5+(-3) = 2');
-ki('prop-aso','(a+b)+c = a+(b+c)');
-k('prop-aso','((-2)+(-3))+5 = (-2)+((-3)+5) = (-2)+(2) = \\boxed{0}');
 
 // ============ PENGURANGAN ============
 k('rule-sub-main','a - b = a + (-b) \\quad \\text{Ubah tanda pengurang menjadi penjumlahan dengan lawan tanda!}');
@@ -355,9 +347,6 @@ ki('mul-np','(-) \\times (+) = \\textbf{Negatif}');
 ki('mul-nn','(-) \\times (-) = \\textbf{Positif}');
 k('mul-summary','\\textbf{Sesama tanda → Positif} \\quad (+\\times+) \\text{ atau } (-\\times-) \\\\[6pt] \\textbf{Beda tanda → Negatif} \\quad (+\\times-) \\text{ atau } (-\\times+)');
 k('mul-ex','(-4) \\times 5 = \\boxed{-20} \\\\[6pt] (-3) \\times (-7) = \\boxed{+21} \\\\[6pt] 6 \\times (-2) = \\boxed{-12}');
-k('mul-kom','a \\times b = b \\times a \\\\ (-3) \\times 4 = 4 \\times (-3) = -12');
-k('mul-dist','a \\times (b+c) = (a \\times b) + (a \\times c) \\\\ (-2) \\times (3+5) = (-2)(3) + (-2)(5) = -6 + (-10) = \\boxed{-16}');
-k('mul-nol','a \\times 0 = 0 \\quad \\text{untuk semua } a \\in \\mathbb{Z}');
 
 // ============ PEMBAGIAN ============
 ki('div-pp','(+) \\div (+) = \\textbf{Positif}');
