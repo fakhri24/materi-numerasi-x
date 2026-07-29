@@ -3,35 +3,361 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perbandingan dan Skala - Numerasi X</title>
+<title>Perbandingan dan Skala - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.card p{color:#aaa}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:100px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#60a5fa}
+select{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px;border-radius:8px;font-size:1rem;outline:none;cursor:pointer}
+select:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.2rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:140px;font-size:1.2rem}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.ref-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.ref-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>📏 Perbandingan dan Skala</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari perbandingan senilai, berbalik nilai, dan skala peta secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('konsep')" id="btn-konsep" class="active">📏 Apa itu Perbandingan?</button>
+<button onclick="show('senilai')" id="btn-senilai">📈 Perbandingan Senilai</button>
+<button onclick="show('berbalik')" id="btn-berbalik">📉 Perbandingan Berbalik Nilai</button>
+<button onclick="show('skala')" id="btn-skala">🗺️ Skala</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== KONSEP ==================== -->
+<div id="konsep" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Apa itu Perbandingan?</h2>
+<div class="rule-box" id="rb-konsep"></div>
+<div class="example" id="ex-konsep"></div>
+<div class="rule-box success" id="rb-konsep-cara"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Sederhanakan Perbandingan</h2>
+<p style="color:#888;margin-bottom:10px">Bentuk $a : b$</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="sd-a" value="12"><span>:</span><input type="number" id="sd-b" value="18">
+<button class="btn btn-primary" onclick="hitungSederhanakan()">Sederhanakan</button>
+</div>
+<div id="sd-result" class="result info" style="margin-top:16px">Masukkan dua nilai lalu klik "Sederhanakan"</div>
 </div>
 </div>
+</div>
+
+<!-- ==================== PERBANDINGAN SENILAI ==================== -->
+<div id="senilai" class="section">
+<div class="card">
+<h2>Perbandingan Senilai (Proporsional)</h2>
+<div class="rule-box" id="rb-senilai"></div>
+<div class="example" id="ex-senilai"></div>
+<div class="rule-box warning" id="rb-senilai-warn"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Perbandingan Senilai</h2>
+<p style="color:#888;margin-bottom:10px">Jika sejumlah barang/nilai sebanding dengan nilai lain</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="sn-a" value="2" style="width:80px"><span>satuan senilai</span>
+<input type="number" id="sn-b" value="20000" style="width:110px">
+<span>, maka</span><input type="number" id="sn-c" value="5" style="width:80px"><span>satuan senilai?</span>
+<button class="btn btn-primary" onclick="hitungSenilai()">Hitung</button>
+</div>
+<div id="sn-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PERBANDINGAN BERBALIK NILAI ==================== -->
+<div id="berbalik" class="section">
+<div class="card">
+<h2>Perbandingan Berbalik Nilai</h2>
+<div class="rule-box" id="rb-berbalik"></div>
+<div class="example" id="ex-berbalik"></div>
+<div class="rule-box warning" id="rb-berbalik-warn"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Perbandingan Berbalik Nilai</h2>
+<p style="color:#888;margin-bottom:10px">Jika satu nilai naik, nilai lain turun (hasil kali tetap)</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="bb-a" value="4" style="width:80px"><span>pekerja selesai dalam</span>
+<input type="number" id="bb-b" value="6" style="width:80px"><span>hari, maka</span>
+<input type="number" id="bb-c" value="8" style="width:80px"><span>pekerja selesai dalam berapa hari?</span>
+<button class="btn btn-primary" onclick="hitungBerbalik()">Hitung</button>
+</div>
+<div id="bb-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== SKALA ==================== -->
+<div id="skala" class="section">
+<div class="card">
+<h2>Skala Peta</h2>
+<div class="rule-box" id="rb-skala"></div>
+<div class="example" id="ex-skala"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Skala</h2>
+<p style="color:#888;margin-bottom:10px">Semua jarak dimasukkan dalam satuan cm</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+<select id="sk-cari" onchange="toggleSkCari()">
+<option value="asli">Cari Jarak Sebenarnya</option>
+<option value="peta">Cari Jarak pada Peta</option>
+<option value="skala">Cari Skala</option>
+</select>
+</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span id="sk-skala-wrap">Skala 1 : <input type="number" id="sk-skala" value="100000" style="width:110px"></span>
+<span id="sk-peta-wrap">Jarak peta (cm) <input type="number" id="sk-peta" value="5" style="width:90px"></span>
+<span id="sk-asli-wrap" style="display:none">Jarak sebenarnya (cm) <input type="number" id="sk-asli" value="500000" style="width:110px"></span>
+<button class="btn btn-primary" onclick="hitungSkala()">Hitung</button>
+</div>
+<div id="sk-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Perbandingan dan Skala</h2>
+<p style="color:#888;margin-bottom:10px">Jawab 10 soal. Ketik jawaban berupa angka (bulat atau desimal).</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="number" id="q-answer" step="any" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+function gcdEuclid(a,b){ a=Math.abs(a);b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+function dispNum(n){ return String(n).replace('.',','); }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ---- RENDER HASIL (plain HTML + inline katex) ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ============ KONSEP (STATIS) ============
+document.getElementById('rb-konsep').innerHTML='Perbandingan (rasio) adalah cara membandingkan dua nilai. Ditulis sebagai $a : b$ atau $\\frac{a}{b}$.';
+document.getElementById('ex-konsep').innerHTML='$8 : 12$';
+document.getElementById('rb-konsep-cara').innerHTML='<div class="label">Cara Menyederhanakan</div>Bagi kedua nilai dengan FPB-nya, sama seperti menyederhanakan pecahan. Contoh: $8:12$, FPB dari 8 dan 12 adalah 4, sehingga $8:12 = 2:3$.';
+
+// ============ PERBANDINGAN SENILAI (STATIS) ============
+document.getElementById('rb-senilai').innerHTML='Pada perbandingan senilai (proporsional), jika satu nilai naik maka nilai lainnya juga naik dengan kelipatan yang sama. Jika $a:b = c:d$, maka berlaku perkalian silang: $a \\times d = b \\times c$.';
+document.getElementById('ex-senilai').innerHTML='2 kg apel harganya Rp20.000. Berapa harga 5 kg apel?<br>$2 : 20.000 = 5 : x \\;\\Rightarrow\\; x = \\frac{20.000 \\times 5}{2} = 50.000$';
+document.getElementById('rb-senilai-warn').innerHTML='<div class="label">💡 Contoh Lain</div>Kecepatan tetap, jarak tempuh, harga per satuan barang, dan konsumsi bahan resep adalah contoh perbandingan senilai.';
+
+// ============ PERBANDINGAN BERBALIK NILAI (STATIS) ============
+document.getElementById('rb-berbalik').innerHTML='Pada perbandingan berbalik nilai, jika satu nilai naik maka nilai lainnya turun. Hasil kali kedua nilai tetap sama: $a \\times b = c \\times d$.';
+document.getElementById('ex-berbalik').innerHTML='4 pekerja menyelesaikan pekerjaan dalam 6 hari. Jika ada 8 pekerja, berapa hari yang dibutuhkan?<br>$4 \\times 6 = 8 \\times x \\;\\Rightarrow\\; x = \\frac{4 \\times 6}{8} = 3$';
+document.getElementById('rb-berbalik-warn').innerHTML='<div class="label">💡 Contoh Lain</div>Jumlah pekerja vs waktu pengerjaan, kecepatan vs waktu tempuh (jarak tetap), dan jumlah mesin vs waktu produksi adalah contoh perbandingan berbalik nilai.';
+
+// ============ SKALA (STATIS) ============
+document.getElementById('rb-skala').innerHTML='Skala pada peta menyatakan perbandingan jarak pada peta dengan jarak sebenarnya, ditulis $1 : n$. Artinya, 1 satuan jarak pada peta mewakili $n$ satuan jarak sebenarnya.';
+document.getElementById('ex-skala').innerHTML='Skala peta $1:100.000$. Jarak pada peta 5 cm, berapa jarak sebenarnya?<br>$5 \\times 100.000 = 500.000\\text{ cm} = 5\\text{ km}$';
+
+renderMathInElement(document.getElementById('konsep'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('senilai'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('berbalik'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('skala'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- KALKULATOR: SEDERHANAKAN PERBANDINGAN ----
+function hitungSederhanakan(){
+  const a=parseFloat(document.getElementById('sd-a').value);
+  const b=parseFloat(document.getElementById('sd-b').value);
+  if(isNaN(a)||isNaN(b)||a===0||b===0){ renderResult('sd-result','Masukkan angka yang valid (tidak boleh 0).','info'); return; }
+  const g=gcdEuclid(a,b);
+  const simpA=a/g, simpB=b/g;
+  const html=`$${dispNum(a)} : ${dispNum(b)}$, FPB $= ${g}$<br>$${dispNum(a)} : ${dispNum(b)} = \\boxed{${dispNum(simpA)} : ${dispNum(simpB)}}$`;
+  renderResult('sd-result', html, 'correct');
+}
+
+// ---- KALKULATOR: PERBANDINGAN SENILAI ----
+function hitungSenilai(){
+  const a=parseFloat(document.getElementById('sn-a').value);
+  const b=parseFloat(document.getElementById('sn-b').value);
+  const c=parseFloat(document.getElementById('sn-c').value);
+  if(isNaN(a)||isNaN(b)||isNaN(c)||a===0){ renderResult('sn-result','Masukkan angka yang valid (satuan pertama tidak boleh 0).','info'); return; }
+  const d=(b*c)/a;
+  const html=`$${dispNum(a)} : ${dispNum(b)} = ${dispNum(c)} : x$<br>$x = \\frac{${dispNum(b)} \\times ${dispNum(c)}}{${dispNum(a)}} = \\boxed{${dispNum(d)}}$`;
+  renderResult('sn-result', html, 'correct');
+}
+
+// ---- KALKULATOR: PERBANDINGAN BERBALIK NILAI ----
+function hitungBerbalik(){
+  const a=parseFloat(document.getElementById('bb-a').value);
+  const b=parseFloat(document.getElementById('bb-b').value);
+  const c=parseFloat(document.getElementById('bb-c').value);
+  if(isNaN(a)||isNaN(b)||isNaN(c)||c===0){ renderResult('bb-result','Masukkan angka yang valid (nilai baru tidak boleh 0).','info'); return; }
+  const d=(a*b)/c;
+  const html=`$${dispNum(a)} \\times ${dispNum(b)} = ${dispNum(c)} \\times x$<br>$x = \\frac{${dispNum(a)} \\times ${dispNum(b)}}{${dispNum(c)}} = \\boxed{${dispNum(d)}}$`;
+  renderResult('bb-result', html, 'correct');
+}
+
+// ---- TOGGLE SKALA INPUTS ----
+function toggleSkCari(){
+  const cari=document.getElementById('sk-cari').value;
+  document.getElementById('sk-skala-wrap').style.display = cari==='skala' ? 'none' : 'inline';
+  document.getElementById('sk-peta-wrap').style.display = cari==='peta' ? 'none' : 'inline';
+  document.getElementById('sk-asli-wrap').style.display = cari==='asli' ? 'none' : 'inline';
+}
+
+// ---- KALKULATOR: SKALA ----
+function hitungSkala(){
+  const cari=document.getElementById('sk-cari').value;
+  const skala=parseFloat(document.getElementById('sk-skala').value);
+  const peta=parseFloat(document.getElementById('sk-peta').value);
+  const asli=parseFloat(document.getElementById('sk-asli').value);
+  let html;
+  if(cari==='asli'){
+    if(isNaN(skala)||isNaN(peta)){ renderResult('sk-result','Masukkan angka yang valid.','info'); return; }
+    const hasil=peta*skala;
+    html=`Jarak sebenarnya $= ${dispNum(peta)} \\times ${dispNum(skala)} = \\boxed{${dispNum(hasil)}\\text{ cm}}$`;
+  } else if(cari==='peta'){
+    if(isNaN(skala)||isNaN(asli)||skala===0){ renderResult('sk-result','Masukkan angka yang valid (skala tidak boleh 0).','info'); return; }
+    const hasil=asli/skala;
+    html=`Jarak pada peta $= \\frac{${dispNum(asli)}}{${dispNum(skala)}} = \\boxed{${dispNum(hasil)}\\text{ cm}}$`;
+  } else {
+    if(isNaN(peta)||isNaN(asli)||peta===0){ renderResult('sk-result','Masukkan angka yang valid (jarak peta tidak boleh 0).','info'); return; }
+    const hasil=asli/peta;
+    html=`Skala $= \\frac{${dispNum(asli)}}{${dispNum(peta)}} = \\boxed{1 : ${dispNum(hasil)}}$`;
+  }
+  renderResult('sk-result', html, 'correct');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'Sederhanakan perbandingan 12:18. Jika ditulis a:b paling sederhana, berapa nilai a?', ans:2},
+  {q:'Sederhanakan perbandingan 20:30. Jika ditulis a:b paling sederhana, berapa nilai b?', ans:3},
+  {q:'2 kg apel harganya Rp20.000. Berapa harga 5 kg apel (dalam ribuan rupiah)?', ans:50},
+  {q:'3 buku harganya Rp45.000. Berapa harga 7 buku (dalam ribuan rupiah)?', ans:105},
+  {q:'4 pekerja menyelesaikan pekerjaan dalam 6 hari. Jika ada 8 pekerja, berapa hari yang dibutuhkan?', ans:3},
+  {q:'6 mesin menyelesaikan pekerjaan dalam 10 jam. Berapa jam dibutuhkan jika hanya ada 4 mesin?', ans:15},
+  {q:'Skala peta 1:500.000. Jarak pada peta 4 cm. Berapa jarak sebenarnya dalam km?', ans:20},
+  {q:'Jarak sebenarnya dua kota adalah 90 km. Jika digambar dengan skala 1:3.000.000, berapa jarak pada peta dalam cm?', ans:3},
+  {q:'Sebuah mobil menempuh 120 km dalam 2 jam. Dengan kecepatan tetap, berapa km yang ditempuh dalam 5 jam?', ans:300},
+  {q:'8 pekerja menyelesaikan pekerjaan dalam 9 hari. Berapa pekerja dibutuhkan agar selesai dalam 6 hari?', ans:12},
+];
+let quizOrder=[], qIdx=0, qScore=0;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').textContent=`Soal ${qIdx+1} dari ${quizOrder.length}: ${item.q}`;
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value==='')return;
+  const item=quizOrder[qIdx];
+  const userAns=parseFloat(inp.value);
+  const el=document.getElementById('q-result');
+  const correct = Math.abs(userAns-item.ans)<1e-9;
+  if(correct){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! Jawabannya ${item.ans}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban yang benar: <strong>${item.ans}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['11-perbandingan-dan-skala']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
