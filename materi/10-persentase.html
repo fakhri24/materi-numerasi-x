@@ -3,35 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Persentase - Numerasi X</title>
+<title>Persentase - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.card p{color:#aaa}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:100px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#60a5fa}
+select{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px;border-radius:8px;font-size:1rem;outline:none;cursor:pointer}
+select:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.2rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:140px;font-size:1.2rem}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.ref-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.ref-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>💯 Persentase</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari konsep persen, konversi, dan menghitung persentase nilai secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('konsep')" id="btn-konsep" class="active">💡 Apa itu Persen?</button>
+<button onclick="show('dariNilai')" id="btn-dariNilai">🔢 Persentase dari Nilai</button>
+<button onclick="show('tentukan')" id="btn-tentukan">🔍 Menentukan Persentase</button>
+<button onclick="show('naikTurun')" id="btn-naikTurun">📈 Kenaikan &amp; Penurunan</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== KONSEP ==================== -->
+<div id="konsep" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Apa itu Persen?</h2>
+<div class="rule-box" id="rb-konsep"></div>
+<table class="ref-table">
+<tr><th>Pecahan</th><th>Desimal</th><th>Persen</th></tr>
+<tr><td id="rt-1a"></td><td>0,5</td><td>50%</td></tr>
+<tr><td id="rt-2a"></td><td>0,25</td><td>25%</td></tr>
+<tr><td id="rt-3a"></td><td>0,75</td><td>75%</td></tr>
+<tr><td id="rt-4a"></td><td>0,2</td><td>20%</td></tr>
+<tr><td id="rt-5a"></td><td>0,1</td><td>10%</td></tr>
+<tr><td id="rt-6a"></td><td>1</td><td>100%</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>🔨 Persen → Pecahan &amp; Desimal</h2>
+<div class="rule-box" id="rb-pk"></div>
+<div class="example" id="ex-pk"></div>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="pk-persen" value="75" step="any"><span>%</span>
+<button class="btn btn-primary" onclick="hitungPersenKe()">Konversi</button>
+</div>
+<div id="pk-result" class="result info" style="margin-top:16px">Masukkan nilai persen lalu klik "Konversi"</div>
 </div>
 </div>
+
+<div class="card">
+<h2>🔨 Desimal / Pecahan → Persen</h2>
+<div class="rule-box" id="rb-kp"></div>
+<div class="example" id="ex-kp"></div>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<select id="kp-type" onchange="toggleKpType()">
+<option value="desimal">Desimal</option>
+<option value="pecahan">Pecahan</option>
+</select>
+<span id="kp-desimal-wrap"><input type="number" id="kp-desimal" value="0.4" step="any"></span>
+<span id="kp-pecahan-wrap" style="display:none;align-items:center;gap:6px">
+<input type="number" id="kp-num" value="3" style="width:70px"><span>/</span><input type="number" id="kp-den" value="4" style="width:70px">
+</span>
+<button class="btn btn-primary" onclick="hitungKePersen()">Konversi</button>
+</div>
+<div id="kp-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Konversi"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PERSENTASE DARI NILAI ==================== -->
+<div id="dariNilai" class="section">
+<div class="card">
+<h2>Persentase dari Suatu Nilai</h2>
+<div class="rule-box" id="rb-dari"></div>
+<div class="example" id="ex-dari"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator: a% dari b</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="dn-a" value="25" step="any"><span>% dari</span>
+<input type="number" id="dn-b" value="200" step="any">
+<button class="btn btn-primary" onclick="hitungDariNilai()">Hitung</button>
+</div>
+<div id="dn-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== MENENTUKAN PERSENTASE ==================== -->
+<div id="tentukan" class="section">
+<div class="card">
+<h2>Menentukan Persentase Suatu Bagian</h2>
+<div class="rule-box" id="rb-tentukan"></div>
+<div class="example" id="ex-tentukan"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator: Berapa Persen?</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="tp-bagian" value="15" step="any"><span>dari</span>
+<input type="number" id="tp-total" value="60" step="any">
+<button class="btn btn-primary" onclick="hitungTentukanPersen()">Hitung</button>
+</div>
+<div id="tp-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KENAIKAN & PENURUNAN ==================== -->
+<div id="naikTurun" class="section">
+<div class="card">
+<h2>Kenaikan &amp; Penurunan Persentase</h2>
+<div class="rule-box" id="rb-nt"></div>
+<div class="example" id="ex-nt-diskon"></div>
+<div class="example" id="ex-nt-naik"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Harga Setelah Diskon / Kenaikan</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Harga awal</span><input type="number" id="hs-awal" value="100000" step="any" style="width:130px">
+<select id="hs-jenis"><option value="diskon">Diskon</option><option value="kenaikan">Kenaikan</option></select>
+<input type="number" id="hs-persen" value="20" step="any"><span>%</span>
+<button class="btn btn-primary" onclick="hitungHargaSetelah()">Hitung</button>
+</div>
+<div id="hs-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔨 Cari Persentase Perubahan</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Nilai awal</span><input type="number" id="pp-awal" value="200000" step="any" style="width:130px">
+<span>Nilai akhir</span><input type="number" id="pp-akhir" value="220000" step="any" style="width:130px">
+<button class="btn btn-primary" onclick="hitungPersenPerubahan()">Hitung</button>
+</div>
+<div id="pp-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Persentase</h2>
+<p style="color:#888;margin-bottom:10px">Jawab 10 soal. Ketik jawaban berupa angka (bulat atau desimal).</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="number" id="q-answer" step="any" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+function gcdEuclid(a,b){ a=Math.abs(a);b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+function decimalPlaces(str){ const s=String(str); const idx=s.indexOf('.'); return idx===-1?0:s.length-idx-1; }
+function dispNum(n){ return String(n).replace('.',','); }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ---- RENDER HASIL (plain HTML + inline katex) ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ============ KONSEP (STATIS) ============
+document.getElementById('rb-konsep').innerHTML='Persen (simbol %) artinya "per seratus". Jadi 1% sama dengan 1/100 atau 0,01. Persen dipakai untuk menyatakan seberapa besar suatu bagian dibandingkan keseluruhan yang dianggap 100 bagian.';
+ki('rt-1a','\\tfrac{1}{2}'); ki('rt-2a','\\tfrac{1}{4}'); ki('rt-3a','\\tfrac{3}{4}'); ki('rt-4a','\\tfrac{1}{5}'); ki('rt-5a','\\tfrac{1}{10}'); ki('rt-6a','1');
+
+document.getElementById('rb-pk').innerHTML='<div class="label">Cara</div>Untuk mengubah persen menjadi desimal, bagi dengan 100. Untuk mengubah persen menjadi pecahan, tulis sebagai per-seratus lalu sederhanakan.';
+k('ex-pk','75\\% = \\frac{75}{100} = \\frac{3}{4} = 0{,}75');
+
+document.getElementById('rb-kp').innerHTML='<div class="label">Cara</div>Untuk mengubah desimal menjadi persen, kalikan dengan 100%. Untuk mengubah pecahan menjadi persen, kalikan dengan 100% (atau ubah ke desimal dulu).';
+k('ex-kp','0{,}4 \\times 100\\% = 40\\% \\qquad \\frac{3}{4} \\times 100\\% = 75\\%');
+
+// ============ DARI NILAI (STATIS) ============
+document.getElementById('rb-dari').innerHTML='Untuk mencari a% dari suatu nilai b, gunakan rumus: a% dari b = (a/100) × b.';
+document.getElementById('ex-dari').innerHTML='25% dari 200 = $\\frac{25}{100} \\times 200 = 50$';
+
+// ============ MENENTUKAN PERSENTASE (STATIS) ============
+document.getElementById('rb-tentukan').innerHTML='Untuk menentukan berapa persen suatu bagian dari total, gunakan rumus: persentase = (bagian/total) × 100%.';
+document.getElementById('ex-tentukan').innerHTML='15 dari 60 = $\\frac{15}{60} \\times 100\\% = 25\\%$';
+
+// ============ KENAIKAN & PENURUNAN (STATIS) ============
+document.getElementById('rb-nt').innerHTML='Persentase kenaikan/penurunan dihitung dari: (selisih ÷ nilai awal) × 100%. Nilai akhir = nilai awal × (1 ± persen/100), tanda + untuk kenaikan dan − untuk penurunan (diskon).';
+document.getElementById('ex-nt-diskon').innerHTML='Diskon 20% dari Rp100.000 → harga akhir = $100.000 \\times (1 - \\frac{20}{100}) = 80.000$';
+document.getElementById('ex-nt-naik').innerHTML='Kenaikan 10% dari Rp200.000 → harga akhir = $200.000 \\times (1 + \\frac{10}{100}) = 220.000$';
+renderMathInElement(document.getElementById('konsep'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('dariNilai'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('tentukan'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('naikTurun'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- KALKULATOR: PERSEN → PECAHAN & DESIMAL ----
+function hitungPersenKe(){
+  const raw=document.getElementById('pk-persen').value;
+  const p=parseFloat(raw);
+  if(isNaN(p)){ renderResult('pk-result','Masukkan angka yang valid.','info'); return; }
+  const dp=decimalPlaces(raw);
+  const scale=Math.pow(10,dp);
+  let num=Math.round(p*scale), den=100*scale;
+  const g=gcdEuclid(num,den);
+  const simpNum=num/g, simpDen=den/g;
+  const desimal=p/100;
+  const html=`$${dispNum(p)}\\%$ sebagai pecahan: $\\frac{${dispNum(p)}}{100} = \\frac{${num}}{${den}} = \\boxed{\\frac{${simpNum}}{${simpDen}}}$<br>$${dispNum(p)}\\%$ sebagai desimal: $\\boxed{${dispNum(desimal)}}$`;
+  renderResult('pk-result', html, 'correct');
+}
+
+// ---- TOGGLE INPUT DESIMAL/PECAHAN ----
+function toggleKpType(){
+  const type=document.getElementById('kp-type').value;
+  document.getElementById('kp-desimal-wrap').style.display = type==='desimal' ? 'inline-flex' : 'none';
+  document.getElementById('kp-pecahan-wrap').style.display = type==='pecahan' ? 'inline-flex' : 'none';
+}
+
+// ---- KALKULATOR: DESIMAL/PECAHAN → PERSEN ----
+function hitungKePersen(){
+  const type=document.getElementById('kp-type').value;
+  let html;
+  if(type==='desimal'){
+    const raw=document.getElementById('kp-desimal').value;
+    const d=parseFloat(raw);
+    if(isNaN(d)){ renderResult('kp-result','Masukkan angka yang valid.','info'); return; }
+    const persen=d*100;
+    html=`$${dispNum(d)} \\times 100\\% = \\boxed{${dispNum(persen)}\\%}$`;
+  } else {
+    const num=parseFloat(document.getElementById('kp-num').value);
+    const den=parseFloat(document.getElementById('kp-den').value);
+    if(isNaN(num)||isNaN(den)||den===0){ renderResult('kp-result','Masukkan angka yang valid (penyebut tidak boleh 0).','info'); return; }
+    const persen=(num/den)*100;
+    html=`$\\frac{${dispNum(num)}}{${dispNum(den)}} \\times 100\\% = \\boxed{${dispNum(persen)}\\%}$`;
+  }
+  renderResult('kp-result', html, 'correct');
+}
+
+// ---- KALKULATOR: a% DARI b ----
+function hitungDariNilai(){
+  const a=parseFloat(document.getElementById('dn-a').value);
+  const b=parseFloat(document.getElementById('dn-b').value);
+  if(isNaN(a)||isNaN(b)){ renderResult('dn-result','Masukkan angka yang valid.','info'); return; }
+  const hasil=(a/100)*b;
+  const html=`$${dispNum(a)}\\%$ dari $${dispNum(b)}$ = $\\frac{${dispNum(a)}}{100} \\times ${dispNum(b)} = \\boxed{${dispNum(hasil)}}$`;
+  renderResult('dn-result', html, 'correct');
+}
+
+// ---- KALKULATOR: BERAPA PERSEN ----
+function hitungTentukanPersen(){
+  const bagian=parseFloat(document.getElementById('tp-bagian').value);
+  const total=parseFloat(document.getElementById('tp-total').value);
+  if(isNaN(bagian)||isNaN(total)||total===0){ renderResult('tp-result','Masukkan angka yang valid (total tidak boleh 0).','info'); return; }
+  const persen=(bagian/total)*100;
+  const html=`$${dispNum(bagian)}$ dari $${dispNum(total)}$ = $\\frac{${dispNum(bagian)}}{${dispNum(total)}} \\times 100\\% = \\boxed{${dispNum(persen)}\\%}$`;
+  renderResult('tp-result', html, 'correct');
+}
+
+// ---- KALKULATOR: HARGA SETELAH DISKON/KENAIKAN ----
+function hitungHargaSetelah(){
+  const awal=parseFloat(document.getElementById('hs-awal').value);
+  const persen=parseFloat(document.getElementById('hs-persen').value);
+  const jenis=document.getElementById('hs-jenis').value;
+  if(isNaN(awal)||isNaN(persen)){ renderResult('hs-result','Masukkan angka yang valid.','info'); return; }
+  const tanda = jenis==='diskon' ? '-' : '+';
+  const selisih=(persen/100)*awal;
+  const akhir = jenis==='diskon' ? awal-selisih : awal+selisih;
+  const label = jenis==='diskon' ? 'diskon' : 'kenaikan';
+  const html=`Harga awal $${dispNum(awal)}$, ${label} $${dispNum(persen)}\\%$:<br>$${dispNum(awal)} \\times (1 ${tanda} \\frac{${dispNum(persen)}}{100}) = ${dispNum(awal)} ${tanda} ${dispNum(selisih)} = \\boxed{${dispNum(akhir)}}$`;
+  renderResult('hs-result', html, 'correct');
+}
+
+// ---- KALKULATOR: CARI PERSENTASE PERUBAHAN ----
+function hitungPersenPerubahan(){
+  const awal=parseFloat(document.getElementById('pp-awal').value);
+  const akhir=parseFloat(document.getElementById('pp-akhir').value);
+  if(isNaN(awal)||isNaN(akhir)||awal===0){ renderResult('pp-result','Masukkan angka yang valid (nilai awal tidak boleh 0).','info'); return; }
+  const selisih=akhir-awal;
+  const persen=(selisih/awal)*100;
+  const naik = selisih>=0;
+  const label = naik ? 'kenaikan' : 'penurunan';
+  const absPersen=Math.abs(persen);
+  const html=`Selisih $= ${dispNum(akhir)} - ${dispNum(awal)} = ${dispNum(selisih)}$<br>Persentase $= \\frac{${dispNum(selisih)}}{${dispNum(awal)}} \\times 100\\% = ${dispNum(persen)}\\%$<br>Jadi ini adalah <strong>${label}</strong> sebesar $\\boxed{${dispNum(absPersen)}\\%}$`;
+  renderResult('pp-result', html, naik ? 'correct' : 'wrong');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'25% dari 80 = ?', ans:20},
+  {q:'40% dari 250 = ?', ans:100},
+  {q:'12% dari 50 = ?', ans:6},
+  {q:'15 dari 60 sama dengan berapa persen?', ans:25},
+  {q:'45 dari 180 sama dengan berapa persen?', ans:25},
+  {q:'9 dari 36 sama dengan berapa persen?', ans:25},
+  {q:'Sebuah baju harga awal Rp100.000 didiskon 20%. Berapa harga setelah diskon (dalam ribuan rupiah)?', ans:80},
+  {q:'Harga sepatu naik dari Rp200.000 menjadi Rp250.000. Berapa persen kenaikannya?', ans:25},
+  {q:'Sebuah barang dibeli Rp80.000, lalu dijual dengan untung 25% dari harga beli. Berapa harga jual (dalam ribuan rupiah)?', ans:100},
+  {q:'Nilai turun dari 80 menjadi 60. Berapa persen penurunannya?', ans:25},
+];
+let quizOrder=[], qIdx=0, qScore=0;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').textContent=`Soal ${qIdx+1} dari ${quizOrder.length}: ${item.q}`;
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value==='')return;
+  const item=quizOrder[qIdx];
+  const userAns=parseFloat(inp.value);
+  const el=document.getElementById('q-result');
+  const correct = Math.abs(userAns-item.ans)<1e-9;
+  if(correct){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! Jawabannya ${item.ans}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban yang benar: <strong>${item.ans}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['10-persentase']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
