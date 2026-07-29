@@ -3,35 +3,333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pengenalan Variabel - Numerasi X</title>
+<title>Pengenalan Variabel - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.card p{color:#aaa}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:110px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.2rem;margin:16px 0}
+.quiz-choices{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.quiz-choices button{background:#1e1e2e;border:2px solid #333;color:#ccc;padding:12px 20px;border-radius:10px;cursor:pointer;font-size:.95rem;transition:all .2s}
+.quiz-choices button:hover{border-color:#60a5fa}
+.quiz-choices button.correct-choice{border-color:#10b981;background:#0e2a1a;color:#6ee7b7}
+.quiz-choices button.wrong-choice{border-color:#ef4444;background:#2a0e0e;color:#fca5a5}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.ref-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.ref-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.ref-table td{padding:10px;border-bottom:1px solid #222}
+.part-box{display:inline-block;padding:10px 18px;border-radius:10px;margin:6px;font-size:1.05rem}
+.part-box.koef{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.part-box.var{background:#2a1e3e;border:1px solid #a78bfa;color:#c4b5fd}
+.part-box.konst{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🔤 Pengenalan Variabel</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari apa itu variabel, unsur bentuk aljabar, menyusun ekspresi &amp; substitusi nilai secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('apaitu')" id="btn-apaitu" class="active">🔤 Apa itu Variabel?</button>
+<button onclick="show('unsur')" id="btn-unsur">🧩 Unsur Aljabar</button>
+<button onclick="show('menyusun')" id="btn-menyusun">✍️ Menyusun Ekspresi</button>
+<button onclick="show('substitusi')" id="btn-substitusi">🔢 Substitusi</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== APA ITU VARIABEL ==================== -->
+<div id="apaitu" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Apa itu Variabel?</h2>
+<div class="rule-box" id="rb-variabel"></div>
+<div class="rule-box success" id="rb-konstanta"></div>
+
+<h3>Contoh</h3>
+<div class="example" id="ex-variabel"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Amati Perubahan Nilai</h2>
+<p style="color:#888;margin-bottom:10px">Misalkan harga satu pensil adalah <span id="disp-x-label">$x$</span> rupiah. Jika kamu membeli 4 pensil, totalnya adalah $4x$ rupiah. Coba ubah harganya!</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<span>Harga 1 pensil ($x$) = Rp</span>
+<input type="number" id="var-x" value="2000" step="100">
+</div>
+<div id="var-result" class="result info" style="margin-top:16px">Ubah angkanya, hasil otomatis diperbarui</div>
 </div>
 </div>
+</div>
+
+<!-- ==================== UNSUR ALJABAR ==================== -->
+<div id="unsur" class="section">
+<div class="card">
+<h2>Unsur-unsur Bentuk Aljabar</h2>
+<div class="rule-box"><div class="label">Koefisien</div><div id="rb-koefisien"></div></div>
+<div class="rule-box"><div class="label">Variabel</div><div id="rb-var2"></div></div>
+<div class="rule-box"><div class="label">Konstanta</div><div id="rb-konst2"></div></div>
+<div class="rule-box success"><div class="label">Suku</div><div id="rb-suku"></div></div>
+
+<h3>Contoh Penguraian</h3>
+<div class="example" id="ex-unsur"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Analisis Bentuk Aljabar</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+<input type="text" id="an-expr" value="3x+5">
+<button class="btn btn-primary" onclick="analisisAljabar()">Analisis</button>
+</div>
+<div id="an-result" class="result info" style="margin-top:16px">Ketik bentuk seperti 3x+5 atau -2x-7 lalu klik "Analisis"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== MENYUSUN EKSPRESI ==================== -->
+<div id="menyusun" class="section">
+<div class="card">
+<h2>Menyusun Ekspresi Aljabar dari Kalimat</h2>
+<p style="color:#aaa;margin-bottom:10px">Kalimat sehari-hari bisa diterjemahkan menjadi bentuk aljabar. Perhatikan urutan pengurangan — ini sering jadi jebakan!</p>
+<table class="ref-table">
+<thead><tr><th>Kalimat</th><th>Bentuk Aljabar</th></tr></thead>
+<tbody id="phrase-table"></tbody>
+</table>
+<div class="rule-box warning">
+<div class="label">⚠️ Hati-hati Urutan Pengurangan</div>
+<div id="warn-urutan"></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== SUBSTITUSI ==================== -->
+<div id="substitusi" class="section">
+<div class="card">
+<h2>Substitusi Nilai Variabel</h2>
+<div class="rule-box" id="rb-substitusi"></div>
+<h3>Contoh</h3>
+<div class="example" id="ex-substitusi"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Substitusi</h2>
+<p style="color:#888;margin-bottom:10px">Ekspresi berbentuk $ax+b$. Masukkan nilai $a$, $b$, dan $x$.</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="number" id="sub-a" value="2" style="width:80px">
+<span>x +</span>
+<input type="number" id="sub-b" value="3" style="width:80px">
+<span>, x =</span>
+<input type="number" id="sub-x" value="5" style="width:80px">
+<button class="btn btn-primary" onclick="hitungSubstitusi()">Hitung</button>
+</div>
+<div id="sub-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Pengenalan Variabel</h2>
+<p style="color:#888;margin-bottom:10px">10 soal pilihan ganda: unsur aljabar, menyusun ekspresi, dan substitusi.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-choices" id="q-choices"></div>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ============ APA ITU VARIABEL (STATIS) ============
+document.getElementById('rb-variabel').innerHTML='<div class="label">Variabel</div>Lambang (biasanya huruf seperti $x$, $y$, $n$) yang mewakili suatu bilangan yang belum diketahui atau nilainya bisa berubah-ubah.';
+document.getElementById('rb-konstanta').innerHTML='<div class="label">Konstanta</div>Bilangan tetap yang nilainya tidak berubah, misalnya angka 5 pada $x+5$.';
+k('ex-variabel','\\textbf{Contoh:}\\\\ \\text{Harga satu buku } = x \\text{ rupiah} \\\\ \\text{Jika membeli 3 buku, totalnya} = \\boxed{3x} \\text{ rupiah}');
+
+// ============ UNSUR ALJABAR (STATIS) ============
+document.getElementById('rb-koefisien').innerHTML='Angka yang mengalikan variabel. Pada $5x$, koefisiennya adalah 5.';
+document.getElementById('rb-var2').innerHTML='Huruf yang mewakili bilangan yang belum diketahui, misalnya $x$ pada $5x$.';
+document.getElementById('rb-konst2').innerHTML='Suku yang tidak memiliki variabel, nilainya tetap. Pada $5x - 8$, konstantanya adalah $-8$.';
+document.getElementById('rb-suku').innerHTML='Bagian dari bentuk aljabar yang dipisahkan oleh tanda + atau −. Pada $5x - 8$, ada 2 suku: $5x$ dan $-8$.';
+k('ex-unsur','\\textbf{Contoh: } 5x - 8 \\\\[6pt] \\text{Koefisien} = 5 \\quad \\text{Variabel} = x \\quad \\text{Konstanta} = -8');
+
+// ============ MENYUSUN EKSPRESI (STATIS) ============
+const phraseData=[
+  ['Suatu bilangan ditambah 5','x + 5'],
+  ['5 lebihnya dari suatu bilangan','x + 5'],
+  ['Suatu bilangan dikurangi 4','x − 4'],
+  ['4 dikurangi suatu bilangan','4 − x'],
+  ['3 kali suatu bilangan','3x'],
+  ['Setengah dari suatu bilangan','x ÷ 2'],
+  ['Jumlah suatu bilangan dan 7, dikali 2','2(x + 7)'],
+];
+document.getElementById('phrase-table').innerHTML=phraseData.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+document.getElementById('warn-urutan').innerHTML='"Suatu bilangan dikurangi 4" artinya $x - 4$ (bilangan dulu, baru dikurangi). Tapi "4 dikurangi suatu bilangan" artinya $4 - x$ (4 dulu, baru dikurangi bilangan). Urutannya terbalik!';
+
+// ============ SUBSTITUSI (STATIS) ============
+document.getElementById('rb-substitusi').innerHTML='Substitusi artinya mengganti variabel dengan nilai tertentu, lalu menghitung hasilnya.';
+k('ex-substitusi','\\textbf{Contoh:}\\\\ 2x + 3, \\text{ jika } x = 5 \\\\ = 2(5) + 3 = 10 + 3 = \\boxed{13}');
+
+// ---- RENDER HASIL ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ---- INTERAKTIF: AMATI PERUBAHAN NILAI ----
+function updateVarDemo(){
+  const x=+document.getElementById('var-x').value;
+  if(isNaN(x)){ renderResult('var-result','Masukkan angka yang valid.','info'); return; }
+  const total=4*x;
+  renderResult('var-result', `Jika $x = ${x}$, maka $4x = 4 \\times ${x} = \\boxed{${total}}$ rupiah`, 'correct');
+}
+document.getElementById('var-x').addEventListener('input', updateVarDemo);
+updateVarDemo();
+
+// ---- INTERAKTIF: ANALISIS BENTUK ALJABAR ----
+function analisisAljabar(){
+  const raw=document.getElementById('an-expr').value.replace(/\s+/g,'');
+  const m=raw.match(/^([+-]?\d*)([a-zA-Z])([+-]\d+)?$/);
+  if(!raw || !m){ renderResult('an-result','Format tidak dikenali. Coba seperti 3x+5, -2x-7, atau x-4.','info'); return; }
+  const coefStr=m[1];
+  const coef = coefStr===''?1:(coefStr==='-'?-1:parseInt(coefStr,10));
+  const variable=m[2];
+  const constant=m[3]?parseInt(m[3],10):0;
+  const sukuCount = constant!==0 ? 2 : 1;
+  const html=`<div class="part-box koef">Koefisien: ${coef}</div><div class="part-box var">Variabel: ${variable}</div><div class="part-box konst">Konstanta: ${constant}</div><br>Jumlah suku: ${sukuCount}`;
+  renderResult('an-result', html, 'correct');
+}
+
+// ---- INTERAKTIF: SUBSTITUSI ----
+function hitungSubstitusi(){
+  const a=+document.getElementById('sub-a').value, b=+document.getElementById('sub-b').value, x=+document.getElementById('sub-x').value;
+  if([a,b,x].some(isNaN)){ renderResult('sub-result','Masukkan angka yang valid.','info'); return; }
+  const ax=a*x, result=ax+b;
+  const bOp = b<0 ? '-' : '+', bAbs = Math.abs(b);
+  const html=`$${a}x ${bOp} ${bAbs}$, jika $x=${x}$<br>$= ${a}(${x}) ${bOp} ${bAbs} = ${ax} ${bOp} ${bAbs} = \\boxed{${result}}$`;
+  renderResult('sub-result', html, 'correct');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'Pada bentuk $5x - 8$, berapakah koefisiennya?', choices:['5','-8','x','13'], ans:'5'},
+  {q:'Pada bentuk $5x - 8$, berapakah konstantanya?', choices:['-8','5','x','8'], ans:'-8'},
+  {q:'Pada bentuk $3y + 7$, apa variabelnya?', choices:['y','3','7','3y'], ans:'y'},
+  {q:'Berapa jumlah suku pada $4x - 9$?', choices:['2','1','3','4'], ans:'2'},
+  {q:'"Suatu bilangan ditambah 5" ditulis sebagai:', choices:['x + 5','5 + x - x','5x','x - 5'], ans:'x + 5'},
+  {q:'"Suatu bilangan dikurangi 4" ditulis sebagai:', choices:['x - 4','4 - x','4x','x + 4'], ans:'x - 4'},
+  {q:'"4 dikurangi suatu bilangan" ditulis sebagai:', choices:['4 - x','x - 4','4x','x ÷ 4'], ans:'4 - x'},
+  {q:'"3 kali suatu bilangan" ditulis sebagai:', choices:['3x','x + 3','x - 3','x ÷ 3'], ans:'3x'},
+  {q:'Jika $x=3$, nilai dari $2x+5$ adalah:', choices:['11','10','6','8'], ans:'11'},
+  {q:'Jika $x=4$, nilai dari $3x-2$ adalah:', choices:['10','12','9','14'], ans:'10'},
+];
+let quizOrder=[], qIdx=0, qScore=0, qLocked=false;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; qLocked=false; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-choices').innerHTML='';
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari ${quizOrder.length}: <br><span id="q-formula" style="font-size:1.1rem"></span>`;
+  document.getElementById('q-formula').innerHTML=item.q;
+  renderMathInElement(document.getElementById('q-formula'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  const choicesShuffled=shuffle(item.choices);
+  document.getElementById('q-choices').innerHTML=choicesShuffled.map(c=>`<button onclick="cekJawaban(this,'${c}')">${c}</button>`).join('');
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  qLocked=false;
+}
+function cekJawaban(btn, chosen){
+  if(qLocked) return;
+  qLocked=true;
+  const item=quizOrder[qIdx];
+  const el=document.getElementById('q-result');
+  document.querySelectorAll('#q-choices button').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===item.ans) b.classList.add('correct-choice');
+    else if(b===btn) b.classList.add('wrong-choice');
+  });
+  if(chosen===item.ans){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar!`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban yang benar: <strong>${item.ans}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['06-pengenalan-variabel']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
