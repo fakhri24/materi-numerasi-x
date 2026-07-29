@@ -3,35 +3,388 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pembulatan dan Estimasi - Numerasi X</title>
+<title>Pembulatan dan Estimasi - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.card p{color:#aaa}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:100px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#60a5fa}
+select{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px;border-radius:8px;font-size:1rem;outline:none;cursor:pointer}
+select:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.2rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:140px;font-size:1.2rem}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.ref-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.ref-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🎯 Pembulatan dan Estimasi</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari pembulatan bilangan, desimal, dan taksiran hasil operasi hitung secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('bulat')" id="btn-bulat" class="active">🔢 Bilangan Bulat</button>
+<button onclick="show('desimal')" id="btn-desimal">🔟 Desimal</button>
+<button onclick="show('taksiran')" id="btn-taksiran">➗ Taksiran Operasi</button>
+<button onclick="show('estimasi')" id="btn-estimasi">🛒 Estimasi Praktis</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== BILANGAN BULAT ==================== -->
+<div id="bulat" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Pembulatan Bilangan Bulat</h2>
+<div class="rule-box" id="rb-bulat"></div>
+<div class="example" id="ex-bulat"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Pembulatan</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Bulatkan</span><input type="number" id="bb-n" value="47" style="width:110px">
+<span>ke</span>
+<select id="bb-unit">
+<option value="10">puluhan</option>
+<option value="100">ratusan</option>
+<option value="1000">ribuan</option>
+<option value="10000">puluh ribuan</option>
+</select>
+<span>terdekat</span>
+<button class="btn btn-primary" onclick="hitungBulatBulat()">Hitung</button>
+</div>
+<div id="bb-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
 </div>
 </div>
+</div>
+
+<!-- ==================== DESIMAL ==================== -->
+<div id="desimal" class="section">
+<div class="card">
+<h2>Pembulatan Desimal</h2>
+<div class="rule-box" id="rb-desimal"></div>
+<div class="example" id="ex-desimal"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Pembulatan Desimal</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Bulatkan</span><input type="text" id="bd-n" value="3.14159" style="width:120px">
+<span>ke</span>
+<select id="bd-places">
+<option value="0">0</option>
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select>
+<span>angka di belakang koma</span>
+<button class="btn btn-primary" onclick="hitungBulatDesimal()">Hitung</button>
+</div>
+<div id="bd-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== TAKSIRAN OPERASI ==================== -->
+<div id="taksiran" class="section">
+<div class="card">
+<h2>Taksiran Hasil Operasi Hitung</h2>
+<div class="rule-box" id="rb-taksiran"></div>
+<div class="example" id="ex-taksiran"></div>
+<div class="rule-box warning" id="rb-taksiran-jenis"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Taksiran</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+<input type="number" id="tk-a" value="48" style="width:90px">
+<select id="tk-op"><option value="+">+</option><option value="-">−</option><option value="×">×</option><option value="÷">÷</option></select>
+<input type="number" id="tk-b" value="63" style="width:90px">
+</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Jenis:</span>
+<select id="tk-jenis"><option value="terbaik">Taksiran Terbaik</option><option value="atas">Taksiran Atas</option><option value="bawah">Taksiran Bawah</option></select>
+<span>Bulatkan ke:</span>
+<select id="tk-unit"><option value="10">puluhan</option><option value="100">ratusan</option></select>
+<button class="btn btn-primary" onclick="hitungTaksiran()">Hitung</button>
+</div>
+<div id="tk-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== ESTIMASI PRAKTIS ==================== -->
+<div id="estimasi" class="section">
+<div class="card">
+<h2>Estimasi dalam Kehidupan Sehari-hari</h2>
+<div class="rule-box" id="rb-estimasi"></div>
+<div class="example" id="ex-estimasi"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Estimasi Total Belanja</h2>
+<p style="color:#888;margin-bottom:10px">Setiap harga dibulatkan ke ribuan terdekat sebelum dijumlahkan</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Rp</span><input type="number" id="eb-1" value="12500" style="width:100px">
+<span>Rp</span><input type="number" id="eb-2" value="8700" style="width:100px">
+<span>Rp</span><input type="number" id="eb-3" value="4300" style="width:100px">
+<button class="btn btn-primary" onclick="hitungEstimasiBelanja()">Hitung</button>
+</div>
+<div id="eb-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Pembulatan dan Estimasi</h2>
+<p style="color:#888;margin-bottom:10px">Jawab 10 soal. Ketik jawaban berupa angka (bulat atau desimal).</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="number" id="q-answer" step="any" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+function dispNum(n){ return String(n).replace('.',','); }
+function dispNumTex(n){ return String(n).replace('.','{,}'); }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ---- RENDER HASIL (plain HTML + inline katex) ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ---- ROUNDING HELPERS (bilangan bulat, berbasis kelipatan) ----
+function roundNearestUnit(n, unit){ return Math.round(n/unit)*unit; }
+function roundUpUnit(n, unit){ return Math.ceil(n/unit)*unit; }
+function roundDownUnit(n, unit){ return Math.floor(n/unit)*unit; }
+
+// ---- ROUNDING HELPER (desimal, berbasis string+BigInt agar bebas galat floating point) ----
+function roundDecimalStr(raw, places){
+  let neg=false;
+  let s=String(raw).trim();
+  if(s.startsWith('-')){ neg=true; s=s.slice(1); }
+  let parts=s.split('.');
+  let intPart=parts[0]||'0';
+  let fracPart=parts[1]||'';
+  let resultStr;
+  if(fracPart.length<=places){
+    resultStr = intPart + (places>0 ? '.'+fracPart.padEnd(places,'0') : '');
+  } else {
+    const roundDigit = fracPart.charCodeAt(places)-48;
+    const kept = fracPart.slice(0,places);
+    let bigVal = BigInt(intPart+kept);
+    if(roundDigit>=5) bigVal += 1n;
+    let combined = bigVal.toString().padStart(intPart.length+places,'0');
+    let newInt = combined.slice(0, combined.length-places) || '0';
+    let newFrac = places>0 ? combined.slice(combined.length-places) : '';
+    resultStr = newInt + (places>0 ? '.'+newFrac : '');
+  }
+  const isZero = parseFloat(resultStr)===0;
+  return (neg && !isZero ? '-' : '') + resultStr;
+}
+
+// ============ BILANGAN BULAT (STATIS) ============
+document.getElementById('rb-bulat').innerHTML='Untuk membulatkan bilangan bulat ke puluhan/ratusan/ribuan terdekat, lihat digit di sebelah kanan tempat yang dituju. Jika digit tersebut 5 atau lebih, bulatkan ke atas; jika kurang dari 5, bulatkan ke bawah.';
+document.getElementById('ex-bulat').innerHTML='$47$ dibulatkan ke puluhan terdekat $= \\boxed{50}$ &nbsp;&nbsp; $234$ dibulatkan ke ratusan terdekat $= \\boxed{200}$';
+
+// ============ DESIMAL (STATIS) ============
+document.getElementById('rb-desimal').innerHTML='Untuk membulatkan desimal ke n angka di belakang koma, lihat digit tepat setelah angka ke-n tersebut. Jika 5 atau lebih, bulatkan ke atas; jika kurang dari 5, buang saja (bulatkan ke bawah).';
+document.getElementById('ex-desimal').innerHTML='$3{,}14159$ dibulatkan ke 2 angka desimal $= \\boxed{3{,}14}$';
+
+// ============ TAKSIRAN (STATIS) ============
+document.getElementById('rb-taksiran').innerHTML='Taksiran (estimasi) adalah perkiraan hasil operasi hitung dengan membulatkan bilangan-bilangan yang terlibat terlebih dahulu, agar perhitungan lebih cepat dan mudah dilakukan secara mental.';
+document.getElementById('ex-taksiran').innerHTML='$48 + 63$, taksiran terbaik (bulatkan ke puluhan terdekat)<br>$\\approx 50 + 60 = \\boxed{110}$';
+document.getElementById('rb-taksiran-jenis').innerHTML='<div class="label">Tiga Jenis Taksiran</div><strong>Taksiran atas:</strong> semua bilangan dibulatkan ke atas.<br><strong>Taksiran bawah:</strong> semua bilangan dibulatkan ke bawah.<br><strong>Taksiran terbaik:</strong> semua bilangan dibulatkan ke nilai terdekat (bisa ke atas atau ke bawah).';
+
+// ============ ESTIMASI PRAKTIS (STATIS) ============
+document.getElementById('rb-estimasi').innerHTML='Estimasi banyak digunakan dalam kehidupan sehari-hari, misalnya memperkirakan total belanja dengan membulatkan setiap harga barang sebelum dijumlahkan, sehingga kita bisa cepat memperkirakan apakah uang yang dibawa cukup.';
+document.getElementById('ex-estimasi').innerHTML='Harga Rp12.500 dibulatkan menjadi Rp13.000. Harga Rp8.700 dibulatkan menjadi Rp9.000.';
+
+renderMathInElement(document.getElementById('bulat'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('desimal'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('taksiran'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+renderMathInElement(document.getElementById('estimasi'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- KALKULATOR: PEMBULATAN BILANGAN BULAT ----
+function hitungBulatBulat(){
+  const n=parseFloat(document.getElementById('bb-n').value);
+  const unit=parseFloat(document.getElementById('bb-unit').value);
+  if(isNaN(n)||isNaN(unit)){ renderResult('bb-result','Masukkan angka yang valid.','info'); return; }
+  const rounded=roundNearestUnit(n,unit);
+  const html=`$${dispNumTex(n)}$ dibulatkan ke kelipatan $${dispNumTex(unit)}$ terdekat $= \\boxed{${dispNumTex(rounded)}}$`;
+  renderResult('bb-result', html, 'correct');
+}
+
+// ---- KALKULATOR: PEMBULATAN DESIMAL ----
+function hitungBulatDesimal(){
+  const raw=document.getElementById('bd-n').value.trim();
+  const places=parseInt(document.getElementById('bd-places').value,10);
+  if(raw===''||isNaN(parseFloat(raw))){ renderResult('bd-result','Masukkan angka yang valid.','info'); return; }
+  const resultStr=roundDecimalStr(raw,places);
+  const html=`$${dispNumTex(raw)}$ dibulatkan ke ${places} angka di belakang koma $= \\boxed{${dispNumTex(resultStr)}}$`;
+  renderResult('bd-result', html, 'correct');
+}
+
+// ---- KALKULATOR: TAKSIRAN OPERASI ----
+function hitungTaksiran(){
+  const a=parseFloat(document.getElementById('tk-a').value);
+  const b=parseFloat(document.getElementById('tk-b').value);
+  const op=document.getElementById('tk-op').value;
+  const jenis=document.getElementById('tk-jenis').value;
+  const unit=parseFloat(document.getElementById('tk-unit').value);
+  if(isNaN(a)||isNaN(b)){ renderResult('tk-result','Masukkan angka yang valid.','info'); return; }
+  const roundFn = jenis==='atas' ? roundUpUnit : (jenis==='bawah' ? roundDownUnit : roundNearestUnit);
+  const ra=roundFn(a,unit), rb=roundFn(b,unit);
+  let taksiran, actual, opSymbol=op;
+  if(op==='+'){ taksiran=ra+rb; actual=a+b; }
+  else if(op==='-'){ taksiran=ra-rb; actual=a-b; }
+  else if(op==='×'){ taksiran=ra*rb; actual=a*b; }
+  else {
+    if(rb===0){ renderResult('tk-result','Pembulatan penyebut menghasilkan 0, coba satuan pembulatan lain.','info'); return; }
+    taksiran=ra/rb; actual=b===0?NaN:a/b;
+  }
+  const jenisLabel = jenis==='atas'?'Taksiran Atas':(jenis==='bawah'?'Taksiran Bawah':'Taksiran Terbaik');
+  const html=`${jenisLabel}: $${dispNumTex(a)} ${opSymbol} ${dispNumTex(b)} \\approx ${dispNumTex(ra)} ${opSymbol} ${dispNumTex(rb)} = \\boxed{${dispNumTex(taksiran)}}$<br>Hasil sebenarnya (tanpa dibulatkan) $= ${dispNumTex(actual)}$`;
+  renderResult('tk-result', html, 'correct');
+}
+
+// ---- KALKULATOR: ESTIMASI TOTAL BELANJA ----
+function hitungEstimasiBelanja(){
+  const h1=parseFloat(document.getElementById('eb-1').value);
+  const h2=parseFloat(document.getElementById('eb-2').value);
+  const h3=parseFloat(document.getElementById('eb-3').value);
+  if(isNaN(h1)||isNaN(h2)||isNaN(h3)){ renderResult('eb-result','Masukkan angka yang valid.','info'); return; }
+  const r1=roundNearestUnit(h1,1000), r2=roundNearestUnit(h2,1000), r3=roundNearestUnit(h3,1000);
+  const totalTaksiran=r1+r2+r3, totalAsli=h1+h2+h3;
+  const html=`$${dispNumTex(h1)} \\to ${dispNumTex(r1)}$, $${dispNumTex(h2)} \\to ${dispNumTex(r2)}$, $${dispNumTex(h3)} \\to ${dispNumTex(r3)}$<br>Estimasi total $= ${dispNumTex(r1)} + ${dispNumTex(r2)} + ${dispNumTex(r3)} = \\boxed{${dispNumTex(totalTaksiran)}}$<br>Total sebenarnya $= ${dispNumTex(totalAsli)}$`;
+  renderResult('eb-result', html, 'correct');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'Bulatkan 47 ke puluhan terdekat.', ans:50},
+  {q:'Bulatkan 234 ke ratusan terdekat.', ans:200},
+  {q:'Bulatkan 156 ke ratusan terdekat.', ans:200},
+  {q:'Bulatkan 3,14159 ke 2 angka desimal.', ans:3.14},
+  {q:'Bulatkan 4,267 ke 2 angka desimal.', ans:4.27},
+  {q:'Taksiran terbaik dari 48 + 63 (bulatkan ke puluhan terdekat).', ans:110},
+  {q:'Taksiran terbaik dari 176 - 89 (bulatkan ke puluhan terdekat).', ans:90},
+  {q:'Taksiran atas dari 23 × 48 (bulatkan ke puluhan terdekat, lalu bulatkan ke atas).', ans:1500},
+  {q:'Taksiran bawah dari 87 ÷ 29 (bulatkan ke puluhan terdekat, lalu bulatkan ke bawah).', ans:4},
+  {q:'Sebuah toko menjual 3 barang seharga Rp12.500, Rp8.700, dan Rp4.300. Jika tiap harga dibulatkan ke ribuan terdekat, berapa estimasi totalnya (dalam ribuan rupiah)?', ans:26},
+];
+let quizOrder=[], qIdx=0, qScore=0;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').textContent=`Soal ${qIdx+1} dari ${quizOrder.length}: ${item.q}`;
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value==='')return;
+  const item=quizOrder[qIdx];
+  const userAns=parseFloat(inp.value);
+  const el=document.getElementById('q-result');
+  const correct = Math.abs(userAns-item.ans)<1e-9;
+  if(correct){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! Jawabannya ${dispNum(item.ans)}`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban yang benar: <strong>${dispNum(item.ans)}</strong>`;
+  }
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['12-pembulatan-dan-estimasi']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
