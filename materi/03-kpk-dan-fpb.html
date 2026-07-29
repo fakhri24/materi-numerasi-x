@@ -255,20 +255,20 @@ function divisionSteps(n){
 }
 
 // ============ FAKTORISASI PRIMA (STATIS) ============
-k('rule-prima','\\text{Bilangan asli} > 1 \\text{ yang hanya memiliki dua faktor: 1 dan dirinya sendiri.} \\\\ \\text{Contoh: } 2,3,5,7,11,13,17,19,23,\\dots');
-k('rule-faktorisasi','\\text{Menyatakan suatu bilangan sebagai perkalian faktor-faktor primanya.}');
+document.getElementById('rule-prima').textContent='Bilangan asli lebih dari 1 yang hanya memiliki dua faktor: 1 dan dirinya sendiri. Contoh: 2, 3, 5, 7, 11, 13, 17, 19, 23, …';
+document.getElementById('rule-faktorisasi').textContent='Menyatakan suatu bilangan sebagai perkalian faktor-faktor primanya.';
 k('ex-faktorisasi','\\textbf{Contoh:}\\\\ 60 = 2\\times 2\\times 3\\times 5 = \\boxed{2^2 \\times 3 \\times 5}');
 
 // ============ FPB (STATIS) ============
-k('rule-fpb','\\text{Bilangan bulat terbesar yang dapat membagi habis dua bilangan atau lebih.}');
+document.getElementById('rule-fpb').textContent='Bilangan bulat terbesar yang dapat membagi habis dua bilangan atau lebih.';
 k('ex-fpb-listing','\\textbf{Contoh: FPB(12, 18)}\\\\ \\text{Faktor } 12 = \\{1,2,3,4,6,12\\} \\\\ \\text{Faktor } 18 = \\{1,2,3,6,9,18\\} \\\\ \\text{Faktor sekutu} = \\{1,2,3,6\\} \\quad\\Rightarrow\\quad \\text{FPB} = \\boxed{6}');
-k('rule-fpb-prima','\\text{Ambil faktor prima yang sama, dengan pangkat TERKECIL.}');
+document.getElementById('rule-fpb-prima').textContent='Ambil faktor prima yang sama, dengan pangkat TERKECIL.';
 k('ex-fpb-prima','\\textbf{Contoh: FPB(24, 36)}\\\\ 24 = 2^3 \\times 3 \\\\ 36 = 2^2 \\times 3^2 \\\\ \\text{FPB} = 2^2 \\times 3 = \\boxed{12}');
 
 // ============ KPK (STATIS) ============
-k('rule-kpk','\\text{Bilangan positif terkecil yang merupakan kelipatan dari dua bilangan atau lebih.}');
+document.getElementById('rule-kpk').textContent='Bilangan positif terkecil yang merupakan kelipatan dari dua bilangan atau lebih.';
 k('ex-kpk-listing','\\textbf{Contoh: KPK(4, 6)}\\\\ \\text{Kelipatan } 4 = \\{4,8,12,16,20,24,\\dots\\} \\\\ \\text{Kelipatan } 6 = \\{6,12,18,24,\\dots\\} \\\\ \\text{Kelipatan sekutu terkecil} = \\boxed{12}');
-k('rule-kpk-prima','\\text{Ambil SEMUA faktor prima (yang sama maupun berbeda), dengan pangkat TERBESAR.}');
+document.getElementById('rule-kpk-prima').textContent='Ambil SEMUA faktor prima (yang sama maupun berbeda), dengan pangkat TERBESAR.';
 k('ex-kpk-prima','\\textbf{Contoh: KPK(8, 12)}\\\\ 8 = 2^3 \\\\ 12 = 2^2 \\times 3 \\\\ \\text{KPK} = 2^3 \\times 3 = \\boxed{24}');
 
 // ============ HUBUNGAN (STATIS) ============

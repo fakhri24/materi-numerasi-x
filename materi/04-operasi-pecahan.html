@@ -262,13 +262,13 @@ function parseFracInput(str){
 }
 
 // ============ SEDERHANAKAN (STATIS) ============
-k('rule-sederhana','\\text{Bagi pembilang dan penyebut dengan FPB keduanya.}');
+document.getElementById('rule-sederhana').textContent='Bagi pembilang dan penyebut dengan FPB keduanya.';
 k('ex-sederhana',`\\textbf{Contoh:}\\\\ \\text{FPB}(12,18)=6 \\quad\\Rightarrow\\quad ${frac(12,18)} = ${frac('12\\div 6','18\\div 6')} = \\boxed{${frac(2,3)}}`);
 
 // ============ TAMBAH & KURANG (STATIS) ============
-k('rule-sejenis','\\text{Jumlahkan/kurangkan pembilangnya saja, penyebut tetap.}');
+document.getElementById('rule-sejenis').textContent='Jumlahkan/kurangkan pembilangnya saja, penyebut tetap.';
 k('ex-sejenis',`${frac(2,7)} + ${frac(3,7)} = ${frac('2+3',7)} = \\boxed{${frac(5,7)}}`);
-k('rule-taksejenis','\\text{Samakan penyebut dulu dengan KPK, baru jumlahkan/kurangkan pembilangnya.}');
+document.getElementById('rule-taksejenis').textContent='Samakan penyebut dulu dengan KPK, baru jumlahkan/kurangkan pembilangnya.';
 k('ex-taksejenis',`${frac(2,3)} + ${frac(1,6)} \\\\[6pt] \\text{KPK}(3,6)=6 \\quad\\Rightarrow\\quad ${frac(4,6)} + ${frac(1,6)} = ${frac(5,6)} = \\boxed{${frac(5,6)}}`);
 
 // ============ KALI & BAGI (STATIS) ============
@@ -280,7 +280,7 @@ k('ex-bagi',`${frac(1,2)} \\div ${frac(1,4)} = ${frac(1,2)} \\times ${frac(4,1)}
 // ============ PECAHAN CAMPURAN (STATIS) ============
 k('rule-c2b','a\\frac{b}{c} = \\frac{(a \\times c) + b}{c}');
 k('ex-c2b',`2\\frac{3}{4} = \\frac{(2\\times 4)+3}{4} = \\boxed{${frac(11,4)}}`);
-k('rule-b2c','\\text{Bagi pembilang dengan penyebut. Hasil bagi = bilangan bulat, sisa = pembilang baru.}');
+document.getElementById('rule-b2c').textContent='Bagi pembilang dengan penyebut. Hasil bagi = bilangan bulat, sisa = pembilang baru.';
 k('ex-b2c',`\\frac{11}{4} = 11 \\div 4 = 2 \\text{ sisa } 3 \\quad\\Rightarrow\\quad \\boxed{2\\frac{3}{4}}`);
 
 // ---- RENDER HASIL ----

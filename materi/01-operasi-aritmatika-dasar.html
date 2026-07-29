@@ -368,11 +368,11 @@ function show(id){
 // ============ PENJUMLAHAN ============
 k('rule-add-same','\\text{Jika tanda sama, jumlahkan nilai mutlak, tanda tetap.} \\\\ (+a) + (+b) = +(a+b) \\\\ (-a) + (-b) = -(a+b)');
 k('ex-add-same','\\textbf{Contoh:}\\\\ (-7) + (-3) = -(7+3) = \\boxed{-10} \\\\[6pt] (+5) + (+9) = +(5+9) = \\boxed{+14}');
-k('rule-add-diff','\\text{Jika tanda berbeda, kurangkan nilai mutlak, ikuti tanda yang lebih besar.} \\\\ (-a) + (+b) = \\pm(b-a) \\text{ jika } b>a');
+document.getElementById('rule-add-diff').innerHTML='Jika tanda berbeda, kurangkan nilai mutlak, ikuti tanda yang lebih besar.<br>$(-a) + (+b) = \\pm(b-a)$ jika $b>a$';
 k('ex-add-diff','\\textbf{Contoh:}\\\\ (-4) + (+9) = +(9-4) = \\boxed{+5} \\\\[6pt] (+3) + (-8) = -(8-3) = \\boxed{-5}');
 
 // ============ PENGURANGAN ============
-k('rule-sub-main','a - b = a + (-b) \\quad \\text{Ubah tanda pengurang menjadi penjumlahan dengan lawan tanda!}');
+document.getElementById('rule-sub-main').innerHTML='$a - b = a + (-b)$<br>Ubah tanda pengurang menjadi penjumlahan dengan lawan tanda!';
 document.getElementById('sub-steps').innerHTML=`<li>Ubah tanda <strong>−</strong> (kurang) menjadi <strong>+</strong> (tambah)</li><li>Balik tanda bilangan setelah tanda kurang → jadikan lawan tanda</li><li>Selesaikan sebagai penjumlahan biasa</li>`;
 k('ex-sub','\\textbf{Contoh:}\\\\ (-3) - (-7) \\\\[4pt] = (-3) + (+7) \\quad \\text{← ubah } -(-7) \\text{ jadi } +(+7) \\\\[4pt] = +(7-3) = \\boxed{+4}');
 const subData=[
@@ -396,12 +396,14 @@ ki('div-pp','(+) \\div (+) = \\textbf{Positif}');
 ki('div-pn','(+) \\div (-) = \\textbf{Negatif}');
 ki('div-np','(-) \\div (+) = \\textbf{Negatif}');
 ki('div-nn','(-) \\div (-) = \\textbf{Positif}');
-k('div-summary','\\text{Aturan tanda pembagian SAMA PERSIS dengan perkalian:} \\\\[4pt] \\textbf{Sesama tanda → Positif, Beda tanda → Negatif}');
+document.getElementById('div-summary').innerHTML='Aturan tanda pembagian SAMA PERSIS dengan perkalian:<br><strong>Sesama tanda → Positif, Beda tanda → Negatif</strong>';
 k('div-ex','(-24) \\div (-6) = \\boxed{+4} \\\\[6pt] 15 \\div (-3) = \\boxed{-5} \\\\[6pt] (-36) \\div 9 = \\boxed{-4}');
-k('div-warn','\\text{Pembagian dengan 0: } a \\div 0 = \\text{TIDAK TERDEFINISI} \\\\[4pt] \\text{Tapi } 0 \\div a = 0 \\text{ untuk semua } a \\neq 0');
+document.getElementById('div-warn').innerHTML='Pembagian dengan 0: $a \\div 0 =$ TIDAK TERDEFINISI<br>Tapi $0 \\div a = 0$ untuk semua $a \\neq 0$';
 
 // ============ PEMDAS ============
-k('pemdas-warn','\\text{Kali dan Bagi setara, begitu juga Tambah dan Kurang.}\\\\ \\text{Kerjakan dari KIRI ke KANAN, bukan selalu "kali/tambah dulu"!}\\\\[8pt] 20 \\div 4 \\times 2:\\ \\text{benar } (20\\div 4)\\times 2 = \\boxed{10}\\\\ \\text{salah } 20\\div(4\\times 2)=2.5\\\\[4pt] 10 - 2 + 3:\\ \\text{benar } (10-2)+3 = \\boxed{11}\\\\ \\text{salah } 10-(2+3)=5');
+document.getElementById('pemdas-warn').innerHTML='Kali dan Bagi setara, begitu juga Tambah dan Kurang. Kerjakan dari KIRI ke KANAN, bukan selalu "kali/tambah dulu"!<br><br>'+
+  '$20 \\div 4 \\times 2$: benar $(20\\div 4)\\times 2 = \\boxed{10}$, salah $20\\div(4\\times 2)=2{,}5$<br>'+
+  '$10 - 2 + 3$: benar $(10-2)+3 = \\boxed{11}$, salah $10-(2+3)=5$';
 document.getElementById('pemdas-ex1-steps').innerHTML=`<li>Soal: $20 - 3 \\times (6-2)$</li><li>Kurung dulu: $6-2=4$ &nbsp;→&nbsp; $20 - 3\\times 4$</li><li>Kali: $3\\times 4=12$ &nbsp;→&nbsp; $20 - 12$</li><li>Kurang: $20-12=\\boxed{8}$</li>`;
 document.getElementById('pemdas-ex2-steps').innerHTML=`<li>Soal: $5 + 2^2 \\times 3$</li><li>Pangkat dulu: $2^2=4$ &nbsp;→&nbsp; $5 + 4\\times 3$</li><li>Kali: $4\\times 3=12$ &nbsp;→&nbsp; $5 + 12$</li><li>Tambah: $5+12=\\boxed{17}$</li>`;
 
