@@ -90,6 +90,20 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div id="sd-result" class="result info" style="margin-top:16px">Masukkan dua nilai lalu klik "Sederhanakan"</div>
 </div>
 </div>
+
+<div class="card">
+<h2>🔨 Bagi Total Sesuai Rasio</h2>
+<div class="rule-box" id="rb-bagirasio"></div>
+<p style="color:#888;margin-bottom:10px">Bentuk total dibagi rasio $a:b$</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>Total</span><input type="number" id="bt-total" value="180" style="width:100px">
+<span>dibagi rasio</span><input type="number" id="bt-a" value="5" style="width:70px"><span>:</span><input type="number" id="bt-b" value="7" style="width:70px">
+<button class="btn btn-primary" onclick="hitungBagiRasio()">Hitung</button>
+</div>
+<div id="bt-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
 </div>
 
 <!-- ==================== PERBANDINGAN SENILAI ==================== -->
@@ -174,7 +188,7 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div id="quiz" class="section">
 <div class="card">
 <h2>🎯 Kuis Perbandingan dan Skala</h2>
-<p style="color:#888;margin-bottom:10px">Jawab 10 soal. Ketik jawaban berupa angka (bulat atau desimal).</p>
+<p style="color:#888;margin-bottom:10px">Jawab 11 soal. Ketik jawaban berupa angka (bulat atau desimal).</p>
 <div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
 <div class="score" id="q-score">Skor: 0 / 10</div>
 <div class="quiz-container" id="quiz-area">
@@ -217,6 +231,7 @@ function renderResult(el, html, cls){
 document.getElementById('rb-konsep').innerHTML='Perbandingan (rasio) adalah cara membandingkan dua nilai. Ditulis sebagai $a : b$ atau $\\frac{a}{b}$.';
 document.getElementById('ex-konsep').innerHTML='$8 : 12$';
 document.getElementById('rb-konsep-cara').innerHTML='<div class="label">Cara Menyederhanakan</div>Bagi kedua nilai dengan FPB-nya, sama seperti menyederhanakan pecahan. Contoh: $8:12$, FPB dari 8 dan 12 adalah 4, sehingga $8:12 = 2:3$.';
+document.getElementById('rb-bagirasio').innerHTML='Untuk membagi sebuah total sesuai rasio $a:b$, jumlahkan dulu kedua bagian rasio ($a+b$) untuk tahu berapa "total bagian", lalu nilai satu bagian $= \\text{total} \\div (a+b)$. Kalikan nilai satu bagian dengan $a$ dan $b$ untuk dapat masing-masing porsi.';
 
 // ============ PERBANDINGAN SENILAI (STATIS) ============
 document.getElementById('rb-senilai').innerHTML='Pada perbandingan senilai (proporsional), jika satu nilai naik maka nilai lainnya juga naik dengan kelipatan yang sama. Jika $a:b = c:d$, maka berlaku perkalian silang: $a \\times d = b \\times c$.';
@@ -246,6 +261,18 @@ function hitungSederhanakan(){
   const simpA=a/g, simpB=b/g;
   const html=`$${dispNum(a)} : ${dispNum(b)}$, FPB $= ${g}$<br>$${dispNum(a)} : ${dispNum(b)} = \\boxed{${dispNum(simpA)} : ${dispNum(simpB)}}$`;
   renderResult('sd-result', html, 'correct');
+}
+
+// ---- KALKULATOR: BAGI TOTAL SESUAI RASIO ----
+function hitungBagiRasio(){
+  const total=parseFloat(document.getElementById('bt-total').value);
+  const a=parseFloat(document.getElementById('bt-a').value);
+  const b=parseFloat(document.getElementById('bt-b').value);
+  if(isNaN(total)||isNaN(a)||isNaN(b)||(a+b)===0){ renderResult('bt-result','Masukkan angka yang valid (jumlah rasio tidak boleh 0).','info'); return; }
+  const satuBagian=total/(a+b);
+  const bagianA=satuBagian*a, bagianB=satuBagian*b;
+  const html=`Total $${dispNum(total)}$ dibagi rasio $${dispNum(a)}:${dispNum(b)}$<br>Total bagian $= ${dispNum(a)}+${dispNum(b)}=${dispNum(a+b)}$, nilai 1 bagian $= \\frac{${dispNum(total)}}{${dispNum(a+b)}} = ${dispNum(satuBagian)}$<br>Bagian pertama $= ${dispNum(a)} \\times ${dispNum(satuBagian)} = \\boxed{${dispNum(bagianA)}}$, bagian kedua $= ${dispNum(b)} \\times ${dispNum(satuBagian)} = \\boxed{${dispNum(bagianB)}}$`;
+  renderResult('bt-result', html, 'correct');
 }
 
 // ---- KALKULATOR: PERBANDINGAN SENILAI ----
@@ -305,6 +332,7 @@ function hitungSkala(){
 const quizBank=[
   {q:'Sederhanakan perbandingan 12:18. Jika ditulis a:b paling sederhana, berapa nilai a?', ans:2},
   {q:'Sederhanakan perbandingan 20:30. Jika ditulis a:b paling sederhana, berapa nilai b?', ans:3},
+  {q:'Perbandingan siswa laki-laki dan perempuan di suatu sekolah adalah 5:7. Jika jumlah seluruh siswa 180 orang, berapa banyak siswa perempuan?', ans:105},
   {q:'2 kg apel harganya Rp20.000. Berapa harga 5 kg apel (dalam ribuan rupiah)?', ans:50},
   {q:'3 buku harganya Rp45.000. Berapa harga 7 buku (dalam ribuan rupiah)?', ans:105},
   {q:'4 pekerja menyelesaikan pekerjaan dalam 6 hari. Jika ada 8 pekerja, berapa hari yang dibutuhkan?', ans:3},

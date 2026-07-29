@@ -145,6 +145,11 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222}
 <div>Sifat distributif sudah dibahas mendalam di <a href="02-sifat-operasi-bilangan.html" style="color:#6ee7b7">materi Sifat Operasi Bilangan →</a></div>
 </div>
 
+<h3>Faktorisasi: Kebalikan dari Distributif</h3>
+<div class="rule-box" id="rb-faktor"></div>
+<div class="example" id="ex-faktor"></div>
+<div class="example" id="ex-faktor2"></div>
+
 <h3>Perkalian Suku dengan Suku</h3>
 <div class="rule-box" id="rb-monomial"></div>
 <div class="example" id="ex-monomial"></div>
@@ -162,13 +167,26 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222}
 <div id="ds-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
 </div>
 </div>
+
+<div class="card">
+<h2>🔨 Kalkulator Faktorisasi</h2>
+<p style="color:#888;margin-bottom:10px">Bentuk $px+q$ → keluarkan FPB-nya sebagai faktor (kebalikan dari kalkulator di atas)</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+<input type="number" id="fk-p" value="8" style="width:70px"><span>x +</span>
+<input type="number" id="fk-q" value="-12" style="width:70px">
+<button class="btn btn-primary" onclick="hitungFaktorisasi()">Faktorkan</button>
+</div>
+<div id="fk-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Faktorkan"</div>
+</div>
+</div>
 </div>
 
 <!-- ==================== KUIS ==================== -->
 <div id="quiz" class="section">
 <div class="card">
 <h2>🎯 Kuis Manipulasi Aljabar Dasar</h2>
-<p style="color:#888;margin-bottom:10px">10 soal pilihan ganda: suku sejenis, penjumlahan/pengurangan, dan distributif.</p>
+<p style="color:#888;margin-bottom:10px">13 soal pilihan ganda: suku sejenis, penjumlahan/pengurangan, distributif, dan faktorisasi.</p>
 <div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
 <div class="score" id="q-score">Skor: 0 / 10</div>
 <div class="quiz-container" id="quiz-area">
@@ -185,6 +203,7 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222}
 // ---- RENDER KATEX ----
 function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
 function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+function gcdEuclid(a,b){ a=Math.abs(a);b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
 
 // ---- NAV ----
 function show(id){
@@ -210,6 +229,10 @@ document.getElementById('rb-dist').innerHTML='Perkalian sebuah bilangan dengan b
 k('ex-dist','3(x+2) = 3 \\times x + 3 \\times 2 = \\boxed{3x+6}');
 document.getElementById('rb-monomial').innerHTML='Mengalikan suku dengan suku: kalikan koefisiennya, kalikan juga variabelnya (variabel × variabel menghasilkan pangkat 2).';
 k('ex-monomial','2x \\times 3x = (2\\times 3)(x \\times x) = \\boxed{6x^2}');
+
+document.getElementById('rb-faktor').innerHTML='Faktorisasi adalah kebalikan dari distributif. Kalau distributif MENGALIKAN faktor ke dalam kurung ($a(bx+c)=abx+ac$), faktorisasi mencari FPB dari semua suku lalu MENGELUARKANNYA sebagai faktor persekutuan di luar kurung.';
+document.getElementById('ex-faktor').innerHTML='$3x+6 = \\boxed{3(x+2)}$ — kebalikan persis dari $3(x+2)=3x+6$ yang baru saja dipelajari.';
+document.getElementById('ex-faktor2').innerHTML='$4xy+8x = \\boxed{4x(y+2)}$ — FPB dari koefisien $4$ dan $8$ adalah $4$, dan kedua suku sama-sama punya faktor $x$.';
 
 // ---- RENDER HASIL ----
 function renderResult(el, html, cls){
@@ -281,6 +304,20 @@ function hitungDistributifAljabar(){
   renderResult('ds-result', html, 'correct');
 }
 
+// ---- KALKULATOR: FAKTORISASI (KEBALIKAN DISTRIBUTIF) ----
+function hitungFaktorisasi(){
+  const p=+document.getElementById('fk-p').value, q=+document.getElementById('fk-q').value;
+  if([p,q].some(isNaN)){ renderResult('fk-result','Masukkan angka yang valid.','info'); return; }
+  if(p===0 && q===0){ renderResult('fk-result','Kedua nilai tidak boleh nol sekaligus.','info'); return; }
+  const g=gcdEuclid(p,q);
+  const a2=p/g, b2=q/g;
+  const pStr = p<0? `-${Math.abs(p)}x` : `${p}x`;
+  const qStr = q<0? `- ${Math.abs(q)}` : `+ ${q}`;
+  const b2Str = b2<0? `- ${Math.abs(b2)}` : `+ ${b2}`;
+  const html=`$${pStr} ${qStr}$, FPB dari $${p}$ dan $${q}$ adalah $${g}$<br>$= \\boxed{${g}(${a2}x ${b2Str})}$`;
+  renderResult('fk-result', html, 'correct');
+}
+
 // ============ KUIS ============
 const quizBank=[
   {q:'Manakah pasangan suku sejenis?', choices:['$3x$ dan $5y$','$3x$ dan $5x$','$3x^2$ dan $5x$','$3xy$ dan $5x$'], ans:'$3x$ dan $5x$'},
@@ -293,6 +330,9 @@ const quizBank=[
   {q:'$2x \\times 3x = ?$', choices:['$6x^2$','$6x$','$5x^2$','$5x$'], ans:'$6x^2$'},
   {q:'Sederhanakan: $2x+3+4x-1$', choices:['$6x+2$','$6x+4$','$2x+2$','$6x-2$'], ans:'$6x+2$'},
   {q:'Sederhanakan: $5(x-1)+2x$', choices:['$7x-5$','$7x+5$','$5x-5$','$7x-1$'], ans:'$7x-5$'},
+  {q:'Bentuk faktor dari $8x-12$ adalah ...', choices:['$4(2x-3)$','$2(4x-6)$','$4(2x+3)$','$8(x-12)$'], ans:'$4(2x-3)$'},
+  {q:'Bentuk faktor dari $6x+15$ adalah ...', choices:['$3(2x+5)$','$5(x+3)$','$3(2x+15)$','$6(x+15)$'], ans:'$3(2x+5)$'},
+  {q:'Bentuk faktor dari $4xy+8x$ adalah ...', choices:['$4x(y+2)$','$4(xy+2x)$','$x(4y+8)$','$8x(y+1)$'], ans:'$4x(y+2)$'},
 ];
 let quizOrder=[], qIdx=0, qScore=0, qLocked=false;
 function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
