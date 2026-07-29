@@ -3,35 +3,351 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manipulasi Aljabar Dasar - Numerasi X</title>
+<title>Manipulasi Aljabar Dasar - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#60a5fa;color:#60a5fa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#a78bfa;margin:16px 0 8px;font-size:1.1rem}
+.card p{color:#aaa}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:90px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#60a5fa}
+select{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px;border-radius:8px;font-size:1.3rem;outline:none;cursor:pointer}
+select:focus{border-color:#60a5fa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.2rem;margin:16px 0}
+.quiz-choices{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.quiz-choices button{background:#1e1e2e;border:2px solid #333;color:#ccc;padding:12px 20px;border-radius:10px;cursor:pointer;font-size:.95rem;transition:all .2s}
+.quiz-choices button:hover{border-color:#60a5fa}
+.quiz-choices button.correct-choice{border-color:#10b981;background:#0e2a1a;color:#6ee7b7}
+.quiz-choices button.wrong-choice{border-color:#ef4444;background:#2a0e0e;color:#fca5a5}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+.tag{display:inline-block;padding:8px 16px;border-radius:10px;margin:6px;font-weight:600}
+.tag.yes{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.tag.no{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+table.ref-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.ref-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
+table.ref-table td{padding:10px;border-bottom:1px solid #222}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🧮 Manipulasi Aljabar Dasar</h1>
-<div class="badge-wrap"><span class="badge prasyarat">Prasyarat</span></div>
+<p class="subtitle">Pelajari suku sejenis, penjumlahan, pengurangan &amp; perkalian bentuk aljabar secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('sejenis')" id="btn-sejenis" class="active">🧩 Suku Sejenis</button>
+<button onclick="show('tambahkurang')" id="btn-tambahkurang">➕ Tambah &amp; Kurang</button>
+<button onclick="show('distributif')" id="btn-distributif">✖️ Perkalian &amp; Distributif</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== SUKU SEJENIS ==================== -->
+<div id="sejenis" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Suku Sejenis</h2>
+<div class="rule-box" id="rb-sejenis"></div>
+
+<h3>Contoh</h3>
+<div style="text-align:center">
+<span class="tag yes">✅ $3x$ dan $5x$ → sejenis</span>
+<span class="tag no">❌ $3x$ dan $5y$ → tak sejenis</span>
+<span class="tag no">❌ $3x$ dan $5x^2$ → tak sejenis</span>
+</div>
+<div class="rule-box success" id="rb-sejenis-cara"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Gabungkan Suku Sejenis</h2>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<input type="text" id="sj-a" value="3x">
+<select id="sj-op"><option value="+">+</option><option value="-">−</option></select>
+<input type="text" id="sj-b" value="5x">
+<button class="btn btn-primary" onclick="hitungSukuSejenis()">Gabungkan</button>
+</div>
+<div id="sj-result" class="result info" style="margin-top:16px">Ketik dua suku (misal 3x dan 5x) lalu klik "Gabungkan"</div>
 </div>
 </div>
+</div>
+
+<!-- ==================== TAMBAH & KURANG ==================== -->
+<div id="tambahkurang" class="section">
+<div class="card">
+<h2>Penjumlahan &amp; Pengurangan Bentuk Aljabar</h2>
+<div class="rule-box" id="rb-tk"></div>
+
+<h3>Contoh Penjumlahan</h3>
+<div class="example" id="ex-tk-add"></div>
+
+<h3>Contoh Pengurangan</h3>
+<div class="example" id="ex-tk-sub"></div>
+
+<div class="rule-box warning" id="rb-tk-warn"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Tambah &amp; Kurang</h2>
+<p style="color:#888;margin-bottom:10px">Bentuk $ax+b$ dan $cx+d$</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+<span>(</span><input type="number" id="tk-a" value="3" style="width:70px"><span>x +</span><input type="number" id="tk-b" value="2" style="width:70px"><span>)</span>
+<select id="tk-op"><option value="+">+</option><option value="-">−</option></select>
+<span>(</span><input type="number" id="tk-c" value="5" style="width:70px"><span>x +</span><input type="number" id="tk-d" value="-4" style="width:70px"><span>)</span>
+<button class="btn btn-primary" onclick="hitungTambahKurangAljabar()">Hitung</button>
+</div>
+<div id="tk-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== PERKALIAN & DISTRIBUTIF ==================== -->
+<div id="distributif" class="section">
+<div class="card">
+<h2>Sifat Distributif dalam Aljabar</h2>
+<div class="rule-box" id="rb-dist"></div>
+<h3>Contoh</h3>
+<div class="example" id="ex-dist"></div>
+<div class="rule-box success">
+<div class="label">💡 Ingat</div>
+<div>Sifat distributif sudah dibahas mendalam di <a href="02-sifat-operasi-bilangan.html" style="color:#6ee7b7">materi Sifat Operasi Bilangan →</a></div>
+</div>
+
+<h3>Perkalian Suku dengan Suku</h3>
+<div class="rule-box" id="rb-monomial"></div>
+<div class="example" id="ex-monomial"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Distributif</h2>
+<p style="color:#888;margin-bottom:10px">Bentuk $a(bx+c)$</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+<input type="number" id="ds-a" value="3" style="width:70px">
+<span>(</span><input type="number" id="ds-b" value="1" style="width:70px"><span>x +</span><input type="number" id="ds-c" value="2" style="width:70px"><span>)</span>
+<button class="btn btn-primary" onclick="hitungDistributifAljabar()">Hitung</button>
+</div>
+<div id="ds-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis Manipulasi Aljabar Dasar</h2>
+<p style="color:#888;margin-bottom:10px">10 soal pilihan ganda: suku sejenis, penjumlahan/pengurangan, dan distributif.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-choices" id="q-choices"></div>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ============ SUKU SEJENIS (STATIS) ============
+document.getElementById('rb-sejenis').innerHTML='Suku sejenis adalah suku-suku yang memiliki variabel dan pangkat yang sama persis. Hanya suku sejenis yang bisa digabungkan (dijumlah atau dikurangkan).';
+document.getElementById('rb-sejenis-cara').innerHTML='<div class="label">Cara Menggabungkan</div>Jumlahkan atau kurangkan koefisiennya saja, variabelnya tetap sama.';
+
+// ============ TAMBAH & KURANG (STATIS) ============
+document.getElementById('rb-tk').innerHTML='Untuk menjumlahkan atau mengurangkan bentuk aljabar, gabungkan suku-suku yang sejenis saja.';
+k('ex-tk-add','(3x+2) + (5x-4) = 3x+5x+2-4 = \\boxed{8x-2}');
+k('ex-tk-sub','(3x+2) - (5x-4) = 3x+2-5x+4 = \\boxed{-2x+6}');
+document.getElementById('rb-tk-warn').innerHTML='<div class="label">⚠️ Hati-hati Saat Mengurangi</div>Saat mengurangkan bentuk berkurung, tanda SEMUA suku di dalamnya harus dibalik dulu. $-(5x-4)$ menjadi $-5x+4$, bukan $-5x-4$.';
+
+// ============ DISTRIBUTIF (STATIS) ============
+document.getElementById('rb-dist').innerHTML='Perkalian sebuah bilangan dengan bentuk berkurung disebar ke setiap suku di dalamnya.';
+k('ex-dist','3(x+2) = 3 \\times x + 3 \\times 2 = \\boxed{3x+6}');
+document.getElementById('rb-monomial').innerHTML='Mengalikan suku dengan suku: kalikan koefisiennya, kalikan juga variabelnya (variabel × variabel menghasilkan pangkat 2).';
+k('ex-monomial','2x \\times 3x = (2\\times 3)(x \\times x) = \\boxed{6x^2}');
+
+// ---- RENDER HASIL ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ---- HELPER: PARSE MONOMIAL TERM (misal "3x", "-x", "y") ----
+function parseTerm(str){
+  const raw=str.replace(/\s+/g,'');
+  const m=raw.match(/^([+-]?\d*)([a-zA-Z])$/);
+  if(!m) return null;
+  const coefStr=m[1];
+  const coef = coefStr===''?1:(coefStr==='-'?-1:parseInt(coefStr,10));
+  return {coef, variable:m[2]};
+}
+
+// ---- KALKULATOR: GABUNGKAN SUKU SEJENIS ----
+function hitungSukuSejenis(){
+  const rawA=document.getElementById('sj-a').value, rawB=document.getElementById('sj-b').value;
+  const op=document.getElementById('sj-op').value;
+  const ta=parseTerm(rawA), tb=parseTerm(rawB);
+  if(!ta||!tb){ renderResult('sj-result','Format tidak dikenali. Coba seperti 3x, -5y, atau x.','info'); return; }
+  if(ta.variable!==tb.variable){
+    renderResult('sj-result', `$${rawA}$ dan $${rawB}$ tidak sejenis (variabel berbeda), jadi TIDAK bisa digabungkan. Tetap ditulis $${rawA} ${op} ${rawB.replace(/^-/,'')}$`, 'wrong');
+    return;
+  }
+  const resultCoef = op==='+' ? ta.coef+tb.coef : ta.coef-tb.coef;
+  const resultTex = resultCoef===0 ? '0' : (resultCoef===1?ta.variable:(resultCoef===-1?'-'+ta.variable:`${resultCoef}${ta.variable}`));
+  const html=`$${rawA} ${op} ${rawB}$ → sejenis, gabungkan koefisien: $${ta.coef} ${op} ${tb.coef} = ${resultCoef}$<br>$= \\boxed{${resultTex}}$`;
+  renderResult('sj-result', html, 'correct');
+}
+
+// ---- KALKULATOR: TAMBAH & KURANG ALJABAR ----
+function hitungTambahKurangAljabar(){
+  const a=+document.getElementById('tk-a').value, b=+document.getElementById('tk-b').value;
+  const c=+document.getElementById('tk-c').value, d=+document.getElementById('tk-d').value;
+  const op=document.getElementById('tk-op').value;
+  if([a,b,c,d].some(isNaN)){ renderResult('tk-result','Masukkan angka yang valid.','info'); return; }
+  const bStr = b<0? `- ${Math.abs(b)}` : `+ ${b}`;
+  const dStr = d<0? `- ${Math.abs(d)}` : `+ ${d}`;
+  let resultA, resultB, stepHtml;
+  if(op==='+'){
+    resultA=a+c; resultB=b+d;
+    stepHtml=`$(${a}x ${bStr}) + (${c}x ${dStr})$<br>$= ${a}x ${bStr} + ${c}x ${dStr}$`;
+  } else {
+    resultA=a-c; resultB=b-d;
+    const negC=-c, negD=-d;
+    const cNegStr = negC<0 ? `- ${Math.abs(negC)}x` : `+ ${negC}x`;
+    const dNegStr = negD<0 ? `- ${Math.abs(negD)}` : `+ ${negD}`;
+    stepHtml=`$(${a}x ${bStr}) - (${c}x ${dStr})$<br>$= ${a}x ${bStr} ${cNegStr} ${dNegStr}$ &nbsp;(tanda kurung kedua dibalik)`;
+  }
+  const resAStr = resultA<0? `-${Math.abs(resultA)}x` : `${resultA}x`;
+  const resBStr = resultB<0? `- ${Math.abs(resultB)}` : `+ ${resultB}`;
+  const html=`${stepHtml}<br>$= \\boxed{${resAStr} ${resBStr}}$`;
+  renderResult('tk-result', html, 'correct');
+}
+
+// ---- KALKULATOR: DISTRIBUTIF ----
+function hitungDistributifAljabar(){
+  const a=+document.getElementById('ds-a').value, b=+document.getElementById('ds-b').value, c=+document.getElementById('ds-c').value;
+  if([a,b,c].some(isNaN)){ renderResult('ds-result','Masukkan angka yang valid.','info'); return; }
+  const cStr = c<0? `- ${Math.abs(c)}` : `+ ${c}`;
+  const ab=a*b, ac=a*c;
+  const abStr = ab<0? `-${Math.abs(ab)}x` : `${ab}x`;
+  const acStr = ac<0? `- ${Math.abs(ac)}` : `+ ${ac}`;
+  const html=`$${a}(${b}x ${cStr})$<br>$= \\boxed{${abStr} ${acStr}}$`;
+  renderResult('ds-result', html, 'correct');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'Manakah pasangan suku sejenis?', choices:['$3x$ dan $5y$','$3x$ dan $5x$','$3x^2$ dan $5x$','$3xy$ dan $5x$'], ans:'$3x$ dan $5x$'},
+  {q:'$3x + 5x = ?$', choices:['$8x$','$15x$','$8x^2$','$3x+5x$'], ans:'$8x$'},
+  {q:'$7y - 2y = ?$', choices:['$5y$','$9y$','$5$','$14y$'], ans:'$5y$'},
+  {q:'$(3x+2)+(5x-4) = ?$', choices:['$8x-2$','$8x+2$','$-2x-2$','$8x-6$'], ans:'$8x-2$'},
+  {q:'$(3x+2)-(5x-4) = ?$', choices:['$-2x+6$','$8x-2$','$-2x-2$','$-2x-6$'], ans:'$-2x+6$'},
+  {q:'$3(x+2) = ?$', choices:['$3x+6$','$3x+2$','$x+6$','$3x+5$'], ans:'$3x+6$'},
+  {q:'$4(2x-3) = ?$', choices:['$8x-12$','$8x-3$','$8x+12$','$2x-12$'], ans:'$8x-12$'},
+  {q:'$2x \\times 3x = ?$', choices:['$6x^2$','$6x$','$5x^2$','$5x$'], ans:'$6x^2$'},
+  {q:'Sederhanakan: $2x+3+4x-1$', choices:['$6x+2$','$6x+4$','$2x+2$','$6x-2$'], ans:'$6x+2$'},
+  {q:'Sederhanakan: $5(x-1)+2x$', choices:['$7x-5$','$7x+5$','$5x-5$','$7x-1$'], ans:'$7x-5$'},
+];
+let quizOrder=[], qIdx=0, qScore=0, qLocked=false;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; qLocked=false; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-choices').innerHTML='';
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari ${quizOrder.length}: <br><span id="q-formula" style="font-size:1.2rem"></span>`;
+  document.getElementById('q-formula').innerHTML=item.q;
+  const choicesShuffled=shuffle(item.choices);
+  document.getElementById('q-choices').innerHTML=choicesShuffled.map((c,i)=>`<button onclick="cekJawaban(this,${i})" id="qc-${i}">${c}</button>`).join('');
+  renderMathInElement(document.getElementById('quiz-area'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  qLocked=false;
+  window._currentChoices=choicesShuffled;
+}
+function cekJawaban(btn, idx){
+  if(qLocked) return;
+  qLocked=true;
+  const item=quizOrder[qIdx];
+  const chosen=window._currentChoices[idx];
+  const el=document.getElementById('q-result');
+  document.querySelectorAll('#q-choices button').forEach((b,i)=>{
+    b.disabled=true;
+    if(window._currentChoices[i]===item.ans) b.classList.add('correct-choice');
+    else if(b===btn) b.classList.add('wrong-choice');
+  });
+  if(chosen===item.ans){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar!`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban yang benar: <strong>${item.ans}</strong>`;
+  }
+  renderMathInElement(el, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['07-manipulasi-aljabar-dasar']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
