@@ -3,35 +3,349 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Persamaan Linear Satu Variabel (PLSV) - Numerasi X</title>
+<title>Persamaan Linear Satu Variabel (PLSV) - Interaktif</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f1a;color:#e0e0e0;line-height:1.7;min-height:100vh}
 .container{max-width:900px;margin:0 auto;padding:20px}
 h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .subtitle{text-align:center;color:#888;margin-bottom:30px;font-size:.95rem}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.badge.prasyarat{background:#16213e;color:#60a5fa;border:1px solid #2a3a5e}
-.badge.sistem{background:#2a1e3e;color:#a78bfa;border:1px solid #3a2a5e}
-.badge-wrap{text-align:center}
-.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:32px;margin-bottom:20px;text-align:center}
-.card h2{color:#60a5fa;margin-bottom:12px;font-size:1.3rem}
-.card p{color:#aaa}
 .back-link{display:inline-block;color:#888;text-decoration:none;font-size:.9rem;margin-bottom:16px;transition:color .2s}
 .back-link:hover{color:#60a5fa}
-.emoji-big{font-size:3rem;margin-bottom:12px}
+.nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.nav button{background:#1e1e2e;border:1px solid #333;color:#ccc;padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;transition:all .2s}
+.nav button:hover,.nav button.active{background:#2d2d44;border-color:#a78bfa;color:#a78bfa}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:#1a1a2e;border:1px solid #2a2a3e;border-radius:14px;padding:24px;margin-bottom:20px}
+.card h2{color:#a78bfa;margin-bottom:12px;font-size:1.3rem}
+.card h3{color:#f472b6;margin:16px 0 8px;font-size:1.1rem}
+.card p{color:#aaa}
+.rule-box{background:#16213e;border-left:4px solid #60a5fa;padding:14px 18px;border-radius:0 10px 10px 0;margin:12px 0}
+.rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
+.rule-box.success{border-left-color:#10b981;background:#0e1a1a}
+.rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
+.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.katex{font-size:1.15em}
+.katex-display{margin:.4em 0}
+.interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
+.btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
+.btn-primary{background:#a78bfa;color:#1a1a2e}.btn-primary:hover{background:#9370f0}
+.btn-green{background:#10b981;color:#fff}.btn-green:hover{background:#059669}
+input[type=number],input[type=text]{background:#1e1e2e;border:2px solid #333;color:#e0e0e0;padding:10px 14px;border-radius:8px;font-size:1.1rem;width:90px;text-align:center;outline:none;transition:border .2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
+.result{margin-top:14px;padding:14px 12px;border-radius:8px;font-size:1.1rem;min-height:50px;text-align:center}
+.result.correct{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.result.wrong{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
+.result.info{background:#0e1a2a;border:1px solid #3b82f6;color:#93c5fd}
+.quiz-container{text-align:center;padding:20px}
+.quiz-question{font-size:1.3rem;margin:16px 0}
+.quiz-input{margin:10px 0}
+.quiz-input input{width:120px;font-size:1.2rem}
+.score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
+.step-list{counter-reset:step;list-style:none;padding:0}
+.step-list li{counter-increment:step;padding:10px 10px 10px 45px;position:relative;margin:6px 0;background:#16162a;border-radius:8px}
+.step-list li::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);background:#a78bfa;color:#1a1a2e;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
+table.ref-table{width:100%;border-collapse:collapse;margin:12px 0}
+table.ref-table th{padding:10px;text-align:left;color:#a78bfa;border-bottom:2px solid #333}
+table.ref-table td{padding:10px;border-bottom:1px solid #222}
+.tag{display:inline-block;padding:8px 16px;border-radius:10px;margin:6px;font-weight:600}
+.tag.yes{background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7}
+.tag.no{background:#2a0e0e;border:1px solid #ef4444;color:#fca5a5}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>⚖️ Persamaan Linear Satu Variabel (PLSV)</h1>
-<div class="badge-wrap"><span class="badge sistem">Sistem Persamaan</span></div>
+<p class="subtitle">Pelajari apa itu PLSV, prinsip kesetaraan, cara menyelesaikan &amp; soal cerita secara interaktif</p>
+
+<div class="nav">
+<button onclick="show('apaitu')" id="btn-apaitu" class="active">⚖️ Apa itu PLSV?</button>
+<button onclick="show('kesetaraan')" id="btn-kesetaraan">🔄 Prinsip Kesetaraan</button>
+<button onclick="show('selesaikan')" id="btn-selesaikan">🔨 Menyelesaikan PLSV</button>
+<button onclick="show('cerita')" id="btn-cerita">📖 Soal Cerita</button>
+<button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
+</div>
+
+<!-- ==================== APA ITU PLSV ==================== -->
+<div id="apaitu" class="section active">
 <div class="card">
-<div class="emoji-big">🚧</div>
-<h2>Segera Hadir</h2>
-<p>Materi interaktif untuk topik ini sedang disiapkan. Nantikan penjelasan, contoh, dan latihan interaktifnya di sini!</p>
+<h2>Apa itu PLSV?</h2>
+<div class="rule-box" id="rb-persamaan"></div>
+<div class="rule-box" id="rb-plsv"></div>
+
+<h3>Bentuk Umum</h3>
+<div class="example" id="ex-bentuk"></div>
+
+<h3>PLSV atau Bukan?</h3>
+<div style="text-align:center">
+<span class="tag yes">✅ $2x+3=7$ → PLSV</span>
+<span class="tag no">❌ $x^2+3=7$ → bukan (pangkat 2)</span>
+<span class="tag no">❌ $2x+3y=7$ → bukan (2 variabel)</span>
+<span class="tag no">❌ $2x+3$ → bukan (tidak ada tanda =)</span>
 </div>
 </div>
+</div>
+
+<!-- ==================== PRINSIP KESETARAAN ==================== -->
+<div id="kesetaraan" class="section">
+<div class="card">
+<h2>Prinsip Kesetaraan</h2>
+<div class="rule-box" id="rb-kesetaraan"></div>
+<ol class="step-list">
+<li>Menambah kedua ruas dengan bilangan yang sama</li>
+<li>Mengurangi kedua ruas dengan bilangan yang sama</li>
+<li>Mengalikan kedua ruas dengan bilangan yang sama (bukan 0)</li>
+<li>Membagi kedua ruas dengan bilangan yang sama (bukan 0)</li>
+</ol>
+<div class="rule-box success" id="rb-kesetaraan-kunci"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Amati Prinsip Kesetaraan</h2>
+<p style="color:#888;margin-bottom:10px">Ubah nilai di bawah, perhatikan kedua ruas selalu diperlakukan sama.</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+<span>x +</span>
+<input type="number" id="kt-b" value="3">
+<span>=</span>
+<input type="number" id="kt-c" value="7">
+</div>
+<div id="kt-result" class="result info" style="margin-top:16px">Ubah angkanya, hasil otomatis diperbarui</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== MENYELESAIKAN PLSV ==================== -->
+<div id="selesaikan" class="section">
+<div class="card">
+<h2>Langkah Menyelesaikan PLSV</h2>
+<ol class="step-list">
+<li>Pindahkan semua suku bervariabel ke satu ruas (ubah tanda saat pindah ruas)</li>
+<li>Pindahkan semua suku angka ke ruas lainnya (ubah tanda saat pindah ruas)</li>
+<li>Gabungkan suku sejenis di masing-masing ruas</li>
+<li>Bagi kedua ruas dengan koefisien variabel</li>
+</ol>
+
+<h3>Contoh Sederhana</h3>
+<div class="example" id="ex-plsv1"></div>
+
+<h3>Contoh dengan Variabel di Kedua Ruas</h3>
+<div class="example" id="ex-plsv2"></div>
+</div>
+
+<div class="card">
+<h2>🔨 Kalkulator Penyelesaian PLSV</h2>
+<p style="color:#888;margin-bottom:10px">Bentuk $ax+b = cx+d$</p>
+<div class="interactive-area">
+<div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+<input type="number" id="pl-a" value="2" style="width:70px"><span>x +</span>
+<input type="number" id="pl-b" value="3" style="width:70px"><span>=</span>
+<input type="number" id="pl-c" value="0" style="width:70px"><span>x +</span>
+<input type="number" id="pl-d" value="11" style="width:70px">
+<button class="btn btn-primary" onclick="hitungPLSV()">Selesaikan</button>
+</div>
+<div id="pl-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Selesaikan"</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== SOAL CERITA ==================== -->
+<div id="cerita" class="section">
+<div class="card">
+<h2>Soal Cerita PLSV</h2>
+<p style="color:#aaa;margin-bottom:10px">Kunci: ubah kalimat cerita menjadi persamaan, lalu selesaikan seperti biasa.</p>
+
+<h3>Contoh 1</h3>
+<div class="rule-box" id="cerita1-soal"></div>
+<ol class="step-list" id="cerita1-steps"></ol>
+
+<h3>Contoh 2</h3>
+<div class="rule-box" id="cerita2-soal"></div>
+<ol class="step-list" id="cerita2-steps"></ol>
+</div>
+</div>
+
+<!-- ==================== KUIS ==================== -->
+<div id="quiz" class="section">
+<div class="card">
+<h2>🎯 Kuis PLSV</h2>
+<p style="color:#888;margin-bottom:10px">Jawab 10 soal. Ketik nilai $x$ (atau nilai yang ditanya) sebagai bilangan.</p>
+<div class="progress-bar"><div class="fill" id="q-progress" style="width:0%"></div></div>
+<div class="score" id="q-score">Skor: 0 / 10</div>
+<div class="quiz-container" id="quiz-area">
+<div class="quiz-question" id="q-text"></div>
+<div class="quiz-input">
+<input type="number" id="q-answer" placeholder="Jawaban" onkeydown="if(event.key==='Enter')cekJawaban()">
+</div>
+<button class="btn btn-green" onclick="cekJawaban()" id="q-btn">Cek Jawaban</button>
+<div class="result" id="q-result" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ---- RENDER KATEX ----
+function k(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:true})}catch(e){console.warn('katex k('+el+')',e)} }
+function ki(el, tex){ try{katex.render(tex, document.getElementById(el), {throwOnError:false, displayMode:false})}catch(e){console.warn('katex ki('+el+')',e)} }
+
+// ---- NAV ----
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='quiz') resetQuiz();
+}
+
+// ============ APA ITU PLSV (STATIS) ============
+document.getElementById('rb-persamaan').innerHTML='<div class="label">Persamaan</div>Kalimat matematika yang memiliki tanda sama dengan ($=$), menyatakan bahwa dua ekspresi bernilai sama.';
+document.getElementById('rb-plsv').innerHTML='<div class="label">Persamaan Linear Satu Variabel (PLSV)</div>Persamaan yang hanya memiliki SATU variabel, dengan pangkat tertinggi variabel tersebut adalah 1.';
+k('ex-bentuk','ax + b = c \\quad \\text{atau} \\quad ax+b=cx+d');
+
+// ============ PRINSIP KESETARAAN (STATIS) ============
+document.getElementById('rb-kesetaraan').innerHTML='Bayangkan persamaan seperti timbangan yang seimbang. Apa pun yang dilakukan pada satu ruas, harus dilakukan juga pada ruas lainnya agar tetap seimbang:';
+document.getElementById('rb-kesetaraan-kunci').innerHTML='<div class="label">Kunci</div>Karena ruas kanan dan kiri selalu diperlakukan sama, "memindah ruas" sebenarnya adalah menerapkan operasi kebalikan ke kedua ruas — itulah kenapa tandanya berubah saat pindah ruas.';
+
+// ============ MENYELESAIKAN PLSV (STATIS) ============
+k('ex-plsv1','2x + 3 = 11 \\\\ 2x = 11 - 3 \\\\ 2x = 8 \\\\ x = \\boxed{4}');
+k('ex-plsv2','5x - 2 = 2x + 7 \\\\ 5x - 2x = 7 + 2 \\\\ 3x = 9 \\\\ x = \\boxed{3}');
+
+// ============ SOAL CERITA (STATIS) ============
+document.getElementById('cerita1-soal').innerHTML='"Umur Andi 5 tahun lebih tua dari umur Budi. Jika jumlah umur mereka 25 tahun, berapa umur Budi?"';
+document.getElementById('cerita1-steps').innerHTML=`
+<li>Misalkan umur Budi $= x$, maka umur Andi $= x+5$</li>
+<li>Jumlah umur: $x + (x+5) = 25$</li>
+<li>Sederhanakan: $2x + 5 = 25$</li>
+<li>Selesaikan: $2x = 20 \\Rightarrow x = 10$</li>
+<li>Umur Budi $= 10$ tahun, umur Andi $= 15$ tahun</li>
+`;
+document.getElementById('cerita2-soal').innerHTML='"Harga 3 buku yang sama adalah Rp45.000. Berapa harga satu buku?"';
+document.getElementById('cerita2-steps').innerHTML=`
+<li>Misalkan harga satu buku $= x$</li>
+<li>Persamaan: $3x = 45000$</li>
+<li>Selesaikan: $x = 45000 \\div 3 = \\boxed{15000}$</li>
+<li>Harga satu buku $=$ Rp15.000</li>
+`;
+
+// ---- RENDER HASIL ----
+function renderResult(el, html, cls){
+  document.getElementById(el).className='result '+cls;
+  document.getElementById(el).innerHTML=html;
+  renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+}
+
+// ---- INTERAKTIF: PRINSIP KESETARAAN ----
+function updateKesetaraanDemo(){
+  const b=+document.getElementById('kt-b').value, c=+document.getElementById('kt-c').value;
+  if(isNaN(b)||isNaN(c)){ renderResult('kt-result','Masukkan angka yang valid.','info'); return; }
+  const result=c-b;
+  const bConstPart = b<0 ? `- ${Math.abs(b)}` : `+ ${b}`;
+  const opWord = b<0 ? `Tambahkan ${Math.abs(b)} ke` : `Kurangi ${b} dari`;
+  const bStr = b<0? `+ ${Math.abs(b)}` : `- ${b}`;
+  const html=`$x ${bConstPart} = ${c}$<br>${opWord} kedua ruas:<br>$x ${bConstPart} ${bStr} = ${c} ${bStr}$<br>$x = \\boxed{${result}}$`;
+  renderResult('kt-result', html, 'correct');
+}
+document.getElementById('kt-b').addEventListener('input', updateKesetaraanDemo);
+document.getElementById('kt-c').addEventListener('input', updateKesetaraanDemo);
+updateKesetaraanDemo();
+
+// ---- KALKULATOR: SELESAIKAN PLSV ----
+function fmtSide(coef, konst){
+  const konstPart = konst<0 ? `- ${Math.abs(konst)}` : `+ ${konst}`;
+  return `${coef}x ${konstPart}`;
+}
+function hitungPLSV(){
+  const a=+document.getElementById('pl-a').value, b=+document.getElementById('pl-b').value;
+  const c=+document.getElementById('pl-c').value, d=+document.getElementById('pl-d').value;
+  if([a,b,c,d].some(isNaN)){ renderResult('pl-result','Masukkan angka yang valid.','info'); return; }
+  const leftStr=fmtSide(a,b), rightStr=fmtSide(c,d);
+  const coefDiff = a-c, constDiff = d-b;
+  if(coefDiff===0){
+    if(constDiff===0){
+      renderResult('pl-result', `$${leftStr} = ${rightStr}$<br>Koefisien $x$ sama dan konstanta sama → berlaku untuk SEMUA nilai $x$ (identitas).`, 'correct');
+    } else {
+      renderResult('pl-result', `$${leftStr} = ${rightStr}$<br>Koefisien $x$ sama tapi konstanta berbeda → TIDAK ADA penyelesaian.`, 'wrong');
+    }
+    return;
+  }
+  const xVal = constDiff/coefDiff;
+  const combinedStr = fmtSide(coefDiff, 0).replace('+ 0','').trim();
+  const html=`$${leftStr} = ${rightStr}$<br>Pindahkan suku $x$ ke kiri, angka ke kanan:<br>$${combinedStr} = ${constDiff}$<br>$x = \\boxed{${xVal}}$`;
+  renderResult('pl-result', html, 'correct');
+}
+
+// ============ KUIS ============
+const quizBank=[
+  {q:'$x + 5 = 12$', ans:7},
+  {q:'$x - 3 = 9$', ans:12},
+  {q:'$2x = 14$', ans:7},
+  {q:'$\\frac{x}{3} = 5$', ans:15},
+  {q:'$3x + 2 = 11$', ans:3},
+  {q:'$4x - 5 = 11$', ans:4},
+  {q:'$2x + 3 = x + 8$', ans:5},
+  {q:'$5x - 4 = 2x + 11$', ans:5},
+  {q:'Suatu bilangan ditambah 7 sama dengan 20. Bilangan itu adalah...', ans:13},
+  {q:'Harga 3 buku yang sama adalah Rp45.000. Harga satu buku adalah... (rupiah)', ans:15000},
+];
+let quizOrder=[], qIdx=0, qScore=0;
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetQuiz(){ quizOrder=shuffle(quizBank); qIdx=0; qScore=0; showQ(); }
+function showQ(){
+  if(qIdx>=quizOrder.length){
+    document.getElementById('q-text').innerHTML=`Kuis selesai! 🎉`;
+    document.getElementById('q-result').className='result correct';
+    document.getElementById('q-result').innerHTML=`Skor akhir: <strong>${qScore} / ${quizOrder.length}</strong> ${qScore>=8?'🌟 Hebat!':qScore>=5?'👍 Cukup bagus!':'📚 Terus belajar ya!'}`;
+    document.getElementById('q-btn').disabled=true;
+    document.getElementById('q-answer').disabled=true;
+    return;
+  }
+  const item=quizOrder[qIdx];
+  document.getElementById('q-text').innerHTML=`Soal ${qIdx+1} dari ${quizOrder.length}: <br><span id="q-formula" style="font-size:1.2rem"></span>`;
+  document.getElementById('q-formula').innerHTML=item.q;
+  renderMathInElement(document.getElementById('q-formula'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  document.getElementById('q-answer').value='';document.getElementById('q-answer').focus();
+  document.getElementById('q-result').innerHTML='';document.getElementById('q-result').className='result info';
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-progress').style.width=`${(qIdx/quizOrder.length)*100}%`;
+  document.getElementById('q-btn').disabled=false;document.getElementById('q-answer').disabled=false;
+}
+function cekJawaban(){
+  const inp=document.getElementById('q-answer');
+  if(inp.value==='')return;
+  const item=quizOrder[qIdx];
+  const userAns=parseFloat(inp.value), correct=item.ans;
+  const el=document.getElementById('q-result');
+  if(Math.abs(userAns-correct)<1e-9){
+    qScore++;el.className='result correct';el.innerHTML=`✅ Benar! $x = ${correct}$`;
+  } else {
+    el.className='result wrong';el.innerHTML=`❌ Salah. Jawaban: <strong>${correct}</strong>`;
+  }
+  renderMathInElement(el, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+  document.getElementById('q-score').textContent=`Skor: ${qScore} / ${quizOrder.length}`;
+  document.getElementById('q-btn').disabled=true;inp.disabled=true;
+  qIdx++;
+  setTimeout(showQ,1500);
+}
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+
+// ---- PROGRESS TRACKING ----
+try{
+  const p=JSON.parse(localStorage.getItem('numerasi-progress')||'{}');
+  p['08-plsv']=true;
+  localStorage.setItem('numerasi-progress',JSON.stringify(p));
+}catch(e){}
+</script>
 </body>
 </html>
