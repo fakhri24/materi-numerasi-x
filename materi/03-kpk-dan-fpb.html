@@ -28,7 +28,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a
 .rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
 .rule-box.success{border-left-color:#10b981;background:#0e1a1a}
 .rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
-.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem}
+.example{background:#12121f;padding:14px 18px;border-radius:8px;margin:8px 0;font-size:1.05rem}
 .katex{font-size:1.15em}
 .interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
 .btn{display:inline-block;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s}
@@ -47,16 +47,15 @@ input[type=number]:focus{border-color:#60a5fa}
 .score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
 .progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
 .progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
-table.prop-table{width:100%;border-collapse:collapse;margin:12px 0}
-table.prop-table th{padding:10px;text-align:left;color:#60a5fa;border-bottom:2px solid #333}
-table.prop-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
+.highlight-pill{display:inline-block;padding:2px 8px;border-radius:6px;background:#0e2a1a;border:1px solid #10b981;color:#6ee7b7;font-weight:bold;margin:0 2px}
+.factor-box{background:#16162a;padding:12px 16px;border-radius:8px;margin:8px 0;line-height:1.8}
 </style>
 </head>
 <body>
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>🧩 KPK dan FPB</h1>
-<p class="subtitle">Pelajari faktorisasi prima, FPB, KPK, dan hubungan antar keduanya secara interaktif</p>
+<p class="subtitle">Pelajari faktorisasi prima, FPB, KPK, dan hubungan antar keduanya secara intuitif &amp; interaktif</p>
 
 <div class="nav">
 <button onclick="show('faktorisasi')" id="btn-faktorisasi" class="active">🌳 Faktorisasi Prima</button>
@@ -72,23 +71,59 @@ table.prop-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <h2>Bilangan Prima &amp; Faktorisasi Prima</h2>
 <div class="rule-box">
 <div class="label">Bilangan Prima</div>
-<div id="rule-prima"></div>
+<p>Bilangan asli lebih dari 1 yang <strong>hanya memiliki dua faktor pembagi</strong>: 1 dan dirinya sendiri.<br>
+<strong>Contoh bilangan prima:</strong> $2, 3, 5, 7, 11, 13, 17, 19, 23, \dots$</p>
 </div>
 <div class="rule-box">
-<div class="label">Faktorisasi Prima</div>
-<div id="rule-faktorisasi"></div>
+<div class="label">Faktorisasi Prima &amp; Pohon Faktor</div>
+<p>Menyatakan suatu bilangan sebagai perkalian faktor-faktor prima pembentuknya. Cara paling visual dan mudah dipahami adalah menggunakan <strong>Pohon Faktor</strong>.</p>
 </div>
-<div class="example" id="ex-faktorisasi"></div>
+
+<h3>🌳 Contoh: Pohon Faktor dari 12</h3>
+<div class="example" style="text-align:center">
+  <svg viewBox="0 0 320 190" width="300" height="180" style="margin:10px auto;display:block">
+    <!-- Lines -->
+    <line x1="160" y1="30" x2="100" y2="90" stroke="#4b5563" stroke-width="2"/>
+    <line x1="160" y1="30" x2="220" y2="90" stroke="#4b5563" stroke-width="2"/>
+    <line x1="220" y1="90" x2="170" y2="150" stroke="#4b5563" stroke-width="2"/>
+    <line x1="220" y1="90" x2="270" y2="150" stroke="#4b5563" stroke-width="2"/>
+    
+    <!-- Root: 12 -->
+    <circle cx="160" cy="30" r="20" fill="#1e1e2e" stroke="#60a5fa" stroke-width="2"/>
+    <text x="160" y="31" fill="#93c5fd" font-weight="bold" font-size="14" text-anchor="middle" dominant-baseline="central">12</text>
+    
+    <!-- Left: 2 (Prime) -->
+    <circle cx="100" cy="90" r="20" fill="#0e2a1a" stroke="#10b981" stroke-width="2.5"/>
+    <text x="100" y="91" fill="#6ee7b7" font-weight="bold" font-size="15" text-anchor="middle" dominant-baseline="central">2</text>
+    
+    <!-- Right: 6 (Composite) -->
+    <circle cx="220" cy="90" r="20" fill="#1e1e2e" stroke="#60a5fa" stroke-width="2"/>
+    <text x="220" y="91" fill="#93c5fd" font-weight="bold" font-size="14" text-anchor="middle" dominant-baseline="central">6</text>
+    
+    <!-- 6 branches to 2 and 3 -->
+    <circle cx="170" cy="150" r="20" fill="#0e2a1a" stroke="#10b981" stroke-width="2.5"/>
+    <text x="170" y="151" fill="#6ee7b7" font-weight="bold" font-size="15" text-anchor="middle" dominant-baseline="central">2</text>
+    
+    <circle cx="270" cy="150" r="20" fill="#0e2a1a" stroke="#10b981" stroke-width="2.5"/>
+    <text x="270" y="151" fill="#6ee7b7" font-weight="bold" font-size="15" text-anchor="middle" dominant-baseline="central">3</text>
+  </svg>
+  <p style="color:#aaa;font-size:0.9rem"><em>Keterangan: Lingkaran hijau di ujung cabang adalah bilangan prima</em></p>
+  
+  <div class="factor-box" style="text-align:left;margin-top:14px">
+    <div><strong>1. Perkalian faktor biasa:</strong> $$12 = 2 \times 2 \times 3$$</div>
+    <div><strong>2. Bentuk notasi pangkat:</strong> $$12 = \mathbf{2^2 \times 3}$$</div>
+  </div>
+</div>
 </div>
 
 <div class="card">
-<h2>🔨 Coba Sendiri</h2>
+<h2>🔨 Coba Sendiri (Pohon Faktor Otomatis)</h2>
 <div class="interactive-area">
 <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
 <input type="number" id="fp-n" value="60" min="2" max="9999">
-<button class="btn btn-primary" onclick="hitungFaktorisasi()">Faktorkan</button>
+<button class="btn btn-primary" onclick="hitungFaktorisasi()">Buat Pohon Faktor</button>
 </div>
-<div id="fp-result" class="result info" style="margin-top:16px">Masukkan bilangan (&gt; 1) lalu klik "Faktorkan"</div>
+<div id="fp-result" class="result info" style="margin-top:16px">Masukkan bilangan (&gt; 1) lalu klik "Buat Pohon Faktor"</div>
 </div>
 </div>
 </div>
@@ -98,16 +133,48 @@ table.prop-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>FPB (Faktor Persekutuan Terbesar)</h2>
 <div class="rule-box">
-<div class="label">Definisi</div>
-<div id="rule-fpb"></div>
+<div class="label">Definisi Konseptual</div>
+<p><strong>Faktor Persekutuan</strong> adalah faktor pembagi yang <em>sama-sama dimiliki</em> oleh dua bilangan atau lebih. <strong>FPB</strong> adalah faktor bersama yang bernilai paling besar.</p>
 </div>
 
-<h3>Metode 1: Irisan Faktor Persekutuan</h3>
-<div class="example" id="ex-fpb-listing"></div>
+<h3>Metode 1: Menjajarkan Semua Faktor (Irisan Faktor)</h3>
+<div class="example">
+<p><strong>Contoh: FPB(12, 18)</strong></p>
+<div style="margin:8px 0;line-height:1.9">
+• Faktor dari 12 = $\{1, 2, 3, 4, 6, 12\}$<br>
+• Faktor dari 18 = $\{1, 2, 3, 6, 9, 18\}$<br>
+• Faktor yang ada di keduanya (Faktor Sekutu) = $\{1, 2, 3, \mathbf{6}\}$<br>
+$\Rightarrow$ Faktor persekutuan terbesar (FPB) = $\mathbf{6}$
+</div>
+</div>
 
-<h3>Metode 2: Faktorisasi Prima</h3>
-<div class="rule-box success"><div class="label">Cara</div><div id="rule-fpb-prima"></div></div>
-<div class="example" id="ex-fpb-prima"></div>
+<h3>Metode 2: Mencari Faktor Prima yang "Ada di Keduanya"</h3>
+<div class="rule-box success">
+<div class="label">Konsep Utama</div>
+<p>Daripada sekadar menghafal rumus, cukup cari <strong>faktor prima apa saja yang sama-sama dimiliki kedua bilangan</strong> (faktor yang berpasangan di keduanya), lalu kalikan!</p>
+</div>
+<div class="example">
+<p><strong>Contoh 1: FPB(12, 18)</strong></p>
+<div class="factor-box">
+$12 = \mathbf{2} \times 2 \times \mathbf{3}$<br>
+$18 = \mathbf{2} \times \mathbf{3} \times 3$<br><br>
+• Faktor yang sama-sama dimiliki keduanya: satu angka $\mathbf{2}$ dan satu angka $\mathbf{3}$.<br>
+$\Rightarrow \text{FPB}(12, 18) = 2 \times 3 = \mathbf{6}$
+</div>
+
+<p style="margin-top:16px"><strong>Contoh 2: FPB(24, 36)</strong></p>
+<div class="factor-box">
+$24 = \mathbf{2} \times \mathbf{2} \times 2 \times \mathbf{3} = 2^3 \times 3$<br>
+$36 = \mathbf{2} \times \mathbf{2} \times \mathbf{3} \times 3 = 2^2 \times 3^2$<br><br>
+• Faktor yang ada di keduanya: dua angka $\mathbf{2}$ dan satu angka $\mathbf{3}$ (yaitu $\mathbf{2 \times 2 \times 3}$).<br>
+$\Rightarrow \text{FPB}(24, 36) = 2^2 \times 3 = \mathbf{12}$
+</div>
+
+<div class="rule-box" style="margin-top:12px;border-left-color:#a78bfa;background:#17172e">
+<div class="label" style="color:#a78bfa">💡 Mengapa sering disebut aturan "ambil pangkat terkecil"?</div>
+<p style="font-size:0.95rem;color:#ccc">Karena pangkat terkecil membatasi <em>jumlah faktor yang benar-benar ada di kedua bilangan sekaligus</em>. Misalnya pada $2^3$ dan $2^2$, hanya ada <strong>dua buah angka 2 ($2^2$)</strong> yang bisa berpasangan bersama. Kita tidak bisa mengambil 3 buah angka 2 karena bilangan satunya tidak memilikinya.</p>
+</div>
+</div>
 </div>
 
 <div class="card">
@@ -129,25 +196,51 @@ table.prop-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>KPK (Kelipatan Persekutuan Terkecil)</h2>
 <div class="rule-box">
-<div class="label">Definisi</div>
-<div id="rule-kpk"></div>
+<div class="label">Definisi Konseptual</div>
+<p><strong>Kelipatan Persekutuan</strong> adalah kelipatan bilangan yang <em>sama-sama dihasilkan</em> oleh dua bilangan atau lebih. <strong>KPK</strong> adalah bilangan kelipatan bersama pertama (yang nilainya paling kecil).</p>
 </div>
 
-<h3>Metode 1: Irisan Kelipatan Persekutuan</h3>
-<div class="example" id="ex-kpk-listing"></div>
+<h3>Metode 1: Menjajarkan Barisan Kelipatan (Metode Paling Intuitif)</h3>
+<div class="example">
+<p><strong>Contoh: Mencari KPK(6, 8)</strong></p>
+<div style="margin:8px 0;line-height:2">
+• Kelipatan 6 = $6, 12, 18, \mathbf{24}, 30, 36, 42, \mathbf{48}, \dots$<br>
+• Kelipatan 8 = $8, 16, \mathbf{24}, 32, 40, \mathbf{48}, \dots$<br>
+• Kelipatan yang sama (bersekutu) = $\mathbf{24}, \mathbf{48}, \dots$<br>
+$\Rightarrow$ Kelipatan sekutu yang <strong>paling kecil</strong> adalah $\mathbf{24}$.<br>
+Maka, $\text{KPK}(6, 8) = \mathbf{24}$.
+</div>
+</div>
 
-<h3>Metode 2: Faktorisasi Prima</h3>
-<div class="rule-box success"><div class="label">Cara</div><div id="rule-kpk-prima"></div></div>
-<div class="example" id="ex-kpk-prima"></div>
+<h3>Metode 2: Faktorisasi Prima (Memenuhi Semua Kebutuhan Faktor)</h3>
+<div class="rule-box success">
+<div class="label">Konsep Kebutuhan Faktor</div>
+<p>Agar suatu bilangan bisa menjadi kelipatan bersama (habis dibagi 6 dan 8), bilangan tersebut harus memuat <strong>semua kebutuhan faktor prima</strong> dari masing-masing bilangan.</p>
+</div>
+<div class="example">
+<p><strong>Contoh: KPK(6, 8) dengan Faktorisasi Prima</strong></p>
+<div class="factor-box">
+$6 = 2 \times 3$<br>
+$8 = 2 \times 2 \times 2 = 2^3$<br><br>
+• Untuk mencukupi $8$, kita butuh <strong>tiga buah angka 2 ($2^3$)</strong>.<br>
+• Untuk mencukupi $6$, kita butuh tambahan <strong>satu buah angka 3</strong>.<br>
+$\Rightarrow \text{KPK}(6, 8) = 2^3 \times 3 = 8 \times 3 = \mathbf{24}$
+</div>
+
+<div class="rule-box" style="margin-top:12px;border-left-color:#a78bfa;background:#17172e">
+<div class="label" style="color:#a78bfa">💡 Mengapa sering disebut aturan "ambil semua faktor dengan pangkat terbesar"?</div>
+<p style="font-size:0.95rem;color:#ccc">Karena KPK harus mampu membagi habis kedua bilangan tanpa sisa, sehingga KPK wajib memiliki cadangan faktor sebanyak yang dibutuhkan bilangan dengan kebutuhan tertinggi (pangkat terbesar).</p>
+</div>
+</div>
 </div>
 
 <div class="card">
 <h2>🔨 Kalkulator KPK</h2>
 <div class="interactive-area">
 <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
-<input type="number" id="kpk-a" value="4" min="1" max="9999">
+<input type="number" id="kpk-a" value="6" min="1" max="9999">
 <span style="font-size:1.3rem;color:#f472b6">&amp;</span>
-<input type="number" id="kpk-b" value="6" min="1" max="9999">
+<input type="number" id="kpk-b" value="8" min="1" max="9999">
 <button class="btn btn-primary" onclick="hitungKPK()">Hitung KPK</button>
 </div>
 <div id="kpk-result" class="result info" style="margin-top:16px">Masukkan dua bilangan lalu klik "Hitung KPK"</div>
@@ -160,7 +253,7 @@ table.prop-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>Hubungan FPB dan KPK</h2>
 <div class="rule-box">
-<div class="label">Rumus</div>
+<div class="label">Rumus Hubungan</div>
 <div id="rule-hubungan"></div>
 </div>
 <div class="example" id="ex-hubungan"></div>
@@ -225,6 +318,15 @@ function show(id){
 }
 
 // ============ HELPER MATEMATIKA ============
+function primeFactorsList(n){
+  const list=[]; let x=n;
+  for(let p=2; p*p<=x; p++){
+    while(x%p===0){ list.push(p); x/=p; }
+  }
+  if(x>1) list.push(x);
+  return list;
+}
+
 function primeFactors(n){
   const factors=[]; let x=n;
   for(let p=2; p*p<=x; p++){
@@ -237,41 +339,76 @@ function primeFactors(n){
   if(x>1) factors.push({p:x,e:1});
   return factors;
 }
+
+function factorsToRawTex(list){
+  if(list.length===0) return '1';
+  return list.join(' \\times ');
+}
+
 function factorsToTex(factors){
   if(factors.length===0) return '1';
   return factors.map(f=> f.e>1 ? `${f.p}^{${f.e}}` : `${f.p}`).join(' \\times ');
 }
+
 function factorsToMap(factors){ const m={}; factors.forEach(f=>m[f.p]=f.e); return m; }
-function divisorsOf(n){ const d=[]; for(let i=1;i<=n;i++) if(n%i===0) d.push(i); return d; }
 function gcdEuclid(a,b){ while(b){ [a,b]=[b,a%b]; } return a; }
 function lcmOf(a,b){ return Math.abs(a*b)/gcdEuclid(a,b); }
-function divisionSteps(n){
-  const steps=[]; let x=n, p=2;
-  while(x>1){
-    if(x%p===0){ steps.push([p, x/p]); x=x/p; }
-    else { p++; }
+
+// ============ GENERATOR POHON FAKTOR SVG ============
+function generateFactorTreeSVG(n){
+  const steps = primeFactorsList(n);
+  if(steps.length <= 1){
+    return `<svg viewBox="0 0 200 90" width="180" height="85" style="margin:10px auto;display:block">
+      <circle cx="100" cy="40" r="22" fill="#0e2a1a" stroke="#10b981" stroke-width="2.5"/>
+      <text x="100" y="41" fill="#6ee7b7" font-weight="bold" font-size="14" text-anchor="middle" dominant-baseline="central">${n}</text>
+      <text x="100" y="75" fill="#888" font-size="11" text-anchor="middle">(Bilangan Prima)</text>
+    </svg>`;
   }
-  return steps;
+
+  const levelHeight = 60;
+  const numSteps = steps.length - 1;
+  const svgHeight = (numSteps + 1) * levelHeight + 30;
+  const svgWidth = Math.max(260, numSteps * 70 + 120);
+
+  let svg = `<svg viewBox="0 0 ${svgWidth} ${svgHeight}" width="${Math.min(svgWidth, 420)}" height="${svgHeight}" style="margin:10px auto;display:block">`;
+  let curX = 90;
+  let curY = 30;
+  let remaining = n;
+
+  for(let i=0; i<numSteps; i++){
+    const p = steps[i];
+    const nextQuot = remaining / p;
+    const leftX = curX - 45;
+    const leftY = curY + levelHeight;
+    const rightX = curX + 55;
+    const rightY = curY + levelHeight;
+
+    svg += `<line x1="${curX}" y1="${curY}" x2="${leftX}" y2="${leftY}" stroke="#4b5563" stroke-width="2"/>`;
+    svg += `<line x1="${curX}" y1="${curY}" x2="${rightX}" y2="${rightY}" stroke="#4b5563" stroke-width="2"/>`;
+
+    // Parent
+    svg += `<circle cx="${curX}" cy="${curY}" r="18" fill="#1e1e2e" stroke="#60a5fa" stroke-width="2"/>`;
+    svg += `<text x="${curX}" y="${curY+1}" fill="#93c5fd" font-weight="bold" font-size="12" text-anchor="middle" dominant-baseline="central">${remaining}</text>`;
+
+    // Left child (Prime)
+    svg += `<circle cx="${leftX}" cy="${leftY}" r="18" fill="#0e2a1a" stroke="#10b981" stroke-width="2.5"/>`;
+    svg += `<text x="${leftX}" y="${leftY+1}" fill="#6ee7b7" font-weight="bold" font-size="13" text-anchor="middle" dominant-baseline="central">${p}</text>`;
+
+    if(i === numSteps - 1){
+      // Last right child is also prime
+      svg += `<circle cx="${rightX}" cy="${rightY}" r="18" fill="#0e2a1a" stroke="#10b981" stroke-width="2.5"/>`;
+      svg += `<text x="${rightX}" y="${rightY+1}" fill="#6ee7b7" font-weight="bold" font-size="13" text-anchor="middle" dominant-baseline="central">${nextQuot}</text>`;
+    }
+
+    remaining = nextQuot;
+    curX = rightX;
+    curY = rightY;
+  }
+  svg += `</svg>`;
+  return svg;
 }
 
-// ============ FAKTORISASI PRIMA (STATIS) ============
-document.getElementById('rule-prima').textContent='Bilangan asli lebih dari 1 yang hanya memiliki dua faktor: 1 dan dirinya sendiri. Contoh: 2, 3, 5, 7, 11, 13, 17, 19, 23, …';
-document.getElementById('rule-faktorisasi').textContent='Menyatakan suatu bilangan sebagai perkalian faktor-faktor primanya.';
-k('ex-faktorisasi','\\textbf{Contoh:}\\\\ 60 = 2\\times 2\\times 3\\times 5 = \\boxed{2^2 \\times 3 \\times 5}');
-
-// ============ FPB (STATIS) ============
-document.getElementById('rule-fpb').textContent='Bilangan bulat terbesar yang dapat membagi habis dua bilangan atau lebih.';
-k('ex-fpb-listing','\\textbf{Contoh: FPB(12, 18)}\\\\ \\text{Faktor } 12 = \\{1,2,3,4,6,12\\} \\\\ \\text{Faktor } 18 = \\{1,2,3,6,9,18\\} \\\\ \\text{Faktor sekutu} = \\{1,2,3,6\\} \\quad\\Rightarrow\\quad \\text{FPB} = \\boxed{6}');
-document.getElementById('rule-fpb-prima').textContent='Ambil faktor prima yang sama, dengan pangkat TERKECIL.';
-k('ex-fpb-prima','\\textbf{Contoh: FPB(24, 36)}\\\\ 24 = 2^3 \\times 3 \\\\ 36 = 2^2 \\times 3^2 \\\\ \\text{FPB} = 2^2 \\times 3 = \\boxed{12}');
-
-// ============ KPK (STATIS) ============
-document.getElementById('rule-kpk').textContent='Bilangan positif terkecil yang merupakan kelipatan dari dua bilangan atau lebih.';
-k('ex-kpk-listing','\\textbf{Contoh: KPK(4, 6)}\\\\ \\text{Kelipatan } 4 = \\{4,8,12,16,20,24,\\dots\\} \\\\ \\text{Kelipatan } 6 = \\{6,12,18,24,\\dots\\} \\\\ \\text{Kelipatan sekutu terkecil} = \\boxed{12}');
-document.getElementById('rule-kpk-prima').textContent='Ambil SEMUA faktor prima (yang sama maupun berbeda), dengan pangkat TERBESAR.';
-k('ex-kpk-prima','\\textbf{Contoh: KPK(8, 12)}\\\\ 8 = 2^3 \\\\ 12 = 2^2 \\times 3 \\\\ \\text{KPK} = 2^3 \\times 3 = \\boxed{24}');
-
-// ============ HUBUNGAN (STATIS) ============
+// ============ HUBUNGAN & CERITA (STATIS) ============
 k('rule-hubungan','\\text{FPB}(a,b) \\times \\text{KPK}(a,b) = a \\times b');
 k('ex-hubungan','\\textbf{Contoh:}\\\\ \\text{FPB}(8,12)=4 \\quad \\text{KPK}(8,12)=24 \\\\ 4 \\times 24 = 96 = 8 \\times 12 \\ \\checkmark');
 document.getElementById('cerita-kpk').innerHTML='Lampu A berkedip setiap 4 detik, lampu B setiap 6 detik. Jika keduanya menyala bersamaan pada detik ke-0, keduanya akan berkedip bersamaan lagi setiap <strong>KPK(4,6) = 12 detik</strong>.';
@@ -283,36 +420,96 @@ function renderResult(el, html, cls){
   document.getElementById(el).innerHTML=html;
   renderMathInElement(document.getElementById(el), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
 }
+
 function hitungFaktorisasi(){
   const n=Math.round(+document.getElementById('fp-n').value);
   if(!Number.isInteger(n) || n<2){ renderResult('fp-result','Masukkan bilangan bulat lebih besar dari 1.','info'); return; }
-  const steps=divisionSteps(n);
-  let cur=n;
-  const rows=steps.map(([p,q])=>{ const row=`${cur} ÷ ${p} = ${q}`; cur=q; return row; }).join('<br>');
-  const tex=factorsToTex(primeFactors(n));
-  renderResult('fp-result', `${rows}<br><br>$${n} = ${tex}$`, 'correct');
+  const rawList = primeFactorsList(n);
+  const powList = primeFactors(n);
+  const rawTex = factorsToRawTex(rawList);
+  const powTex = factorsToTex(powList);
+  const treeSvg = generateFactorTreeSVG(n);
+  
+  const html = `
+    ${treeSvg}
+    <div style="text-align:left;background:#16162a;padding:12px 16px;border-radius:8px;margin-top:10px">
+      <div><strong>1. Perkalian biasa:</strong> $${n} = ${rawTex}$</div>
+      <div style="margin-top:6px"><strong>2. Bentuk pangkat:</strong> $${n} = \\mathbf{${powTex}}$</div>
+    </div>
+  `;
+  renderResult('fp-result', html, 'correct');
 }
+
 function hitungFPB(){
   const a=Math.round(+document.getElementById('fpb-a').value), b=Math.round(+document.getElementById('fpb-b').value);
   if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1){ renderResult('fpb-result','Masukkan dua bilangan bulat positif.','info'); return; }
+  const rawA = primeFactorsList(a), rawB = primeFactorsList(b);
   const fa=primeFactors(a), fb=primeFactors(b);
   const ma=factorsToMap(fa), mb=factorsToMap(fb);
+  
+  // Find shared prime factors
+  const sharedList=[];
+  const copyB = [...rawB];
+  for(let x of rawA){
+    const idx = copyB.indexOf(x);
+    if(idx !== -1){
+      sharedList.push(x);
+      copyB.splice(idx, 1);
+    }
+  }
+
   const common=Object.keys(ma).filter(p=>mb[p]).map(p=>({p:+p, e:Math.min(ma[p],mb[p])}));
-  const fpbValue=common.reduce((acc,f)=>acc*Math.pow(f.p,f.e),1);
-  const s=`$${a} = ${factorsToTex(fa)}$<br>$${b} = ${factorsToTex(fb)}$<br>FPB = ${common.length? '$'+factorsToTex(common)+'$' : '1'} $= \\boxed{${fpbValue}}$`;
-  renderResult('fpb-result', s, 'correct');
+  const fpbValue=gcdEuclid(a, b);
+
+  const sharedTex = sharedList.length ? sharedList.join(' \\times ') : '1';
+  const html = `
+    <div style="text-align:left;background:#16162a;padding:12px 16px;border-radius:8px">
+      <div>$${a} = ${factorsToRawTex(rawA)} = ${factorsToTex(fa)}$</div>
+      <div>$${b} = ${factorsToRawTex(rawB)} = ${factorsToTex(fb)}$</div>
+      <hr style="border:none;border-top:1px solid #333;margin:8px 0">
+      <div>• <strong>Faktor yang sama-sama ada di keduanya:</strong> $${sharedTex}$</div>
+      <div style="margin-top:6px;font-size:1.15rem">• <strong>FPB(${a}, ${b}) = $${sharedTex}$ $= \\mathbf{${fpbValue}}$</strong></div>
+    </div>
+  `;
+  renderResult('fpb-result', html, 'correct');
 }
+
 function hitungKPK(){
   const a=Math.round(+document.getElementById('kpk-a').value), b=Math.round(+document.getElementById('kpk-b').value);
   if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1){ renderResult('kpk-result','Masukkan dua bilangan bulat positif.','info'); return; }
+  const kpkValue=lcmOf(a, b);
+  
+  // Generate multiple listing up to LCM (or max 8 items)
+  const multA=[], multB=[];
+  const limitA = Math.min(kpkValue, a * 8);
+  for(let m=a; m<=limitA; m+=a) multA.push(m);
+  const limitB = Math.min(kpkValue, b * 8);
+  for(let m=b; m<=limitB; m+=b) multB.push(m);
+
+  const strA = multA.map(v => v===kpkValue ? `<strong>${v}</strong>` : `${v}`).join(', ') + (multA[multA.length-1] < kpkValue ? ', ...' : '');
+  const strB = multB.map(v => v===kpkValue ? `<strong>${v}</strong>` : `${v}`).join(', ') + (multB[multB.length-1] < kpkValue ? ', ...' : '');
+
   const fa=primeFactors(a), fb=primeFactors(b);
   const ma=factorsToMap(fa), mb=factorsToMap(fb);
   const allPrimes=[...new Set([...Object.keys(ma),...Object.keys(mb)])];
   const all=allPrimes.map(p=>({p:+p, e:Math.max(ma[p]||0, mb[p]||0)}));
-  const kpkValue=all.reduce((acc,f)=>acc*Math.pow(f.p,f.e),1);
-  const s=`$${a} = ${factorsToTex(fa)}$<br>$${b} = ${factorsToTex(fb)}$<br>KPK = $${factorsToTex(all)}$ $= \\boxed{${kpkValue}}$`;
-  renderResult('kpk-result', s, 'correct');
+
+  const html = `
+    <div style="text-align:left;background:#16162a;padding:12px 16px;border-radius:8px">
+      <div style="margin-bottom:6px"><strong>Metode Barisan Kelipatan:</strong></div>
+      <div>• Kelipatan ${a} = ${strA}</div>
+      <div>• Kelipatan ${b} = ${strB}</div>
+      <div style="margin-top:6px">• Kelipatan sekutu pertama (terkecil) = <strong style="color:#6ee7b7">${kpkValue}</strong></div>
+      <hr style="border:none;border-top:1px solid #333;margin:8px 0">
+      <div><strong>Metode Faktorisasi Prima:</strong></div>
+      <div>$${a} = ${factorsToTex(fa)}$ &nbsp;|&nbsp; $${b} = ${factorsToTex(fb)}$</div>
+      <div style="margin-top:4px">• Ambil semua faktor penyusun: $${factorsToTex(all)}$ $= \\mathbf{${kpkValue}}$</div>
+      <div style="margin-top:6px;font-size:1.15rem">• <strong>KPK(${a}, ${b}) = $\\mathbf{${kpkValue}}$</strong></div>
+    </div>
+  `;
+  renderResult('kpk-result', html, 'correct');
 }
+
 function hitungHubungan(){
   const a=Math.round(+document.getElementById('hub-a').value), b=Math.round(+document.getElementById('hub-b').value);
   if(!Number.isInteger(a)||!Number.isInteger(b)||a<1||b<1){ renderResult('hub-result','Masukkan dua bilangan bulat positif.','info'); return; }
@@ -325,9 +522,9 @@ function hitungHubungan(){
 // ============ KUIS ============
 const quizBank=[
   {type:'FPB', a:12, b:18, ans:6},
-  {type:'KPK', a:4, b:6, ans:12},
+  {type:'KPK', a:6, b:8, ans:24},
   {type:'FPB', a:24, b:36, ans:12},
-  {type:'KPK', a:5, b:7, ans:35},
+  {type:'KPK', a:4, b:6, ans:12},
   {type:'FPB', a:45, b:60, ans:15},
   {type:'KPK', a:8, b:12, ans:24},
   {type:'FPB', a:16, b:24, ans:8},

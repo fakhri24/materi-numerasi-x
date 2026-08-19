@@ -29,7 +29,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a
 .rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
 .rule-box.success{border-left-color:#10b981;background:#0e1a1a}
 .rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
-.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.example{background:#12121f;padding:14px 18px;border-radius:8px;margin:8px 0;font-size:1.05rem}
 .katex{font-size:1.15em}
 .katex-display{margin:.4em 0}
 .interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
@@ -60,13 +60,13 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>💯 Persentase</h1>
-<p class="subtitle">Pelajari konsep persen, konversi, dan menghitung persentase nilai secara interaktif</p>
+<p class="subtitle">Pelajari konsep persen, konversi, dan menghitung perubahan harga secara intuitif &amp; interaktif</p>
 
 <div class="nav">
 <button onclick="show('konsep')" id="btn-konsep" class="active">💡 Apa itu Persen?</button>
 <button onclick="show('dariNilai')" id="btn-dariNilai">🔢 Persentase dari Nilai</button>
 <button onclick="show('tentukan')" id="btn-tentukan">🔍 Menentukan Persentase</button>
-<button onclick="show('naikTurun')" id="btn-naikTurun">📈 Kenaikan &amp; Penurunan</button>
+<button onclick="show('naikTurun')" id="btn-naikTurun">📈 Kenaikan &amp; Diskon</button>
 <button onclick="show('quiz')" id="btn-quiz">🎯 Kuis</button>
 </div>
 
@@ -89,7 +89,7 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>🔨 Persen → Pecahan &amp; Desimal</h2>
 <div class="rule-box" id="rb-pk"></div>
-<div class="example" id="ex-pk"></div>
+<div class="example" id="ex-pk" style="text-align:center"></div>
 <div class="interactive-area">
 <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
 <input type="number" id="pk-persen" value="75" step="any"><span>%</span>
@@ -102,7 +102,7 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>🔨 Desimal / Pecahan → Persen</h2>
 <div class="rule-box" id="rb-kp"></div>
-<div class="example" id="ex-kp"></div>
+<div class="example" id="ex-kp" style="text-align:center"></div>
 <div class="interactive-area">
 <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
 <select id="kp-type" onchange="toggleKpType()">
@@ -125,7 +125,7 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>Persentase dari Suatu Nilai</h2>
 <div class="rule-box" id="rb-dari"></div>
-<div class="example" id="ex-dari"></div>
+<div class="example" id="ex-dari" style="text-align:center"></div>
 </div>
 
 <div class="card">
@@ -146,7 +146,7 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 <div class="card">
 <h2>Menentukan Persentase Suatu Bagian</h2>
 <div class="rule-box" id="rb-tentukan"></div>
-<div class="example" id="ex-tentukan"></div>
+<div class="example" id="ex-tentukan" style="text-align:center"></div>
 </div>
 
 <div class="card">
@@ -162,25 +162,55 @@ table.ref-table td{padding:10px;border-bottom:1px solid #222;text-align:center}
 </div>
 </div>
 
-<!-- ==================== KENAIKAN & PENURUNAN ==================== -->
+<!-- ==================== KENAIKAN & DISKON ==================== -->
 <div id="naikTurun" class="section">
 <div class="card">
-<h2>Kenaikan &amp; Penurunan Persentase</h2>
-<div class="rule-box" id="rb-nt"></div>
-<div class="example" id="ex-nt-diskon"></div>
-<div class="example" id="ex-nt-naik"></div>
+<h2>Kenaikan &amp; Diskon Persentase</h2>
+<div class="rule-box success">
+<div class="label">Prinsip 2 Langkah Sederhana</div>
+<p>Tidak perlu menghafal rumus kurung $(1 \pm p)$ yang membingungkan. Cukup gunakan <strong>2 langkah alami</strong>:</p>
+<ol style="margin-left:20px;margin-top:6px;line-height:1.8;color:#ccc">
+<li><strong>Langkah 1:</strong> Hitung besar perubahannya ($\text{persentase} \times \text{harga awal}$).</li>
+<li><strong>Langkah 2:</strong>
+  <br>• Jika <strong>Kenaikan</strong> $\rightarrow$ $\text{Harga Akhir} = \text{Harga Awal} + \text{Besar Kenaikan}$.
+  <br>• Jika <strong>Diskon / Penurunan</strong> $\rightarrow$ $\text{Harga Akhir} = \text{Harga Awal} - \text{Besar Diskon}$.
+</li>
+</ol>
+</div>
+
+<h3>Contoh 1: Kenaikan Harga</h3>
+<div class="example">
+  <p><strong>Soal:</strong> Harga awal suatu barang adalah <strong>100</strong>, lalu naik sebesar <strong>20%</strong>. Berapa harga setelah naik?</p>
+  <div style="background:#16162a;padding:12px 16px;border-radius:8px;margin-top:8px">
+    <div><strong>Langkah 1 (Hitung besar kenaikannya):</strong></div>
+    <div style="margin:4px 0">$$\text{Kenaikan} = 20\% \times 100 = \frac{20}{100} \times 100 = \mathbf{20}$$</div>
+    <div style="margin-top:10px"><strong>Langkah 2 (Tambahkan ke harga awal):</strong></div>
+    <div style="margin:4px 0">$$\text{Harga Akhir} = 100 + 20 = \mathbf{120}$$</div>
+  </div>
+</div>
+
+<h3>Contoh 2: Diskon (Potongan Harga)</h3>
+<div class="example">
+  <p><strong>Soal:</strong> Sebuah baju seharga <strong>Rp100.000</strong> mendapat diskon <strong>20%</strong>. Berapa harga yang harus dibayar?</p>
+  <div style="background:#16162a;padding:12px 16px;border-radius:8px;margin-top:8px">
+    <div><strong>Langkah 1 (Hitung besar potongan diskon):</strong></div>
+    <div style="margin:4px 0">$$\text{Diskon} = 20\% \times 100.000 = \frac{20}{100} \times 100.000 = \mathbf{\text{Rp}20.000}$$</div>
+    <div style="margin-top:10px"><strong>Langkah 2 (Kurangkan dari harga awal):</strong></div>
+    <div style="margin:4px 0">$$\text{Harga Akhir} = 100.000 - 20.000 = \mathbf{\text{Rp}80.000}$$</div>
+  </div>
+</div>
 </div>
 
 <div class="card">
-<h2>🔨 Harga Setelah Diskon / Kenaikan</h2>
+<h2>🔨 Kalkulator 2 Langkah: Diskon / Kenaikan</h2>
 <div class="interactive-area">
 <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
 <span>Harga awal</span><input type="number" id="hs-awal" value="100000" step="any" style="width:130px">
 <select id="hs-jenis"><option value="diskon">Diskon</option><option value="kenaikan">Kenaikan</option></select>
 <input type="number" id="hs-persen" value="20" step="any"><span>%</span>
-<button class="btn btn-primary" onclick="hitungHargaSetelah()">Hitung</button>
+<button class="btn btn-primary" onclick="hitungHargaSetelah()">Hitung Bertahap</button>
 </div>
-<div id="hs-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung"</div>
+<div id="hs-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Hitung Bertahap"</div>
 </div>
 </div>
 
@@ -252,21 +282,12 @@ document.getElementById('rb-kp').innerHTML='<div class="label">Cara</div>Untuk m
 k('ex-kp','0{,}4 \\times 100\\% = 40\\% \\qquad \\frac{3}{4} \\times 100\\% = 75\\%');
 
 // ============ DARI NILAI (STATIS) ============
-document.getElementById('rb-dari').innerHTML='Untuk mencari a% dari suatu nilai b, gunakan rumus: a% dari b = (a/100) × b.';
-document.getElementById('ex-dari').innerHTML='25% dari 200 = $\\frac{25}{100} \\times 200 = 50$';
+document.getElementById('rb-dari').innerHTML='Untuk mencari a% dari suatu nilai b, gunakan perkalian: (a / 100) × b.';
+k('ex-dari','25\\% \\text{ dari } 200 = \\frac{25}{100} \\times 200 = \\mathbf{50}');
 
 // ============ MENENTUKAN PERSENTASE (STATIS) ============
-document.getElementById('rb-tentukan').innerHTML='Untuk menentukan berapa persen suatu bagian dari total, gunakan rumus: persentase = (bagian/total) × 100%.';
-document.getElementById('ex-tentukan').innerHTML='15 dari 60 = $\\frac{15}{60} \\times 100\\% = 25\\%$';
-
-// ============ KENAIKAN & PENURUNAN (STATIS) ============
-document.getElementById('rb-nt').innerHTML='Persentase kenaikan/penurunan dihitung dari: (selisih ÷ nilai awal) × 100%. Nilai akhir = nilai awal × (1 ± persen/100), tanda + untuk kenaikan dan − untuk penurunan (diskon).';
-document.getElementById('ex-nt-diskon').innerHTML='Diskon 20% dari Rp100.000 → harga akhir = $100.000 \\times (1 - \\frac{20}{100}) = 80.000$';
-document.getElementById('ex-nt-naik').innerHTML='Kenaikan 10% dari Rp200.000 → harga akhir = $200.000 \\times (1 + \\frac{10}{100}) = 220.000$';
-renderMathInElement(document.getElementById('konsep'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
-renderMathInElement(document.getElementById('dariNilai'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
-renderMathInElement(document.getElementById('tentukan'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
-renderMathInElement(document.getElementById('naikTurun'), {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
+document.getElementById('rb-tentukan').innerHTML='Untuk menentukan berapa persen suatu bagian dari total: (bagian ÷ total) × 100%.';
+k('ex-tentukan','15 \\text{ dari } 60 = \\frac{15}{60} \\times 100\\% = \\mathbf{25\\%}');
 
 // ---- KALKULATOR: PERSEN → PECAHAN & DESIMAL ----
 function hitungPersenKe(){
@@ -330,17 +351,32 @@ function hitungTentukanPersen(){
   renderResult('tp-result', html, 'correct');
 }
 
-// ---- KALKULATOR: HARGA SETELAH DISKON/KENAIKAN ----
+// ---- KALKULATOR: HARGA SETELAH DISKON/KENAIKAN (2 TAHAP) ----
 function hitungHargaSetelah(){
   const awal=parseFloat(document.getElementById('hs-awal').value);
   const persen=parseFloat(document.getElementById('hs-persen').value);
   const jenis=document.getElementById('hs-jenis').value;
   if(isNaN(awal)||isNaN(persen)){ renderResult('hs-result','Masukkan angka yang valid.','info'); return; }
-  const tanda = jenis==='diskon' ? '-' : '+';
+  
   const selisih=(persen/100)*awal;
-  const akhir = jenis==='diskon' ? awal-selisih : awal+selisih;
-  const label = jenis==='diskon' ? 'diskon' : 'kenaikan';
-  const html=`Harga awal $${dispNum(awal)}$, ${label} $${dispNum(persen)}\\%$:<br>$${dispNum(awal)} \\times (1 ${tanda} \\frac{${dispNum(persen)}}{100}) = ${dispNum(awal)} ${tanda} ${dispNum(selisih)} = \\boxed{${dispNum(akhir)}}$`;
+  const isDiskon = (jenis === 'diskon');
+  const akhir = isDiskon ? awal - selisih : awal + selisih;
+  const label = isDiskon ? 'Diskon' : 'Kenaikan';
+  const op = isDiskon ? '-' : '+';
+  
+  const html = `
+    <div style="text-align:left;background:#16162a;padding:14px 18px;border-radius:10px">
+      <div style="margin-bottom:8px"><strong>Harga Awal:</strong> $${dispNum(awal)}$ &nbsp;|&nbsp; <strong>${label}:</strong> $${dispNum(persen)}\\%$</div>
+      <hr style="border:none;border-top:1px solid #333;margin:8px 0">
+      <div><strong>Langkah 1 (Hitung besar ${label.toLowerCase()}):</strong></div>
+      <div style="margin:4px 0">$$\\text{Besar } ${label} = ${dispNum(persen)}\\% \\times ${dispNum(awal)} = \\frac{${dispNum(persen)}}{100} \\times ${dispNum(awal)} = \\mathbf{${dispNum(selisih)}}$$</div>
+      <div style="margin-top:10px"><strong>Langkah 2 (${isDiskon ? 'Kurangkan dari' : 'Tambahkan ke'} harga awal):</strong></div>
+      <div style="margin:4px 0">$$\\text{Harga Akhir} = ${dispNum(awal)} ${op} ${dispNum(selisih)} = \\mathbf{${dispNum(akhir)}}$$</div>
+      <div style="margin-top:8px;font-size:1.15rem;color:#6ee7b7;text-align:center">
+        • <strong>Harga setelah ${label.toLowerCase()}: $\\mathbf{${dispNum(akhir)}}$</strong>
+      </div>
+    </div>
+  `;
   renderResult('hs-result', html, 'correct');
 }
 
@@ -408,6 +444,9 @@ function cekJawaban(){
   qIdx++;
   setTimeout(showQ,1500);
 }
+
+// ---- INIT KATEX AUTO RENDER ----
+renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});
 
 // ---- PROGRESS TRACKING ----
 try{

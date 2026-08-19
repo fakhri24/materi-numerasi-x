@@ -29,7 +29,7 @@ h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a
 .rule-box.warning{border-left-color:#f59e0b;background:#1a1a0e}
 .rule-box.success{border-left-color:#10b981;background:#0e1a1a}
 .rule-box .label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;color:#888}
-.example{background:#12121f;padding:12px 16px;border-radius:8px;margin:8px 0;font-size:1.05rem;text-align:center}
+.example{background:#12121f;padding:14px 18px;border-radius:8px;margin:8px 0;font-size:1.05rem}
 .katex{font-size:1.15em}
 .katex-display{margin:.4em 0}
 .interactive-area{background:#12121f;border-radius:12px;padding:20px;margin:12px 0;text-align:center}
@@ -48,7 +48,7 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 .quiz-input input{width:120px;font-size:1.2rem}
 .score{font-size:1.1rem;color:#fbbf24;margin:10px 0}
 .step-list{counter-reset:step;list-style:none;padding:0}
-.step-list li{counter-increment:step;padding:10px 10px 10px 45px;position:relative;margin:6px 0;background:#16162a;border-radius:8px}
+.step-list li{counter-increment:step;padding:10px 10px 10px 45px;position:relative;margin:6px 0;background:#16162a;border-radius:8px;color:#ccc}
 .step-list li::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);background:#a78bfa;color:#1a1a2e;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
 .progress-bar{height:6px;background:#2a2a3e;border-radius:3px;overflow:hidden;margin:10px 0}
 .progress-bar .fill{height:100%;background:linear-gradient(90deg,#3b82f6,#a78bfa);border-radius:3px;transition:width .4s}
@@ -62,7 +62,7 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <div class="container">
 <a href="../index.html" class="back-link">← Kembali ke Daftar Materi</a>
 <h1>📐 Sistem Persamaan Linear Dua Variabel (SPLDV)</h1>
-<p class="subtitle">Pelajari apa itu SPLDV, metode substitusi, eliminasi &amp; soal cerita secara interaktif</p>
+<p class="subtitle">Pelajari konsep SPLDV, metode substitusi, metode eliminasi bersusun sejajar, &amp; soal cerita secara interaktif</p>
 
 <div class="nav">
 <button onclick="show('apaitu')" id="btn-apaitu" class="active">📐 Apa itu SPLDV?</button>
@@ -79,7 +79,7 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <div class="rule-box" id="rb-spldv"></div>
 
 <h3>Bentuk Umum</h3>
-<div class="example" id="ex-bentuk"></div>
+<div class="example" id="ex-bentuk" style="text-align:center"></div>
 
 <div class="rule-box success" id="rb-solusi"></div>
 
@@ -104,7 +104,7 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 </ol>
 
 <h3>Contoh</h3>
-<div class="example" id="ex-substitusi"></div>
+<div class="example" id="ex-substitusi" style="text-align:center"></div>
 </div>
 
 <div class="card">
@@ -130,20 +130,80 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <!-- ==================== METODE ELIMINASI ==================== -->
 <div id="eliminasi" class="section">
 <div class="card">
-<h2>Metode Eliminasi</h2>
+<h2>Metode Eliminasi (Operasi Bersusun Sejajar)</h2>
+<div class="rule-box">
+<div class="label">Prinsip Kerja</div>
+<p>Eliminasi berarti <strong>menghilangkan salah satu variabel</strong>. Cara paling jelas dan rapi adalah dengan <strong>menjajarkan kedua persamaan secara bersusun vertikal</strong> (suku $x$, $y$, tanda $=$, dan konstanta sejajar lurus), lalu ditarik garis operasi <strong>penjumlahan $(+)$</strong> atau <strong>pengurangan $(-)$</strong>.</p>
+</div>
+
 <ol class="step-list">
-<li>Samakan koefisien salah satu variabel (kalikan persamaan jika perlu)</li>
-<li>Jumlahkan atau kurangkan kedua persamaan untuk menghilangkan variabel itu</li>
-<li>Selesaikan persamaan satu variabel yang tersisa</li>
-<li>Substitusikan hasilnya ke salah satu persamaan untuk mendapatkan variabel lainnya</li>
+<li><strong>Sejajarkan kedua persamaan</strong> vertikal ($x$ lurus $x$, $y$ lurus $y$, $=$ lurus $=$, konstanta lurus konstanta).</li>
+<li><strong>Pilih variabel yang ingin dihilangkan</strong> (samakan koefisiennya jika belum sama).</li>
+<li><strong>Tentukan tanda operasi:</strong>
+  <br>• Jika tanda koefisien variabel <strong>berbeda</strong> ($+y$ dan $-y$) $\rightarrow$ gunakan <strong>penjumlahan $(+)$</strong>.
+  <br>• Jika tanda koefisien variabel <strong>sama</strong> ($+x$ dan $+x$ atau $-x$ dan $-x$) $\rightarrow$ gunakan <strong>pengurangan $(-)$</strong>.
+</li>
+<li>Tarik garis pembatas susun, hitung variabel yang tersisa, lalu substitusi kembali untuk mencari variabel lainnya.</li>
 </ol>
 
-<h3>Contoh</h3>
-<div class="example" id="ex-eliminasi"></div>
+<h3>Contoh 1: Mengeliminasi $y$ dengan Penjumlahan $(+)$</h3>
+<div class="example">
+  <p>Selesaikan SPLDV: $x + y = 6$ dan $x - y = 4$</p>
+  <div style="background:#16162a;padding:14px 18px;border-radius:10px;margin:10px 0;text-align:center">
+    $$\begin{array}{rcccll}
+    x & + & y & = & 6 & \text{(Pers. 1)} \\
+    x & - & y & = & 4 & \text{(Pers. 2)} \\
+    \hline \\[-10pt]
+    2x & & & = & 10 & (+) \implies \mathbf{x = 5}
+    \end{array}$$
+  </div>
+  <p>Substitusikan $x = 5$ ke Persamaan 1:</p>
+  <div style="background:#16162a;padding:10px 18px;border-radius:8px;margin:8px 0;text-align:center">
+    $$5 + y = 6 \implies y = 6 - 5 \implies \mathbf{y = 1}$$
+  </div>
+  <p style="text-align:center;font-weight:bold;color:#6ee7b7">Penyelesaian: $(x, y) = (5, 1)$</p>
+</div>
+
+<h3>Contoh 2: Mengeliminasi $x$ dengan Pengurangan $(-)$</h3>
+<div class="example">
+  <p>Dari sistem yang sama ($x + y = 6$ dan $x - y = 4$), kita juga bisa mengeliminasi $x$:</p>
+  <div style="background:#16162a;padding:14px 18px;border-radius:10px;margin:10px 0;text-align:center">
+    $$\begin{array}{rcccll}
+    x & + & y & = & 6 & \text{(Pers. 1)} \\
+    x & - & y & = & 4 & \text{(Pers. 2)} \\
+    \hline \\[-10pt]
+    & & 2y & = & 2 & (-) \implies \mathbf{y = 1}
+    \end{array}$$
+  </div>
+  <p>Substitusikan $y = 1$ ke Persamaan 1:</p>
+  <div style="background:#16162a;padding:10px 18px;border-radius:8px;margin:8px 0;text-align:center">
+    $$x + 1 = 6 \implies \mathbf{x = 5}$$
+  </div>
+  <p style="text-align:center;font-weight:bold;color:#6ee7b7">Penyelesaian: $(x, y) = (5, 1)$ (Hasilnya persis sama!)</p>
+</div>
+
+<h3>Contoh 3: Menyamakan Koefisien Terlebih Dahulu</h3>
+<div class="example">
+  <p>Selesaikan: $2x + 3y = 16$ dan $x + 2y = 9$</p>
+  <p style="margin-top:6px">• Koefisien $x$ belum sama. Kalikan Persamaan 2 dengan 2 agar sama-sama $2x$:</p>
+  <div style="background:#16162a;padding:14px 18px;border-radius:10px;margin:10px 0;text-align:center">
+    $$\begin{array}{rccclll}
+    2x & + & 3y & = & 16 & (\times 1) & \rightarrow \ 2x + 3y = 16 \\
+    x & + & 2y & = & 9 & (\times 2) & \rightarrow \ 2x + 4y = 18 \\
+    \hline \\[-10pt]
+    & - & y & = & -2 & & (-) \implies \mathbf{y = 2}
+    \end{array}$$
+  </div>
+  <p>Substitusikan $y = 2$ ke $x + 2y = 9$:</p>
+  <div style="background:#16162a;padding:10px 18px;border-radius:8px;margin:8px 0;text-align:center">
+    $$x + 2(2) = 9 \implies x + 4 = 9 \implies \mathbf{x = 5}$$
+  </div>
+  <p style="text-align:center;font-weight:bold;color:#6ee7b7">Penyelesaian: $(x, y) = (5, 2)$</p>
+</div>
 </div>
 
 <div class="card">
-<h2>🔨 Kalkulator Eliminasi</h2>
+<h2>🔨 Kalkulator Eliminasi Bersusun</h2>
 <p style="color:#888;margin-bottom:10px">Bentuk $a_1x+b_1y=c_1$ dan $a_2x+b_2y=c_2$</p>
 <div class="interactive-area">
 <div class="eq-inputs">
@@ -156,8 +216,8 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <input type="number" id="el-b2" value="2"><span>y =</span>
 <input type="number" id="el-c2" value="9">
 </div>
-<button class="btn btn-primary" onclick="hitungEliminasi()">Selesaikan</button>
-<div id="el-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Selesaikan"</div>
+<button class="btn btn-primary" onclick="hitungEliminasi()">Selesaikan Bersusun</button>
+<div id="el-result" class="result info" style="margin-top:16px">Masukkan nilai lalu klik "Selesaikan Bersusun"</div>
 </div>
 </div>
 </div>
@@ -166,7 +226,7 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <div id="cerita" class="section">
 <div class="card">
 <h2>Soal Cerita SPLDV</h2>
-<p style="color:#aaa;margin-bottom:10px">Kunci: ubah dua kalimat cerita menjadi dua persamaan, lalu selesaikan dengan substitusi atau eliminasi.</p>
+<p style="color:#aaa;margin-bottom:10px">Kunci: ubah dua kalimat cerita menjadi dua persamaan, lalu selesaikan dengan substitusi atau eliminasi bersusun.</p>
 
 <h3>Contoh 1</h3>
 <div class="rule-box" id="cerita1-soal"></div>
@@ -220,9 +280,6 @@ document.getElementById('rb-solusi').innerHTML='<div class="label">Penyelesaian<
 // ============ SUBSTITUSI (STATIS) ============
 k('ex-substitusi','x+y=10 \\ \\text{dan} \\ x-y=2 \\\\[4pt] \\text{Dari pers. 1: } x = 10-y \\\\ \\text{Substitusi ke pers. 2: } (10-y)-y=2 \\\\ 10-2y=2 \\ \\Rightarrow \\ y=4 \\\\ x=10-4=\\boxed{6} \\quad y=\\boxed{4}');
 
-// ============ ELIMINASI (STATIS) ============
-k('ex-eliminasi','2x+3y=16 \\ \\text{dan} \\ x+2y=9 \\\\[4pt] \\text{Samakan koefisien } x: (2x+3y=16) \\ \\text{dan} \\ 2(x+2y=9) \\\\ 2x+3y=16 \\\\ 2x+4y=18 \\ (-) \\\\ -y=-2 \\ \\Rightarrow \\ y=2 \\\\ \\text{Substitusi: } x+2(2)=9 \\ \\Rightarrow \\ x=\\boxed{5} \\quad y=\\boxed{2}');
-
 // ============ SOAL CERITA (STATIS) ============
 document.getElementById('cerita1-soal').innerHTML='"Harga 2 pensil dan 3 buku adalah Rp16.000. Harga 1 pensil dan 2 buku adalah Rp9.000. Berapa harga masing-masing?"';
 document.getElementById('cerita1-steps').innerHTML=`
@@ -260,15 +317,13 @@ function hitungSubstitusi(){
     renderResult('sb-result', `$${a1}x ${fmtSigned(b1)}y = ${c1}$ dan $${a2}x ${fmtSigned(b2)}y = ${c2}$<br>Kedua persamaan sejajar/berimpit → tidak ada solusi tunggal.`, 'wrong');
     return;
   }
-  // x = (c1 - b1 y)/a1, substitute into eq2
-  // a2*(c1-b1y)/a1 + b2*y = c2  =>  y = (a1*c2 - a2*c1) / (a1*b2 - a2*b1)
   const yVal = (a1*c2 - a2*c1) / D;
   const xVal = (c1 - b1*yVal) / a1;
   const html=`$${a1}x ${fmtSigned(b1)}y = ${c1}$ dan $${a2}x ${fmtSigned(b2)}y = ${c2}$<br>Dari pers. 1: $x = \\dfrac{${c1} ${fmtSigned(-b1)}y}{${a1}}$<br>Substitusi ke pers. 2, selesaikan untuk $y$: $y = \\boxed{${yVal}}$<br>Substitusi kembali: $x = \\boxed{${xVal}}$`;
   renderResult('sb-result', html, 'correct');
 }
 
-// ---- KALKULATOR: ELIMINASI ----
+// ---- KALKULATOR: ELIMINASI BERSUSUN ----
 function hitungEliminasi(){
   const a1=+document.getElementById('el-a1').value, b1=+document.getElementById('el-b1').value, c1=+document.getElementById('el-c1').value;
   const a2=+document.getElementById('el-a2').value, b2=+document.getElementById('el-b2').value, c2=+document.getElementById('el-c2').value;
@@ -278,11 +333,48 @@ function hitungEliminasi(){
     renderResult('el-result', `$${a1}x ${fmtSigned(b1)}y = ${c1}$ dan $${a2}x ${fmtSigned(b2)}y = ${c2}$<br>Kedua persamaan sejajar/berimpit → tidak ada solusi tunggal.`, 'wrong');
     return;
   }
-  const xVal = (c1*b2 - c2*b1) / Dx;
+
+  // Multiply to match coefficient of y
+  const m1 = Math.abs(b2) || 1;
+  const m2 = Math.abs(b1) || 1;
+  
+  const A1 = a1 * m1, B1 = b1 * m1, C1 = c1 * m1;
+  const A2 = a2 * m2, B2 = b2 * m2, C2 = c2 * m2;
+  
+  const isAdd = (B1 + B2 === 0);
+  const opSymbol = isAdd ? '(+)' : '(-)';
+  
+  const resA = isAdd ? (A1 + A2) : (A1 - A2);
+  const resC = isAdd ? (C1 + C2) : (C1 - C2);
+  
+  const xVal = resC / resA;
   let yVal;
-  if(b1!==0) yVal = (c1 - a1*xVal)/b1;
+  if(b1 !== 0) yVal = (c1 - a1*xVal)/b1;
   else yVal = (c2 - a2*xVal)/b2;
-  const html=`$${a1}x ${fmtSigned(b1)}y = ${c1}$ dan $${a2}x ${fmtSigned(b2)}y = ${c2}$<br>Samakan koefisien $y$: kalikan pers. 1 dengan ${b2}, pers. 2 dengan ${b1}<br>Kurangkan untuk eliminasi $y$: $x = \\boxed{${xVal}}$<br>Substitusi ke salah satu persamaan: $y = \\boxed{${yVal}}$`;
+
+  const html = `
+    <div style="text-align:left;background:#16162a;padding:14px 18px;border-radius:10px">
+      <div style="margin-bottom:6px"><strong>Langkah Eliminasi Bersusun:</strong></div>
+      <div style="color:#aaa;font-size:0.95rem">
+        (1) $${a1}x ${fmtSigned(b1)}y = ${c1}$ &nbsp;$(\\times ${m1}) \\rightarrow ${A1}x ${fmtSigned(B1)}y = ${C1}$<br>
+        (2) $${a2}x ${fmtSigned(b2)}y = ${c2}$ &nbsp;$(\\times ${m2}) \\rightarrow ${A2}x ${fmtSigned(B2)}y = ${C2}$
+      </div>
+      <div style="margin:14px 0;text-align:center">
+        $$\\begin{array}{rcccll}
+        ${A1}x & ${B1<0?'-':'+'} & ${Math.abs(B1)}y & = & ${C1} \\\\
+        ${A2}x & ${B2<0?'-':'+'} & ${Math.abs(B2)}y & = & ${C2} \\\\
+        \\hline \\\\[-10pt]
+        ${resA}x & & & = & ${resC} & ${opSymbol} \\implies \\mathbf{x = ${xVal}}
+        \\end{array}$$
+      </div>
+      <div>Substitusikan $x = ${xVal}$ ke persamaan awal untuk mendapatkan $y$:</div>
+      <div style="margin:6px 0;text-align:center">$$\\mathbf{y = ${yVal}}$$</div>
+      <hr style="border:none;border-top:1px solid #333;margin:8px 0">
+      <div style="text-align:center;font-size:1.15rem;color:#6ee7b7">
+        • <strong>Himpunan Penyelesaian: $(x, y) = (${xVal}, ${yVal})$</strong>
+      </div>
+    </div>
+  `;
   renderResult('el-result', html, 'correct');
 }
 
