@@ -185,13 +185,20 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <h3>Contoh 3: Menyamakan Koefisien Terlebih Dahulu</h3>
 <div class="example">
   <p>Selesaikan: $2x + 3y = 16$ dan $x + 2y = 9$</p>
-  <p style="margin-top:6px">• Koefisien $x$ belum sama. Kalikan Persamaan 2 dengan 2 agar sama-sama $2x$:</p>
+  <div style="margin:8px 0;line-height:1.8;color:#ccc">
+    • <strong>Langkah 1 (Samakan koefisien $x$):</strong> Kalikan Persamaan 2 dengan 2<br>
+    <span style="display:inline-block;padding-left:14px">
+      $\text{Pers. 1 } (\times 1) \rightarrow 2x + 3y = 16$<br>
+      $\text{Pers. 2 } (\times 2) \rightarrow 2x + 4y = 18$
+    </span>
+  </div>
+  <p>• <strong>Langkah 2 (Susun dan kurangkan untuk mengeliminasi $x$):</strong></p>
   <div style="background:#16162a;padding:14px 18px;border-radius:10px;margin:10px 0;text-align:center">
-    $$\begin{array}{rccclll}
-    2x & + & 3y & = & 16 & (\times 1) & \rightarrow \ 2x + 3y = 16 \\
-    x & + & 2y & = & 9 & (\times 2) & \rightarrow \ 2x + 4y = 18 \\
+    $$\begin{array}{rcccll}
+    2x & + & 3y & = & 16 \\
+    2x & + & 4y & = & 18 \\
     \hline \\[-10pt]
-    & - & y & = & -2 & & (-) \implies \mathbf{y = 2}
+    & - & y & = & -2 & (-) \implies \mathbf{y = 2}
     \end{array}$$
   </div>
   <p>Substitusikan $y = 2$ ke $x + 2y = 9$:</p>
