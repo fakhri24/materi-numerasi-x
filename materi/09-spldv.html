@@ -95,16 +95,94 @@ input[type=number]:focus,input[type=text]:focus{border-color:#a78bfa}
 <!-- ==================== METODE SUBSTITUSI ==================== -->
 <div id="substitusi" class="section">
 <div class="card">
-<h2>Metode Substitusi</h2>
+<h2>Metode Substitusi (Mengganti Variabel)</h2>
+<div class="rule-box success">
+<div class="label">💡 Kapan Metode Substitusi Paling Tepat Digunakan?</div>
+<p>Substitusi artinya <strong>"menggantikan"</strong>. Metode ini <strong>paling cepat &amp; praktis</strong> digunakan ketika salah satu persamaan sudah berbentuk eksplisit siap pakai:</p>
+<div style="margin:8px 0;padding:8px 14px;background:#0e2a1a;border-radius:8px;border:1px solid #10b981;text-align:center">
+  $$\mathbf{y = \dots} \quad \text{atau} \quad \mathbf{x = \dots}$$
+</div>
+<p style="font-size:0.95rem;color:#ccc">Jika sudah ada bentuk $y = \dots$ atau $x = \dots$, kita bisa langsung <em>menyelipkan / memasukkannya</em> ke persamaan lainnya tanpa perlu menyusun atau menyamakan koefisien lagi!</p>
+</div>
+
 <ol class="step-list">
-<li>Nyatakan salah satu variabel dari salah satu persamaan (misal $x = \dots$)</li>
-<li>Substitusikan ke persamaan lainnya</li>
-<li>Selesaikan persamaan satu variabel yang terbentuk</li>
-<li>Substitusikan kembali untuk mendapatkan variabel lainnya</li>
+<li><strong>Identifikasi variabel</strong> yang sudah berbentuk $y = \dots$ atau $x = \dots$ (atau ubah salah satu jika belum).</li>
+<li><strong>Gantikan (substitusikan)</strong> variabel tersebut ke persamaan lainnya dengan bantuan tanda kurung.</li>
+<li><strong>Selesaikan</strong> persamaan satu variabel yang terbentuk.</li>
+<li><strong>Masukkan kembali hasilnya</strong> ke persamaan awal untuk mendapatkan variabel pasangannya.</li>
 </ol>
 
-<h3>Contoh</h3>
-<div class="example" id="ex-substitusi" style="text-align:center"></div>
+<h3>Contoh 1: Persamaan Sudah Siap Pakai ($y = \dots$)</h3>
+<div class="example">
+  <p>Selesaikan sistem persamaan:</p>
+  <div style="background:#16162a;padding:12px 16px;border-radius:8px;margin:8px 0;text-align:center">
+    $$\begin{cases}
+    y = 2x + 1 & \text{(Pers. 1, sudah berbentuk } y = \dots) \\
+    x + y = 7 & \text{(Pers. 2)}
+    \end{cases}$$
+  </div>
+
+  <div style="margin-top:12px;line-height:1.8;color:#ccc">
+    • <strong>Langkah 1 (Substitusikan $y$ ke Persamaan 2):</strong><br>
+    Ganti huruf $y$ pada Persamaan 2 dengan $(2x + 1)$:
+    <div style="background:#16162a;padding:10px 16px;border-radius:8px;margin:6px 0;text-align:center">
+      $$x + \mathbf{(2x + 1)} = 7$$
+    </div>
+    
+    • <strong>Langkah 2 (Selesaikan untuk mencari $x$):</strong>
+    <div style="background:#16162a;padding:10px 16px;border-radius:8px;margin:6px 0;text-align:center">
+      $$\begin{aligned}
+      3x + 1 &= 7 \\
+      3x &= 7 - 1 \\
+      3x &= 6 \implies \mathbf{x = 2}
+      \end{aligned}$$
+    </div>
+
+    • <strong>Langkah 3 (Masukkan $x = 2$ ke Persamaan 1 untuk mencari $y$):</strong>
+    <div style="background:#16162a;padding:10px 16px;border-radius:8px;margin:6px 0;text-align:center">
+      $$y = 2(\mathbf{2}) + 1 = 4 + 1 \implies \mathbf{y = 5}$$
+    </div>
+
+    <div style="margin-top:10px;text-align:center;font-size:1.15rem;color:#6ee7b7">
+      • <strong>Himpunan Penyelesaian: $(x, y) = (2, 5)$</strong>
+    </div>
+  </div>
+</div>
+
+<h3>Contoh 2: Mengubah Menjadi $x = \dots$ Terlebih Dahulu</h3>
+<div class="example">
+  <p>Selesaikan sistem persamaan:</p>
+  <div style="background:#16162a;padding:12px 16px;border-radius:8px;margin:8px 0;text-align:center">
+    $$\begin{cases}
+    x - y = 2 & \text{(Pers. 1)} \\
+    x + y = 10 & \text{(Pers. 2)}
+    \end{cases}$$
+  </div>
+
+  <div style="margin-top:12px;line-height:1.8;color:#ccc">
+    • <strong>Langkah 1 (Ubah Pers. 1 menjadi $x = \dots$):</strong><br>
+    Dari Persamaan 1: pindahkan $-y$ ke ruas kanan menjadi $\mathbf{x = y + 2}$.
+    
+    <div style="margin-top:6px">• <strong>Langkah 2 (Substitusikan $x$ ke Persamaan 2):</strong></div>
+    Ganti huruf $x$ pada Persamaan 2 dengan $(y + 2)$:
+    <div style="background:#16162a;padding:10px 16px;border-radius:8px;margin:6px 0;text-align:center">
+      $$\begin{aligned}
+      \mathbf{(y + 2)} + y &= 10 \\
+      2y + 2 &= 10 \\
+      2y &= 8 \implies \mathbf{y = 4}
+      \end{aligned}$$
+    </div>
+
+    • <strong>Langkah 3 (Cari nilai $x$):</strong>
+    <div style="background:#16162a;padding:10px 16px;border-radius:8px;margin:6px 0;text-align:center">
+      $$x = \mathbf{4} + 2 \implies \mathbf{x = 6}$$
+    </div>
+
+    <div style="margin-top:10px;text-align:center;font-size:1.15rem;color:#6ee7b7">
+      • <strong>Himpunan Penyelesaian: $(x, y) = (6, 4)$</strong>
+    </div>
+  </div>
+</div>
 </div>
 
 <div class="card">
@@ -284,9 +362,6 @@ document.getElementById('rb-spldv').innerHTML='SPLDV adalah dua persamaan linear
 k('ex-bentuk','a_1x+b_1y=c_1 \\\\ a_2x+b_2y=c_2');
 document.getElementById('rb-solusi').innerHTML='<div class="label">Penyelesaian</div>Penyelesaian SPLDV berupa PASANGAN nilai $(x,y)$ — berbeda dengan PLSV yang hanya mencari satu nilai.';
 
-// ============ SUBSTITUSI (STATIS) ============
-k('ex-substitusi','x+y=10 \\ \\text{dan} \\ x-y=2 \\\\[4pt] \\text{Dari pers. 1: } x = 10-y \\\\ \\text{Substitusi ke pers. 2: } (10-y)-y=2 \\\\ 10-2y=2 \\ \\Rightarrow \\ y=4 \\\\ x=10-4=\\boxed{6} \\quad y=\\boxed{4}');
-
 // ============ SOAL CERITA (STATIS) ============
 document.getElementById('cerita1-soal').innerHTML='"Harga 2 pensil dan 3 buku adalah Rp16.000. Harga 1 pensil dan 2 buku adalah Rp9.000. Berapa harga masing-masing?"';
 document.getElementById('cerita1-steps').innerHTML=`
@@ -326,7 +401,27 @@ function hitungSubstitusi(){
   }
   const yVal = (a1*c2 - a2*c1) / D;
   const xVal = (c1 - b1*yVal) / a1;
-  const html=`$${a1}x ${fmtSigned(b1)}y = ${c1}$ dan $${a2}x ${fmtSigned(b2)}y = ${c2}$<br>Dari pers. 1: $x = \\dfrac{${c1} ${fmtSigned(-b1)}y}{${a1}}$<br>Substitusi ke pers. 2, selesaikan untuk $y$: $y = \\boxed{${yVal}}$<br>Substitusi kembali: $x = \\boxed{${xVal}}$`;
+  
+  const b1Sign = b1 < 0 ? `+ ${Math.abs(b1)}y` : `- ${b1}y`;
+  const xExpr = a1 === 1 ? `${c1} ${b1Sign}` : `\\dfrac{${c1} ${b1Sign}}{${a1}}`;
+
+  const html = `
+    <div style="text-align:left;background:#16162a;padding:14px 18px;border-radius:10px;line-height:1.8">
+      <div style="margin-bottom:8px"><strong>Persamaan awal:</strong></div>
+      <div style="color:#aaa">(1) $${a1}x ${fmtSigned(b1)}y = ${c1}$ &nbsp;|&nbsp; (2) $${a2}x ${fmtSigned(b2)}y = ${c2}$</div>
+      <hr style="border:none;border-top:1px solid #333;margin:10px 0">
+      <div>• <strong>Langkah 1 (Nyatakan $x = \\dots$ dari Pers. 1):</strong></div>
+      <div style="margin:6px 0;text-align:center">$$x = ${xExpr}$$</div>
+      <div>• <strong>Langkah 2 (Substitusikan ke Pers. 2 dan selesaikan):</strong></div>
+      <div style="margin:6px 0;text-align:center">$$\\mathbf{y = ${yVal}}$$</div>
+      <div>• <strong>Langkah 3 (Substitusikan nilai $y = ${yVal}$ kembali untuk mencari $x$):</strong></div>
+      <div style="margin:6px 0;text-align:center">$$\\mathbf{x = ${xVal}}$$</div>
+      <hr style="border:none;border-top:1px solid #333;margin:10px 0">
+      <div style="text-align:center;font-size:1.15rem;color:#6ee7b7">
+        • <strong>Himpunan Penyelesaian: $(x, y) = (${xVal}, ${yVal})$</strong>
+      </div>
+    </div>
+  `;
   renderResult('sb-result', html, 'correct');
 }
 
